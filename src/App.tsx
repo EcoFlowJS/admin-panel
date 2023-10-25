@@ -1,12 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import Button from "rsuite/Button";
-import { CustomProvider } from "rsuite";
+import { Container, CustomProvider } from "rsuite";
 export default createBrowserRouter([
   {
     path: "/admin",
     element: (
       <CustomProvider theme="dark">
-        <Button appearance="primary">Default</Button>
+        <Container>
+          <Button appearance="primary">Default</Button>
+        </Container>
       </CustomProvider>
     ),
   },
