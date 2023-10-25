@@ -1,0 +1,20 @@
+@import 'rsuite/styles/index.less';
+@import './color.scheme.less';
+
+@enable-dark-mode: true;
+@enable-high-contrast: false;
+@enable-css-reset: true;
+
+@primary-color-dark: #1361AA;
+@red: #EC3257;
+@red-dark: #dc143c;
+@green:#5AC69F;
+@green-dark: #3EB489;
+@yellow: #eae86f;
+@yellow-dark: #ffbf00;
+
+& when(@enable-dark-mode = true ){
+    .rs-theme-dark {
+        --rs-body: @slate-900-dark;
+    }
+}
