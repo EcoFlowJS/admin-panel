@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react()],
   base: "/admin",
   server: {
+    open: true,
     port: 3000,
     proxy: {
       "/editor/flow": {
