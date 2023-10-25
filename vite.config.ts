@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import autoprefixer from "autoprefixer";
+import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,6 +15,10 @@ export default defineConfig({
       },
       "/editor/schema": {
         target: "http://localhost:3002/",
+        changeOrigin: true,
+      },
+      "/errors": {
+        target: "http://localhost:3003/",
         changeOrigin: true,
       },
     },
