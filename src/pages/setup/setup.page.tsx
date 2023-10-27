@@ -1,6 +1,7 @@
+import BaseSetup from "../../components/setup/base/base.component";
 
 export default function SetupPage() {
   return (
-    <div>SetupPage</div>
+    <BaseSetup />
   )
 }

@@ -1,0 +1,26 @@
+.step-container{
+    background-color: #FFFFFF;
+    min-width: 50vw;
+
+    .rs-panel-body {
+        & > .steps{
+            & > div {
+                & > .rs-steps-item-content {
+                    color: var(--rs-gray-600) !important;
+                }
+
+                & > * .rs-steps-item-icon-process {
+                    color: #FFFFFF;
+                }
+            }
+        }
+
+        & > div[role="separator"]{
+            background-color: var(--rs-gray-200);
+        }
+
+        & > .step-header > .rs-panel-header{
+            color: var(--rs-gray-600);
+        }
+    }
+}
