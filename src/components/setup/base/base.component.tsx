@@ -1,4 +1,4 @@
-import { Button, Divider, FlexboxGrid, Panel, Stack, Steps } from "rsuite";
+import { Button, Divider, FlexboxGrid, Panel, Steps } from "rsuite";
 import PageNextIcon from "@rsuite/icons/PageNext";
 import PagePreviousIcon from "@rsuite/icons/PagePrevious";
 import CheckIcon from "@rsuite/icons/Check";
