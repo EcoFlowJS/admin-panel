@@ -40,7 +40,7 @@ export default function BaseSetup() {
       alignItems="center"
       direction="column"
       style={{
-        height: '100vh'
+        minHeight: '100vh'
       }}
     >
       <h3>Preliminary Configuration</h3><br />
