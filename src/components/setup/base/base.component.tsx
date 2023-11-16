@@ -16,6 +16,7 @@ export default function BaseSetup() {
     status: "process",
     finalize: false,
   };
+
   const headerText: string[] = [
     "Welcome to Eco-Flow",
     "Database Connection Settings",
