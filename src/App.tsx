@@ -1,2 +1,7 @@
+import { atom, getDefaultStore } from "jotai";
 import router from "./lib/router/BrowserRouter";
-export default router
+
+const defaultStore = getDefaultStore();
+console.log(defaultStore.get(atom("abcef")));
+
+export default router;
