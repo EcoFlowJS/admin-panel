@@ -1,6 +1,8 @@
 import { Error404 } from "@eco-flow/components-lib";
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import BaseLayout from "../layout/BaseAdminLayout/BaseAdminLayout.layout";
+import DashboardPage from "../pages/Dashboard/Dashboard.page";
 
 const Redirect = () => {
   const navigate = useNavigate();
@@ -15,7 +17,9 @@ export default function () {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Redirect />} />
-        <Route path="/admin" element="{<Redirect />}"></Route>
+        <Route path="/admin" element={<BaseLayout />}>
+          <Route path="dashboard" element={<DashboardPage />} />
+        </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
