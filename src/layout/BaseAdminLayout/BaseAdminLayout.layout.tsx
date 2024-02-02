@@ -40,6 +40,8 @@ export default function BaseAdminLayout() {
           style={{
             padding: "2rem",
             backgroundColor: "var(--dashboard-content-background-color)",
+            overflowY: "auto",
+            height: "calc(100vh - 57px)",
           }}
         >
           <Content>

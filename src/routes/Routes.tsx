@@ -2,7 +2,11 @@ import { Error404 } from "@eco-flow/components-lib";
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import BaseLayout from "../layout/BaseAdminLayout/BaseAdminLayout.layout";
-import DashboardPage from "../pages/Dashboard/Dashboard.page";
+import UserProfile from "../pages/UserProfile/UserProfile";
+import UsersDashboard from "../pages/UserDashboard/UsersDashboard";
+import ServerConfigurations from "../pages/ServerConfigurations/ServerConfigurations";
+import ServerEnvironments from "../pages/ServerEnvironments/ServerEnvironments";
+import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
 
 const Redirect = () => {
   const navigate = useNavigate();
@@ -18,11 +22,11 @@ export default function () {
       <Routes>
         <Route path="/" element={<Redirect />} />
         <Route path="/admin" element={<BaseLayout />}>
-          <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="profile" element="profile" />
-          <Route path="users" element="users" />
-          <Route path="configurations" element="configurations" />
-          <Route path="environments" element="Environments" />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="profile" element={<UserProfile />} />
+          <Route path="users" element={<UsersDashboard />} />
+          <Route path="configurations" element={<ServerConfigurations />} />
+          <Route path="environments" element={<ServerEnvironments />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
