@@ -19,7 +19,10 @@ export default function () {
         <Route path="/" element={<Redirect />} />
         <Route path="/admin" element={<BaseLayout />}>
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="profile" element="profile" />
           <Route path="users" element="users" />
+          <Route path="configurations" element="configurations" />
+          <Route path="environments" element="Environments" />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
