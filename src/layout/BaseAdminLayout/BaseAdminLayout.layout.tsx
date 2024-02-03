@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import initService from "../../service/init/init.service";
 import useNavagator from "../../utils/redirect/redirect";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Container, Content } from "rsuite";
 import Header from "../../components/Header/Header";
 import SideNav from "../../components/SideNav/SideNav";
@@ -36,18 +36,22 @@ export default function BaseAdminLayout() {
       <Header />
       <Container>
         <SideNav />
-        <Container
-          style={{
-            padding: "2rem",
-            backgroundColor: "var(--dashboard-content-background-color)",
-            overflowY: "auto",
-            height: "calc(100vh - 57px)",
-          }}
-        >
-          <Content>
+        <Content style={{ position: "relative" }}>
+          <Container
+            style={{
+              padding: "2rem",
+              backgroundColor: "var(--dashboard-content-background-color)",
+              overflowY: "auto",
+              position: "absolute",
+              top: "0",
+              bottom: "0",
+              right: "0",
+              left: "0",
+            }}
+          >
             <Outlet />
-          </Content>
-        </Container>
+          </Container>
+        </Content>
       </Container>
     </Container>
   );

@@ -9,7 +9,15 @@ const ServerConfigParser = (serverConfig: any, PrefixKey = ""): any => {
             : key
         ] = serverConfig[key];
       } else
-        config = { ...config, ...ServerConfigParser(serverConfig[key], key) };
+        config = {
+          ...config,
+          ...ServerConfigParser(
+            serverConfig[key],
+            PrefixKey !== ""
+              ? PrefixKey + key.charAt(0).toUpperCase() + key.slice(1)
+              : key
+          ),
+        };
     } else
       config[
         PrefixKey !== ""

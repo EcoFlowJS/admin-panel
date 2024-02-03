@@ -10,60 +10,51 @@ import {
   Header,
   Input,
   InputNumber,
+  SelectPicker,
   Tabs,
   Toggle,
 } from "rsuite";
 import AdminLoading from "../../components/Loading/AdminLoading.component";
 import getAllServerConfigService from "../../service/config/getAllServerConfig.service";
-import { Form, FormGroup } from "@eco-flow/components-lib";
+import {
+  Form,
+  FormGroup,
+  InputEnv,
+  InputPasswordEnv,
+} from "@eco-flow/components-lib";
 import { configOptions } from "@eco-flow/types";
 import ServerConfigParser from "./ServerConfigParser";
 import routeList from "./routesList";
+import {
+  DB_DriverList,
+  DB_DriverParser,
+  defaultServerConfigsOptions,
+  logList,
+} from "./serverConfigList";
+import isEnv from "../../utils/isEnv/inEnv";
+import updateConfigs from "../../service/config/updateConfig";
+import axios from "../../utils/axios/axios";
 
 export default function ServerConfigurations() {
   const [isLoading, setLoading] = useState(true);
   const [isLoadingError, setLoadingError] = useState(false);
   const [defaultServerConfigs, setDefaultServerConfig] =
     useState<configOptions>();
-  const [value, setValue] = useState({
-    userDir: "",
-    moduleDir: "",
-    envDir: "",
-    DB_Directory: "",
-    flowFile: "",
-    flowFilePretty: false,
-    Host: "",
-    Port: 0,
-    httpsEnabled: false,
-    httpsKey: "",
-    httpsCert: "",
-    httpCorsEnabled: false,
-    httpCorsOrigin: "",
-    httpCorsAllowMethods: [],
-    httpCorsExposeHeaders: "",
-    httpCorsAllowHeaders: "",
-    httpCorsCredentials: false,
-    httpCorsKeepHeadersOnError: false,
-    httpCorsSecureContext: false,
-    httpCorsPrivateNetworkAccess: false,
-    systemRouterOptionsPrefix: "",
-    systemRouterOptionsMethods: [],
-    systemRouterOptionsRouterPath: "",
-    systemRouterOptionsSensitive: false,
-    systemRouterOptionsStrict: false,
-    systemRouterOptionsExclusive: false,
-    systemRouterOptionsHost: "",
-    apiRouterOptionsPrefix: "",
-    apiRouterOptionsMethods: [],
-    apiRouterOptionsRouterPath: "",
-    apiRouterOptionsSensitive: false,
-    apiRouterOptionsStrict: false,
-    apiRouterOptionsExclusive: false,
-    apiRouterOptionsHost: "",
-    httpStatic: "",
-    httpStaticRoot: "",
-  });
+  const [value, setValue] = useState(defaultServerConfigsOptions);
   const submitButtonRef = useRef(null);
+
+  const [isEnvMongoConnectionString, setEnvMongoConnectionString] =
+    useState(false);
+  const [
+    isEnvMongoConnectionStringChecked,
+    setEnvMongoConnectionStringChecked,
+  ] = useState(false);
+  const [isEnvUsername, setEnvUsername] = useState(false);
+  const [isEnvUsernameChecked, setEnvUsernameChecked] = useState(false);
+  const [isEnvPassword, setEnvPassword] = useState(false);
+  const [isEnvPasswordChecked, setEnvPasswordChecked] = useState(false);
+  const [isEnvDatabase, setEnvDatabase] = useState(false);
+  const [isEnvDatabaseChecked, setEnvDatabaseChecked] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -72,11 +63,50 @@ export default function ServerConfigurations() {
         const { defaultConfig, serverConfig } = response.payload;
         setDefaultServerConfig(defaultConfig);
         const config = ServerConfigParser(serverConfig);
+        if (
+          typeof config.databaseConfigurationConnectionString !== "undefined"
+        ) {
+          const [isEnvMongoString, EnvMongoString] = isEnv(
+            config.databaseConfigurationConnectionString
+          );
+          config.databaseConfigurationConnectionString = EnvMongoString;
+          setEnvMongoConnectionStringChecked(isEnvMongoString);
+          setEnvMongoConnectionString(isEnvMongoString);
+        }
+
+        if (typeof config.databaseConfigurationUser !== "undefined") {
+          const [isEnvUsername, EnvUsername] = isEnv(
+            config.databaseConfigurationUser
+          );
+          config.databaseConfigurationUser = EnvUsername;
+          setEnvUsernameChecked(isEnvUsername);
+          setEnvUsername(isEnvUsername);
+        }
+
+        if (typeof config.databaseConfigurationPassword !== "undefined") {
+          const [isEnvPassword, EnvPassword] = isEnv(
+            config.databaseConfigurationPassword
+          );
+          config.databaseConfigurationPassword = EnvPassword;
+          setEnvPasswordChecked(isEnvPassword);
+          setEnvPassword(isEnvPassword);
+        }
+
+        if (typeof config.databaseConfigurationPassword !== "undefined") {
+          const [isEnvDatabase, EnvDatabase] = isEnv(
+            config.databaseConfigurationDatabase
+          );
+          config.databaseConfigurationDatabase = EnvDatabase;
+          setEnvDatabaseChecked(isEnvDatabase);
+          setEnvDatabase(isEnvDatabase);
+        }
+
         setValue({
           ...value,
           ...config,
           httpCorsExposeHeaders: config.httpCorsExposeHeaders.toString(),
           httpCorsAllowHeaders: config.httpCorsAllowHeaders?.toString(),
+          databaseDriver: DB_DriverParser(config.databaseDriver),
         });
       }
       if (response.error) setLoadingError(true);
@@ -84,7 +114,30 @@ export default function ServerConfigurations() {
     })();
   }, []);
 
-  // useEffect(() => console.log(isSSL), [isSSL]);
+  useEffect(() => {
+    if (value.databaseDriver === "MySQL")
+      setValue({ ...value, databaseConfigurationPort: 3306 });
+
+    if (value.databaseDriver === "PostgreSQL")
+      setValue({ ...value, databaseConfigurationPort: 5432 });
+  }, [value.databaseDriver]);
+
+  const configProcessHandler = () => {
+    const SendData = { ...value };
+    if (isEnvMongoConnectionString)
+      SendData.databaseConfigurationConnectionString = `env(${value.databaseConfigurationConnectionString})`;
+    if (isEnvUsername)
+      SendData.databaseConfigurationUser = `env(${value.databaseConfigurationUser})`;
+    if (isEnvPassword)
+      SendData.databaseConfigurationPassword = `env(${value.databaseConfigurationPassword})`;
+    if (isEnvDatabase)
+      SendData.databaseConfigurationDatabase = `env(${value.databaseConfigurationDatabase})`;
+
+    console.log(SendData);
+    updateConfigs(SendData)
+      .then((val) => console.log(val))
+      .catch((err) => axios(err.payload.config));
+  };
 
   return (
     <>
@@ -118,7 +171,7 @@ export default function ServerConfigurations() {
               formValue={value}
               onSubmit={(status, event) => {
                 event.preventDefault();
-                console.log(value, Object.keys(value).length);
+                configProcessHandler();
               }}
             >
               <Tabs defaultActiveKey="1" vertical appearance="tabs">
@@ -415,15 +468,257 @@ export default function ServerConfigurations() {
                     defaultChecked={value.flowFilePretty}
                   />
                 </Tabs.Tab>
-                <Tabs.Tab
-                  eventKey="7"
-                  title="Logging Configutations"
-                ></Tabs.Tab>
-                <Tabs.Tab eventKey="8" title="Editor Configutations"></Tabs.Tab>
-                <Tabs.Tab
-                  eventKey="9"
-                  title="System Database Configutations"
-                ></Tabs.Tab>
+                <Tabs.Tab eventKey="7" title="Logging Configutations">
+                  <FormGroup
+                    name="loggingEnabled"
+                    label="Enable Logs "
+                    accepter={Toggle}
+                    defaultChecked={value.loggingEnabled}
+                  />
+                  {value.loggingEnabled ? (
+                    <>
+                      <FormGroup
+                        name="loggingLevel"
+                        label="Logs Level "
+                        accepter={SelectPicker}
+                        data={logList}
+                        style={{ width: 150 }}
+                        searchable={false}
+                      />
+                      <FormGroup
+                        name="loggingFormat"
+                        label="Logs Format :- "
+                        accepter={Input}
+                        placeholder={value.loggingFormat}
+                      />
+                      <FormGroup
+                        name="loggingPrettyPrint"
+                        label="Logs Pretty Print "
+                        accepter={Toggle}
+                        defaultChecked={value.loggingPrettyPrint}
+                      />
+                      <FormGroup
+                        name="loggingLableEnable"
+                        label="Logs Lable Enable "
+                        accepter={Toggle}
+                        defaultChecked={value.loggingLableEnable}
+                      />
+                      {value.loggingLableEnable ? (
+                        <FormGroup
+                          name="loggingLableLable"
+                          label="Logs Lable :- "
+                          accepter={Input}
+                          placeholder={value.loggingLableLable}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                      <FormGroup
+                        name="loggingConsole"
+                        label="Logs Enable Console "
+                        accepter={Toggle}
+                        defaultChecked={value.loggingConsole}
+                      />
+                      <FormGroup
+                        name="loggingFileEnabled"
+                        label="Logs Enable File "
+                        accepter={Toggle}
+                        defaultChecked={value.loggingFileEnabled}
+                      />
+                      {value.loggingFileEnabled ? (
+                        <>
+                          <FormGroup
+                            name="loggingFileLocation"
+                            label="Logs File Location :- "
+                            accepter={Input}
+                            placeholder={value.loggingFileLocation}
+                          />
+                          <FormGroup
+                            name="loggingFileFilename"
+                            label="Logs Filename :- "
+                            accepter={Input}
+                            placeholder={value.loggingFileFilename}
+                          />
+                        </>
+                      ) : (
+                        <></>
+                      )}
+
+                      <FormGroup
+                        name="loggingWebEnabled"
+                        label="Logs Enable Web "
+                        accepter={Toggle}
+                        defaultChecked={value.loggingWebEnabled}
+                      />
+                      {value.loggingWebEnabled ? (
+                        <>
+                          <FormGroup
+                            name="loggingWebHost"
+                            label="Logs Web Host :- "
+                            accepter={Input}
+                            placeholder={value.loggingWebHost}
+                          />
+                          <FormGroup
+                            name="loggingWebPort"
+                            label="Logs Web Port :- "
+                            accepter={InputNumber}
+                            max={65535}
+                            mix={1}
+                            placeholder={value.loggingWebPort}
+                          />
+                          <FormGroup
+                            name="loggingWebPath"
+                            label="Logs Web Path :- "
+                            accepter={Input}
+                            placeholder={value.loggingWebPath}
+                          />
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </Tabs.Tab>
+                <Tabs.Tab eventKey="8" title="Editor Configutations">
+                  <FormGroup
+                    name="editorEnabled"
+                    label="Enable Editors "
+                    accepter={Toggle}
+                    defaultChecked={value.editorEnabled}
+                  />
+                  {value.editorEnabled ? (
+                    <>
+                      <FormGroup
+                        name="editorAdmin"
+                        label="Enable Admin Editors"
+                        accepter={Toggle}
+                        defaultChecked={value.editorAdmin}
+                      />
+                      <FormGroup
+                        name="editorFlow"
+                        label="Enable FLow Editors "
+                        accepter={Toggle}
+                        defaultChecked={value.editorFlow}
+                      />
+                      <FormGroup
+                        name="editorSchema"
+                        label="Enable Schema Editors "
+                        accepter={Toggle}
+                        defaultChecked={value.editorSchema}
+                      />
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </Tabs.Tab>
+                <Tabs.Tab eventKey="9" title="System Database Configutations">
+                  <FormGroup
+                    name="databaseDriver"
+                    label="Database Driver"
+                    accepter={SelectPicker}
+                    data={DB_DriverList}
+                    style={{ width: 150 }}
+                    searchable={false}
+                    onClean={() => setValue({ ...value, databaseDriver: "" })}
+                  />
+                  {value.databaseDriver !== "" ? (
+                    value.databaseDriver === "MongoDB" ? (
+                      <>
+                        <FormGroup
+                          name="databaseConfigurationConnectionString"
+                          label="Connection String"
+                          accepter={InputEnv}
+                          autoComplete="off"
+                          placeholder="Connection String"
+                          style={{ width: 250 }}
+                          envCheckbox
+                          envCheckboxOnChange={setEnvMongoConnectionString}
+                          defaultChecked={isEnvMongoConnectionStringChecked}
+                        />
+                        {isEnvMongoConnectionStringChecked.toString()}
+                      </>
+                    ) : value.databaseDriver === "Sqlite" ? (
+                      <>
+                        <FormGroup
+                          name="databaseConfigurationFilename"
+                          label="Sqlite File "
+                          accepter={Input}
+                          autoComplete="off"
+                          placeholder="Sqlite File"
+                          helperText="File will create automatically if not exists"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <FormGroup
+                          name="databaseConfigurationHost"
+                          label="Host"
+                          accepter={Input}
+                          autoComplete="off"
+                          placeholder="localhost"
+                          style={{ width: 250 }}
+                        />
+                        <FormGroup
+                          name="databaseConfigurationPort"
+                          label="Port"
+                          accepter={InputNumber}
+                          placeholder={
+                            value.databaseDriver === "MySQL"
+                              ? "3306"
+                              : value.databaseDriver === "PostgreSQL"
+                              ? "5432"
+                              : "3000"
+                          }
+                          min={1}
+                          max={65535}
+                          style={{ width: 250 }}
+                        />
+                        <FormGroup
+                          name="databaseConfigurationUser"
+                          label="Username"
+                          accepter={InputEnv}
+                          autoComplete="off"
+                          placeholder="Username"
+                          style={{ width: 250 }}
+                          envCheckbox
+                          envCheckboxOnChange={setEnvUsername}
+                          defaultChecked={isEnvUsernameChecked}
+                        />
+                        <FormGroup
+                          name="databaseConfigurationPassword"
+                          label="Password"
+                          accepter={InputPasswordEnv}
+                          placeholder="Password"
+                          style={{ width: 250 }}
+                          envCheckbox
+                          envCheckboxOnChange={setEnvPassword}
+                          defaultChecked={isEnvPasswordChecked}
+                        />
+                        <FormGroup
+                          name="databaseConfigurationDatabase"
+                          label="Database Name"
+                          accepter={InputEnv}
+                          autoComplete="off"
+                          placeholder="Database Name"
+                          style={{ width: 250 }}
+                          envCheckbox
+                          envCheckboxOnChange={setEnvDatabase}
+                          defaultChecked={isEnvDatabaseChecked}
+                        />
+                        <FormGroup
+                          name="databaseConfigurationSsl"
+                          label="SSL  "
+                          accepter={Toggle}
+                          defaultChecked={value.databaseConfigurationSsl}
+                        />
+                      </>
+                    )
+                  ) : (
+                    <></>
+                  )}
+                </Tabs.Tab>
               </Tabs>
               <input type="submit" hidden ref={submitButtonRef} />
             </Form>
