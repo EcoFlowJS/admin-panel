@@ -65,6 +65,11 @@ const defaultServerConfigsOptions = {
   databaseConfigurationDatabase: "",
   databaseConfigurationSsl: false,
 };
+
+const routeList = ["GET", "HEAD", "PUT", "POST", "DELETE", "PATCH"].map(
+  (item) => ({ label: item, value: item })
+);
+
 const logLevel: LogLevel = {
   ERROR: 0,
   WARNING: 1,
@@ -103,4 +108,10 @@ const DB_DriverParser = (driver: DB_Drivers): string => {
   }
 };
 
-export { defaultServerConfigsOptions, logList, DB_DriverList, DB_DriverParser };
+export {
+  defaultServerConfigsOptions,
+  logList,
+  DB_DriverList,
+  routeList,
+  DB_DriverParser,
+};

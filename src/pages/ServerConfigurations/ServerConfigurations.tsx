@@ -6,7 +6,6 @@ import {
   Content,
   Divider,
   FlexboxGrid,
-  Footer,
   Header,
   Input,
   InputNumber,
@@ -17,32 +16,37 @@ import {
 import AdminLoading from "../../components/Loading/AdminLoading.component";
 import getAllServerConfigService from "../../service/config/getAllServerConfig.service";
 import {
+  AlertModal,
   Form,
   FormGroup,
   InputEnv,
   InputPasswordEnv,
+  useNotification,
 } from "@eco-flow/components-lib";
-import { configOptions } from "@eco-flow/types";
+import { ApiResponse, configOptions } from "@eco-flow/types";
 import ServerConfigParser from "./ServerConfigParser";
-import routeList from "./routesList";
 import {
   DB_DriverList,
   DB_DriverParser,
   defaultServerConfigsOptions,
   logList,
+  routeList,
 } from "./serverConfigList";
 import isEnv from "../../utils/isEnv/inEnv";
 import updateConfigs from "../../service/config/updateConfig";
-import axios from "../../utils/axios/axios";
 
 export default function ServerConfigurations() {
+  // Loading state
   const [isLoading, setLoading] = useState(true);
   const [isLoadingError, setLoadingError] = useState(false);
+
+  // Component states
   const [defaultServerConfigs, setDefaultServerConfig] =
     useState<configOptions>();
   const [value, setValue] = useState(defaultServerConfigsOptions);
-  const submitButtonRef = useRef(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
+  //Env Inputs states
   const [isEnvMongoConnectionString, setEnvMongoConnectionString] =
     useState(false);
   const [
@@ -55,6 +59,9 @@ export default function ServerConfigurations() {
   const [isEnvPasswordChecked, setEnvPasswordChecked] = useState(false);
   const [isEnvDatabase, setEnvDatabase] = useState(false);
   const [isEnvDatabaseChecked, setEnvDatabaseChecked] = useState(false);
+
+  // Response state
+  const [response, setResponse] = useState<ApiResponse>({});
 
   useEffect(() => {
     (async () => {
@@ -122,22 +129,35 @@ export default function ServerConfigurations() {
       setValue({ ...value, databaseConfigurationPort: 5432 });
   }, [value.databaseDriver]);
 
-  const configProcessHandler = () => {
-    const SendData = { ...value };
-    if (isEnvMongoConnectionString)
-      SendData.databaseConfigurationConnectionString = `env(${value.databaseConfigurationConnectionString})`;
-    if (isEnvUsername)
-      SendData.databaseConfigurationUser = `env(${value.databaseConfigurationUser})`;
-    if (isEnvPassword)
-      SendData.databaseConfigurationPassword = `env(${value.databaseConfigurationPassword})`;
-    if (isEnvDatabase)
-      SendData.databaseConfigurationDatabase = `env(${value.databaseConfigurationDatabase})`;
+  useEffect(() => {
+    if (response.error) errorResponse.show();
+  }, [response]);
 
-    console.log(SendData);
-    updateConfigs(SendData)
-      .then((val) => console.log(val))
-      .catch((err) => axios(err.payload.config));
-  };
+  const successResponse = useNotification({
+    header: "Connection Update Success",
+    type: "success",
+    children: <>{response.success ? response.payload : <></>}</>,
+  });
+
+  const errorResponse = useNotification({
+    header: "Connection Update Error",
+    type: "error",
+    children: <>{response.error ? response.payload : <></>}</>,
+  });
+
+  const configProcessHandler = () =>
+    (async () => {
+      const SendData = { ...value };
+      if (isEnvMongoConnectionString)
+        SendData.databaseConfigurationConnectionString = `env(${value.databaseConfigurationConnectionString})`;
+      if (isEnvUsername)
+        SendData.databaseConfigurationUser = `env(${value.databaseConfigurationUser})`;
+      if (isEnvPassword)
+        SendData.databaseConfigurationPassword = `env(${value.databaseConfigurationPassword})`;
+      if (isEnvDatabase)
+        SendData.databaseConfigurationDatabase = `env(${value.databaseConfigurationDatabase})`;
+      setResponse(await updateConfigs(SendData));
+    })();
 
   return (
     <>
@@ -153,7 +173,8 @@ export default function ServerConfigurations() {
               <FlexboxGrid.Item>
                 <Button
                   appearance="primary"
-                  onClick={() => (submitButtonRef.current! as any).click()}
+                  // onClick={() => (submitButtonRef.current! as any).click()}
+                  onClick={() => setModalOpen(true)}
                 >
                   Confirm
                 </Button>
@@ -169,10 +190,6 @@ export default function ServerConfigurations() {
               checkTrigger="none"
               onChange={(changed) => setValue({ ...value, ...changed })}
               formValue={value}
-              onSubmit={(status, event) => {
-                event.preventDefault();
-                configProcessHandler();
-              }}
             >
               <Tabs defaultActiveKey="1" vertical appearance="tabs">
                 <Tabs.Tab eventKey="1" title="Server Configutations">
@@ -637,7 +654,6 @@ export default function ServerConfigurations() {
                           envCheckboxOnChange={setEnvMongoConnectionString}
                           defaultChecked={isEnvMongoConnectionStringChecked}
                         />
-                        {isEnvMongoConnectionStringChecked.toString()}
                       </>
                     ) : value.databaseDriver === "Sqlite" ? (
                       <>
@@ -720,11 +736,35 @@ export default function ServerConfigurations() {
                   )}
                 </Tabs.Tab>
               </Tabs>
-              <input type="submit" hidden ref={submitButtonRef} />
             </Form>
           </Content>
         </Container>
       )}
+
+      <AlertModal
+        open={modalOpen}
+        confirmButtonText="Confirm"
+        CancelButtonText="Cancel"
+        confirmButtonProps={{
+          color: "green",
+          onClick: () => {
+            setModalOpen(false);
+            configProcessHandler();
+          },
+        }}
+        CancelButtonProps={{
+          appearance: "default",
+          onClick: () => {
+            setModalOpen(false);
+          },
+        }}
+        size="sm"
+      >
+        <h6>Are You Sure?</h6>
+        <Divider />
+        <p>Updating Configuration will result in restarting of the server.</p>
+        <p>Please be patients while the server is restarting.</p>
+      </AlertModal>
     </>
   );
 }
