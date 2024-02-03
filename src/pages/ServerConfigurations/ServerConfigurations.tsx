@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  Button,
   CheckPicker,
   Container,
   Content,
   Divider,
+  FlexboxGrid,
   Footer,
   Header,
   Input,
   InputNumber,
-  Panel,
+  Tabs,
   Toggle,
 } from "rsuite";
 import AdminLoading from "../../components/Loading/AdminLoading.component";
@@ -18,34 +20,50 @@ import { configOptions } from "@eco-flow/types";
 import ServerConfigParser from "./ServerConfigParser";
 import routeList from "./routesList";
 
-interface ServerConfig {
-  userDir?: string;
-  moduleDir?: string;
-  envDir?: string;
-  DB_Directory?: string;
-  flowFile?: string;
-  flowFilePretty?: boolean;
-  Host?: string;
-  Port?: number;
-  httpsEnabled?: boolean;
-  httpsKey?: string;
-  httpsCert?: string;
-  httpCorsEnabled?: boolean;
-  httpCorsOrigin?: string;
-  httpCorsExposeHeaders?: string;
-  httpCorsAllowHeaders?: string;
-  httpCorsCredentials?: boolean;
-  httpCorsKeepHeadersOnError?: boolean;
-  httpCorsSecureContext?: boolean;
-  httpCorsPrivateNetworkAccess?: boolean;
-}
-
 export default function ServerConfigurations() {
   const [isLoading, setLoading] = useState(true);
   const [isLoadingError, setLoadingError] = useState(false);
   const [defaultServerConfigs, setDefaultServerConfig] =
     useState<configOptions>();
-  const [value, setValue] = useState<ServerConfig>({});
+  const [value, setValue] = useState({
+    userDir: "",
+    moduleDir: "",
+    envDir: "",
+    DB_Directory: "",
+    flowFile: "",
+    flowFilePretty: false,
+    Host: "",
+    Port: 0,
+    httpsEnabled: false,
+    httpsKey: "",
+    httpsCert: "",
+    httpCorsEnabled: false,
+    httpCorsOrigin: "",
+    httpCorsAllowMethods: [],
+    httpCorsExposeHeaders: "",
+    httpCorsAllowHeaders: "",
+    httpCorsCredentials: false,
+    httpCorsKeepHeadersOnError: false,
+    httpCorsSecureContext: false,
+    httpCorsPrivateNetworkAccess: false,
+    systemRouterOptionsPrefix: "",
+    systemRouterOptionsMethods: [],
+    systemRouterOptionsRouterPath: "",
+    systemRouterOptionsSensitive: false,
+    systemRouterOptionsStrict: false,
+    systemRouterOptionsExclusive: false,
+    systemRouterOptionsHost: "",
+    apiRouterOptionsPrefix: "",
+    apiRouterOptionsMethods: [],
+    apiRouterOptionsRouterPath: "",
+    apiRouterOptionsSensitive: false,
+    apiRouterOptionsStrict: false,
+    apiRouterOptionsExclusive: false,
+    apiRouterOptionsHost: "",
+    httpStatic: "",
+    httpStaticRoot: "",
+  });
+  const submitButtonRef = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -66,7 +84,7 @@ export default function ServerConfigurations() {
     })();
   }, []);
 
-  // useEffect(() => console.log(value), [value]);
+  // useEffect(() => console.log(isSSL), [isSSL]);
 
   return (
     <>
@@ -74,9 +92,22 @@ export default function ServerConfigurations() {
         <AdminLoading />
       ) : (
         <Container>
-          <Header>
-            <h4>Server Configurations</h4>
+          <Header style={{ paddingLeft: "2rem", paddingRight: "2rem" }}>
+            <FlexboxGrid justify="space-between">
+              <FlexboxGrid.Item>
+                <h4>Server Configurations</h4>
+              </FlexboxGrid.Item>
+              <FlexboxGrid.Item>
+                <Button
+                  appearance="primary"
+                  onClick={() => (submitButtonRef.current! as any).click()}
+                >
+                  Confirm
+                </Button>
+              </FlexboxGrid.Item>
+            </FlexboxGrid>
           </Header>
+          <Divider />
           <Content>
             <Form
               disabled={isLoadingError}
@@ -90,8 +121,8 @@ export default function ServerConfigurations() {
                 console.log(value, Object.keys(value).length);
               }}
             >
-              <Panel header={<h5>Configutations</h5>} bordered>
-                <Panel bodyFill header={<h6>Server Configutations</h6>}>
+              <Tabs defaultActiveKey="1" vertical appearance="tabs">
+                <Tabs.Tab eventKey="1" title="Server Configutations">
                   <FormGroup
                     name="Host"
                     label="Host :- "
@@ -109,10 +140,17 @@ export default function ServerConfigurations() {
                     min={1}
                   />
                   <FormGroup
+                    name="httpStatic"
+                    label="Static Serve Uri :- "
+                    accepter={Input}
+                    autoComplete="off"
+                    placeholder={defaultServerConfigs?.httpStatic}
+                  />
+                  <FormGroup
                     name="httpsEnabled"
                     label="Https :- "
                     accepter={Toggle}
-                    checked={value.httpsEnabled}
+                    defaultChecked={value.httpsEnabled}
                   />
                   {value.httpsEnabled ? (
                     <>
@@ -134,12 +172,13 @@ export default function ServerConfigurations() {
                   ) : (
                     <></>
                   )}
-
+                </Tabs.Tab>
+                <Tabs.Tab eventKey="2" title="Cors Configutations">
                   <FormGroup
                     name="httpCorsEnabled"
-                    label="Cors :- "
+                    label="Enable  "
                     accepter={Toggle}
-                    checked={value.httpCorsEnabled}
+                    defaultChecked={value.httpCorsEnabled}
                   />
                   {value.httpCorsEnabled ? (
                     <>
@@ -191,37 +230,140 @@ export default function ServerConfigurations() {
                         name="httpCorsCredentials"
                         label="Cors Credentials :-"
                         accepter={Toggle}
-                        checked={value.httpCorsCredentials}
+                        defaultChecked={value.httpCorsCredentials}
                       />
                       <FormGroup
                         name="httpCorsKeepHeadersOnError"
-                        label="CorsKeepHeadersOnError:-"
+                        label="Cors KeepHeadersOnError:-"
                         accepter={Toggle}
-                        checked={value.httpCorsKeepHeadersOnError}
+                        defaultChecked={value.httpCorsKeepHeadersOnError}
                       />
                       <FormGroup
                         name="httpCorsSecureContext"
                         label="Cors SecureContext:-"
                         accepter={Toggle}
-                        checked={value.httpCorsSecureContext}
+                        defaultChecked={value.httpCorsSecureContext}
                       />
                       <FormGroup
                         name="httpCorsPrivateNetworkAccess"
-                        label="CorsPrivateNetworkAccess:-"
+                        label="Cors PrivateNetworkAccess:-"
                         accepter={Toggle}
-                        checked={value.httpCorsPrivateNetworkAccess}
+                        defaultChecked={value.httpCorsPrivateNetworkAccess}
                       />
                     </>
                   ) : (
                     <></>
                   )}
-                </Panel>
-                <Divider />
-                <Panel bodyFill header={<h6>Router Configutations</h6>}>
-                  {/* //To-Do: Router configuration */}
-                </Panel>
-                <Divider />
-                <Panel bodyFill header={<h6>Directory Configutations</h6>}>
+                </Tabs.Tab>
+                <Tabs.Tab eventKey="3" title="EcoFlow Router Configutations">
+                  <FormGroup
+                    name="systemRouterOptionsPrefix"
+                    label="EcoFlow Router Prefix :- "
+                    accepter={Input}
+                    autoComplete="off"
+                    placeholder={
+                      defaultServerConfigs?.systemRouterOptions?.prefix
+                    }
+                  />
+                  <FormGroup
+                    name="systemRouterOptionsMethods"
+                    label="EcoFlow Router AllowMethods :- "
+                    accepter={CheckPicker}
+                    autoComplete="off"
+                    searchable={false}
+                    data={routeList}
+                    style={{ width: 300 }}
+                  />
+                  <FormGroup
+                    name="systemRouterOptionsRouterPath"
+                    label="EcoFlow Router Path :- "
+                    accepter={Input}
+                    autoComplete="off"
+                    placeholder={
+                      defaultServerConfigs?.systemRouterOptions?.routerPath
+                    }
+                  />
+                  <FormGroup
+                    name="systemRouterOptionsHost"
+                    label="EcoFlow Router Host :- "
+                    accepter={Input}
+                    autoComplete="off"
+                    placeholder={
+                      defaultServerConfigs?.systemRouterOptions?.host
+                    }
+                  />
+                  <FormGroup
+                    name="systemRouterOptionsSensitive"
+                    label="EcoFlow Router case-sensitive :- "
+                    accepter={Toggle}
+                    defaultChecked={value.systemRouterOptionsSensitive}
+                  />
+                  <FormGroup
+                    name="systemRouterOptionsStrict"
+                    label="EcoFlow Router Strict Mode "
+                    accepter={Toggle}
+                    defaultChecked={value.systemRouterOptionsStrict}
+                  />
+                  <FormGroup
+                    name="systemRouterOptionsExclusive"
+                    label="EcoFlow Router Exclusive Mode "
+                    accepter={Toggle}
+                    defaultChecked={value.systemRouterOptionsExclusive}
+                  />
+                </Tabs.Tab>
+                <Tabs.Tab eventKey="4" title="API Router Configutations">
+                  <FormGroup
+                    name="apiRouterOptionsPrefix"
+                    label="EcoFlow Router Prefix :- "
+                    accepter={Input}
+                    autoComplete="off"
+                    placeholder={defaultServerConfigs?.apiRouterOptions?.prefix}
+                  />
+                  <FormGroup
+                    name="apiRouterOptionsMethods"
+                    label="EcoFlow Router AllowMethods :- "
+                    accepter={CheckPicker}
+                    autoComplete="off"
+                    searchable={false}
+                    data={routeList}
+                    style={{ width: 300 }}
+                  />
+                  <FormGroup
+                    name="apiRouterOptionsRouterPath"
+                    label="EcoFlow Router Path :- "
+                    accepter={Input}
+                    autoComplete="off"
+                    placeholder={
+                      defaultServerConfigs?.apiRouterOptions?.routerPath
+                    }
+                  />
+                  <FormGroup
+                    name="apiRouterOptionsHost"
+                    label="EcoFlow Router Host :- "
+                    accepter={Input}
+                    autoComplete="off"
+                    placeholder={defaultServerConfigs?.apiRouterOptions?.host}
+                  />
+                  <FormGroup
+                    name="apiRouterOptionsSensitive"
+                    label="EcoFlow Router case-sensitive :- "
+                    accepter={Toggle}
+                    defaultChecked={value.apiRouterOptionsSensitive}
+                  />
+                  <FormGroup
+                    name="apiRouterOptionsStrict"
+                    label="EcoFlow Router Strict Mode "
+                    accepter={Toggle}
+                    defaultChecked={value.apiRouterOptionsStrict}
+                  />
+                  <FormGroup
+                    name="apiRouterOptionsExclusive"
+                    label="EcoFlow Router Exclusive Mode "
+                    accepter={Toggle}
+                    defaultChecked={value.apiRouterOptionsExclusive}
+                  />
+                </Tabs.Tab>
+                <Tabs.Tab eventKey="5" title="Directory Configutations">
                   <FormGroup
                     name="userDir"
                     label="Base directory :- "
@@ -250,9 +392,15 @@ export default function ServerConfigurations() {
                     autoComplete="off"
                     placeholder={defaultServerConfigs?.DB_Directory}
                   />
-                </Panel>
-                <Divider />
-                <Panel bodyFill header={<h6>Flow Configutations</h6>}>
+                  <FormGroup
+                    name="httpStaticRoot"
+                    label="Static Serve Location :- "
+                    accepter={Input}
+                    autoComplete="off"
+                    placeholder={defaultServerConfigs?.httpStaticRoot}
+                  />
+                </Tabs.Tab>
+                <Tabs.Tab eventKey="6" title="Flow Configutations">
                   <FormGroup
                     name="flowFile"
                     label="Flow File Name :- "
@@ -264,15 +412,22 @@ export default function ServerConfigurations() {
                     name="flowFilePretty"
                     label="Pretty Flow File :- "
                     accepter={Toggle}
-                    checked={value.flowFilePretty}
+                    defaultChecked={value.flowFilePretty}
                   />
-                </Panel>
-                <Divider />
-              </Panel>
-              <input type="submit" value="submit" />
+                </Tabs.Tab>
+                <Tabs.Tab
+                  eventKey="7"
+                  title="Logging Configutations"
+                ></Tabs.Tab>
+                <Tabs.Tab eventKey="8" title="Editor Configutations"></Tabs.Tab>
+                <Tabs.Tab
+                  eventKey="9"
+                  title="System Database Configutations"
+                ></Tabs.Tab>
+              </Tabs>
+              <input type="submit" hidden ref={submitButtonRef} />
             </Form>
           </Content>
-          <Footer>Footer</Footer>
         </Container>
       )}
     </>
