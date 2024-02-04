@@ -1,18 +1,8 @@
+import { ApiResponse } from "@eco-flow/types";
 import axios from "../../utils/axios/axios";
 
-const updateConfigs = (Data: any): Promise<any> => {
-  return new Promise<any>(async (resolve) => {
-    axios.put("/admin/config", Data).then(
-      (value) => {
-        if (typeof value.status === "undefined" || value.status !== 200)
-          setTimeout(() => updateConfigs(Data), 1000);
-        else resolve(value.data);
-      },
-      () => {
-        setTimeout(() => updateConfigs(Data), 1000);
-      }
-    );
-  });
+const updateConfigs = async (Data: any): Promise<ApiResponse> => {
+  return (await axios.put("/admin/config", Data)).data as ApiResponse;
 };
 
 export default updateConfigs;

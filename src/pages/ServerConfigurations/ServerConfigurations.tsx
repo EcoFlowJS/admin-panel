@@ -34,6 +34,9 @@ import {
 } from "./serverConfigList";
 import isEnv from "../../utils/isEnv/inEnv";
 import updateConfigs from "../../service/config/updateConfig";
+import { resartModalState } from "../../store/modals.store";
+import { useAtom } from "jotai";
+import "./styles.less";
 
 export default function ServerConfigurations() {
   // Loading state
@@ -45,6 +48,7 @@ export default function ServerConfigurations() {
     useState<configOptions>();
   const [value, setValue] = useState(defaultServerConfigsOptions);
   const [modalOpen, setModalOpen] = useState(false);
+  const [_restartModalOpen, setRestartModalOpen] = useAtom(resartModalState);
 
   //Env Inputs states
   const [isEnvMongoConnectionString, setEnvMongoConnectionString] =
@@ -61,6 +65,7 @@ export default function ServerConfigurations() {
   const [isEnvDatabaseChecked, setEnvDatabaseChecked] = useState(false);
 
   // Response state
+  const [responseLoading, setResponseLoading] = useState(false);
   const [response, setResponse] = useState<ApiResponse>({});
 
   useEffect(() => {
@@ -111,8 +116,14 @@ export default function ServerConfigurations() {
         setValue({
           ...value,
           ...config,
-          httpCorsExposeHeaders: config.httpCorsExposeHeaders.toString(),
-          httpCorsAllowHeaders: config.httpCorsAllowHeaders?.toString(),
+          httpCorsExposeHeaders:
+            typeof config.httpCorsExposeHeaders !== "undefined"
+              ? config.httpCorsExposeHeaders.toString()
+              : "",
+          httpCorsAllowHeaders:
+            typeof config.httpCorsAllowHeaders !== "undefined"
+              ? config.httpCorsAllowHeaders.toString()
+              : "",
           databaseDriver: DB_DriverParser(config.databaseDriver),
         });
       }
@@ -127,10 +138,17 @@ export default function ServerConfigurations() {
 
     if (value.databaseDriver === "PostgreSQL")
       setValue({ ...value, databaseConfigurationPort: 5432 });
+
+    successResponse.show();
   }, [value.databaseDriver]);
 
   useEffect(() => {
     if (response.error) errorResponse.show();
+    if (response.success) {
+      successResponse.show();
+      setResponseLoading(false);
+      setRestartModalOpen(true);
+    }
   }, [response]);
 
   const successResponse = useNotification({
@@ -156,6 +174,7 @@ export default function ServerConfigurations() {
         SendData.databaseConfigurationPassword = `env(${value.databaseConfigurationPassword})`;
       if (isEnvDatabase)
         SendData.databaseConfigurationDatabase = `env(${value.databaseConfigurationDatabase})`;
+      setResponseLoading(true);
       setResponse(await updateConfigs(SendData));
     })();
 
@@ -173,8 +192,9 @@ export default function ServerConfigurations() {
               <FlexboxGrid.Item>
                 <Button
                   appearance="primary"
-                  // onClick={() => (submitButtonRef.current! as any).click()}
                   onClick={() => setModalOpen(true)}
+                  loading={responseLoading}
+                  disabled={isLoadingError}
                 >
                   Confirm
                 </Button>
@@ -184,7 +204,7 @@ export default function ServerConfigurations() {
           <Divider />
           <Content>
             <Form
-              disabled={isLoadingError}
+              disabled={isLoadingError || responseLoading}
               layout="horizontal"
               style={{ paddingTop: "2rem" }}
               checkTrigger="none"
@@ -580,7 +600,7 @@ export default function ServerConfigurations() {
                             label="Logs Web Port :- "
                             accepter={InputNumber}
                             max={65535}
-                            mix={1}
+                            min={1}
                             placeholder={value.loggingWebPort}
                           />
                           <FormGroup
@@ -760,10 +780,15 @@ export default function ServerConfigurations() {
         }}
         size="sm"
       >
-        <h6>Are You Sure?</h6>
+        <h5>Are You Sure?</h5>
         <Divider />
-        <p>Updating Configuration will result in restarting of the server.</p>
-        <p>Please be patients while the server is restarting.</p>
+        <p>
+          Updating configuration need to restart the server for the updated
+          configuration to be get effective.
+          <br />
+          Please be patients be patient and restart the server once
+          configuration successfully gets updated.
+        </p>
       </AlertModal>
     </>
   );
