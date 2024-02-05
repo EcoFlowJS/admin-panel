@@ -1,4 +1,5 @@
 import axios from "axios";
+import isServerOnline from "../../service/server/isServerOnline.service";
 
 const instance = axios.create({ withCredentials: true });
 
@@ -6,7 +7,9 @@ instance.defaults.baseURL = "http://localhost:4000/systemApi/";
 instance.defaults.headers.common["Content-Type"] = "application/json";
 
 instance.interceptors.response.use(
-  (resp) => resp,
+  (resp) => {
+    return resp;
+  },
   async (error) => {
     switch (error.code) {
       case "ERR_NETWORK":

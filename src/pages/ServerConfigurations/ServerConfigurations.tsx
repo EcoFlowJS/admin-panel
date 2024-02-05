@@ -65,8 +65,12 @@ export default function ServerConfigurations() {
   const [isEnvDatabaseChecked, setEnvDatabaseChecked] = useState(false);
 
   // Response state
+  const [serverConfigs, setServerConfig] = useState({});
   const [responseLoading, setResponseLoading] = useState(false);
-  const [response, setResponse] = useState<ApiResponse>({});
+  const [response, setResponse] = useState<{
+    configs: any;
+    ApiResponse: ApiResponse;
+  }>({ configs: {}, ApiResponse: {} });
 
   useEffect(() => {
     (async () => {
@@ -126,6 +130,19 @@ export default function ServerConfigurations() {
               : "",
           databaseDriver: DB_DriverParser(config.databaseDriver),
         });
+        setServerConfig({
+          ...value,
+          ...ServerConfigParser(serverConfig),
+          httpCorsExposeHeaders:
+            typeof config.httpCorsExposeHeaders !== "undefined"
+              ? config.httpCorsExposeHeaders.toString()
+              : "",
+          httpCorsAllowHeaders:
+            typeof config.httpCorsAllowHeaders !== "undefined"
+              ? config.httpCorsAllowHeaders.toString()
+              : "",
+          databaseDriver: DB_DriverParser(config.databaseDriver),
+        });
       }
       if (response.error) setLoadingError(true);
       setLoading(false);
@@ -138,29 +155,38 @@ export default function ServerConfigurations() {
 
     if (value.databaseDriver === "PostgreSQL")
       setValue({ ...value, databaseConfigurationPort: 5432 });
-
-    successResponse.show();
   }, [value.databaseDriver]);
 
   useEffect(() => {
-    if (response.error) errorResponse.show();
-    if (response.success) {
+    if (response.ApiResponse.error) errorResponse.show();
+    if (response.ApiResponse.success) {
       successResponse.show();
+      setServerConfig(response.configs);
       setResponseLoading(false);
       setRestartModalOpen(true);
     }
   }, [response]);
 
   const successResponse = useNotification({
-    header: "Connection Update Success",
+    header: "Configuration Update Success",
     type: "success",
-    children: <>{response.success ? response.payload : <></>}</>,
+    children: (
+      <>{response.ApiResponse.success ? response.ApiResponse.payload : <></>}</>
+    ),
+  });
+
+  const warningResponse = useNotification({
+    header: "Configuration update warning",
+    type: "warning",
+    children: <>No configuration is changed to be get updated.</>,
   });
 
   const errorResponse = useNotification({
-    header: "Connection Update Error",
+    header: "Configuration Update Error",
     type: "error",
-    children: <>{response.error ? response.payload : <></>}</>,
+    children: (
+      <>{response.ApiResponse.error ? response.ApiResponse.payload : <></>}</>
+    ),
   });
 
   const configProcessHandler = () =>
@@ -174,8 +200,16 @@ export default function ServerConfigurations() {
         SendData.databaseConfigurationPassword = `env(${value.databaseConfigurationPassword})`;
       if (isEnvDatabase)
         SendData.databaseConfigurationDatabase = `env(${value.databaseConfigurationDatabase})`;
+
+      if (JSON.stringify(SendData) === JSON.stringify(serverConfigs)) {
+        warningResponse.show();
+        return;
+      }
       setResponseLoading(true);
-      setResponse(await updateConfigs(SendData));
+      setResponse({
+        configs: SendData,
+        ApiResponse: await updateConfigs(SendData),
+      });
     })();
 
   return (

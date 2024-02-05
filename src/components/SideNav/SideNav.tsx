@@ -34,6 +34,9 @@ export default function SideNav() {
       case "users":
         navigate("/admin/users");
         break;
+      case "server":
+        navigate("/admin/serverSettings");
+        break;
       default:
         console.log(eventKey);
     }
@@ -84,6 +87,13 @@ export default function SideNav() {
               icon={<GearCircleIcon />}
               placement="rightStart"
             >
+              <Nav.Item
+                eventKey="server"
+                active={loc.pathname.startsWith("/admin/serverSettings")}
+                icon={<IconWrapper icon={GrConfigure} />}
+              >
+                Server
+              </Nav.Item>
               <Nav.Item
                 eventKey="config"
                 active={loc.pathname.startsWith("/admin/configurations")}

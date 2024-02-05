@@ -4,7 +4,7 @@ import { FlexboxGrid, IconButton, Navbar, Stack, Whisper } from "rsuite";
 import { FaUserCircle, FaGithub } from "react-icons/fa";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
 import { useAtom } from "jotai";
-import initStatus from "../../store/initStatus.store";
+import initStatus from "../../store/initStatusState.store";
 import userDropdownMenu from "./userDropdownMenu";
 import themeMode from "../../store/theme.mode";
 

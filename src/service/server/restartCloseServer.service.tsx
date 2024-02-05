@@ -1,3 +1,4 @@
+import { ApiResponse } from "@eco-flow/types";
 import axios from "../../utils/axios/axios";
 
 const restartServer = ({ Mode } = { Mode: "restart" }): Promise<any> => {
@@ -16,4 +17,19 @@ const restartServer = ({ Mode } = { Mode: "restart" }): Promise<any> => {
   });
 };
 
-export { restartServer };
+const closeServer = async (): Promise<any> => {
+  return (await axios.post("/server", { Mode: "stop" })).data;
+};
+
+const restartCloseServer = (mode: "restart" | "stop"): Promise<ApiResponse> => {
+  switch (mode) {
+    case "restart":
+      return restartServer({ Mode: mode });
+    case "stop":
+      return closeServer();
+    default:
+      return new Promise<any>((resolve) => resolve(null));
+  }
+};
+
+export default restartCloseServer;

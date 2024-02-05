@@ -7,6 +7,7 @@ import UsersDashboard from "../pages/UserDashboard/UsersDashboard";
 import ServerConfigurations from "../pages/ServerConfigurations/ServerConfigurations";
 import ServerEnvironments from "../pages/ServerEnvironments/ServerEnvironments";
 import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
+import ServerSettings from "../pages/ServerSettings/ServerSettings";
 
 const Redirect = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function () {
           <Route path="users" element={<UsersDashboard />} />
           <Route path="configurations" element={<ServerConfigurations />} />
           <Route path="environments" element={<ServerEnvironments />} />
+          <Route path="serverSettings" element={<ServerSettings />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
