@@ -16,7 +16,7 @@ export default function App() {
 
   useLayoutEffect(() => {
     document.title = "Loading...";
-    isServerOnline([setClosedServer, setRestartingServer]);
+    isServerOnline([setClosedServer, setRestartingServer, null]);
   }, []);
 
   return (
