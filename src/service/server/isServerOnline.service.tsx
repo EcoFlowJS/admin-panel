@@ -23,10 +23,11 @@ const isServerOnline = ([
         setTimeout(() => {
           setClosedServer(false);
           setRestartingServer(false);
-          successNotification({
-            success: true,
-            payload: "Server successfully restarted and ready to serve again",
-          });
+          if (successNotification !== null)
+            successNotification({
+              success: true,
+              payload: "Server successfully restarted and ready to serve again",
+            });
           resolve();
         }, 1000);
       if (val.error) {
