@@ -327,6 +327,7 @@ export default function ServerConfigurations() {
                         label="Cors ExposeHeaders :- "
                         accepter={Input}
                         autoComplete="off"
+                        helperTextStyle={{ marginLeft: 242 }}
                         helperText={
                           <>
                             use <strong>,</strong> to separate multiple headers
@@ -338,6 +339,7 @@ export default function ServerConfigurations() {
                         label="Cors AllowHeaders :- "
                         accepter={Input}
                         autoComplete="off"
+                        helperTextStyle={{ marginLeft: 242 }}
                         helperText={
                           <>
                             use <strong>,</strong> to separate multiple headers
@@ -717,6 +719,7 @@ export default function ServerConfigurations() {
                           accepter={Input}
                           autoComplete="off"
                           placeholder="Sqlite File"
+                          helperTextStyle={{ marginLeft: 242 }}
                           helperText="File will create automatically if not exists"
                         />
                       </>
