@@ -2,7 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import initService from "../../service/init/init.service";
 import useNavagator from "../../utils/redirect/redirect";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Container, Content, Divider, Loader } from "rsuite";
+import { Container, Content, Divider, FlexboxGrid, Loader } from "rsuite";
 import Header from "../../components/Header/Header";
 import SideNav from "../../components/SideNav/SideNav";
 import { useAtom } from "jotai";
@@ -23,7 +23,7 @@ export default function BaseAdminLayout() {
     document.title = "Admin Dashboard";
   }, []);
 
-  const redirect = (url: string) => () => {
+  const redirect = (url: string) => {
     window.location.replace(window.location.origin + url);
   };
   const status = initService();
@@ -65,8 +65,6 @@ export default function BaseAdminLayout() {
   }, [response]);
 
   useEffect(() => {
-    console.log(onServerRestartedResponse);
-
     if (onServerRestartedResponse.success) successRestart.show();
   }, [onServerRestartedResponse]);
 
@@ -90,45 +88,62 @@ export default function BaseAdminLayout() {
 
   return (
     <>
-      <Container style={{ minHeight: "100vh" }}>
-        <Header />
-        <Container>
-          <SideNav />
-          <Content style={{ position: "relative" }}>
-            <Container
-              style={{
-                padding: "2rem",
-                backgroundColor: "var(--dashboard-content-background-color)",
-                overflowY: "auto",
-                position: "absolute",
-                top: "0",
-                bottom: "0",
-                right: "0",
-                left: "0",
-              }}
-            >
-              <Outlet />
+      {(!status.isNew && status.isLoggedIn) ||
+      (status.isNew && status.isLoggedIn) ? (
+        <>
+          <Container style={{ minHeight: "100vh" }}>
+            <Header />
+            <Container>
+              <SideNav />
+              <Content style={{ position: "relative" }}>
+                <Container
+                  style={{
+                    padding: "2rem",
+                    backgroundColor:
+                      "var(--dashboard-content-background-color)",
+                    overflowY: "auto",
+                    position: "absolute",
+                    top: "0",
+                    bottom: "0",
+                    right: "0",
+                    left: "0",
+                  }}
+                >
+                  <Outlet />
+                </Container>
+              </Content>
             </Container>
-          </Content>
-        </Container>
-      </Container>
-      <AlertModal
-        open={restartModalOpen}
-        CancelButtonProps={{
-          onClick: () => setRestartModalOpen(false),
-          color: "green",
-        }}
-        confirmButtonProps={{
-          onClick: () => {
-            restartCloseServer("restart").then(setResponse, setResponse);
-          },
-          color: "red",
-        }}
-      >
-        <h5>Server Restart</h5>
-        <Divider />
-        <p>Are you sure you want to restart the server?</p>
-      </AlertModal>
+          </Container>
+          <AlertModal
+            open={restartModalOpen}
+            CancelButtonProps={{
+              onClick: () => setRestartModalOpen(false),
+              color: "green",
+            }}
+            confirmButtonProps={{
+              onClick: () => {
+                restartCloseServer("restart").then(setResponse, setResponse);
+              },
+              color: "red",
+            }}
+          >
+            <h5>Server Restart</h5>
+            <Divider />
+            <p>Are you sure you want to restart the server?</p>
+          </AlertModal>
+        </>
+      ) : (
+        <>
+          <FlexboxGrid
+            style={{ height: "100vh" }}
+            justify="center"
+            align="middle"
+          >
+            {status.isNew && !status.isLoggedIn ? "Redirecting to setup" : ""}
+            {!status.isNew && !status.isLoggedIn ? "Redirecting to Login" : ""}
+          </FlexboxGrid>
+        </>
+      )}
     </>
   );
 }

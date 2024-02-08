@@ -11,6 +11,7 @@ import { TbUsers } from "react-icons/tb";
 import { ImProfile } from "react-icons/im";
 import { IconWrapper } from "@eco-flow/components-lib";
 import { GrConfigure } from "react-icons/gr";
+import { CiServer } from "react-icons/ci";
 
 export default function SideNav() {
   const [expand, setExpand] = React.useState(true);
@@ -90,7 +91,7 @@ export default function SideNav() {
               <Nav.Item
                 eventKey="server"
                 active={loc.pathname.startsWith("/admin/serverSettings")}
-                icon={<IconWrapper icon={GrConfigure} />}
+                icon={<IconWrapper icon={CiServer} />}
               >
                 Server
               </Nav.Item>
