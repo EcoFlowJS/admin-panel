@@ -60,7 +60,7 @@ export default function BaseAdminLayout() {
           setRestartingServer,
           setOnServerRestartedResponse,
         ]);
-      }, 2 * 1000);
+      }, 30 * 1000);
     }
   }, [response]);
 
