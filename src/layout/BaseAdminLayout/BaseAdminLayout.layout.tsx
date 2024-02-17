@@ -7,6 +7,7 @@ import Header from "../../components/Header/Header";
 import SideNav from "../../components/SideNav/SideNav";
 import { useAtom } from "jotai";
 import initStatusState, {
+  isLoggedIn,
   isLoggedOut,
 } from "../../store/initStatusState.store";
 import { AlertModal, useNotification } from "@eco-flow/components-lib";
@@ -37,6 +38,7 @@ export default function BaseAdminLayout() {
     serverRestartedResponse
   );
   const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
+  const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
 
   useEffect(() => {
     document.title = "Admin Dashboard";
@@ -54,6 +56,13 @@ export default function BaseAdminLayout() {
   }, [loggedOut]);
 
   useEffect(() => {
+    if (loggedIn) {
+      setLoggedIn(false);
+      setinitStatus({ ...initStatus, isLoggedIn: true });
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
     if (!isLoading) {
       if (initStatus.isNew && !initStatus.isLoggedIn) redirect("/auth/setup");
       if (!initStatus.isNew && !initStatus.isLoggedIn) redirect("/auth/login");
@@ -62,7 +71,7 @@ export default function BaseAdminLayout() {
       if (location.pathname === "/admin" || location.pathname === "/admin/")
         navigate("/dashboard");
     }
-  }, [location.pathname, initStatus]);
+  }, [initStatus]);
 
   useEffect(() => {
     if (response.error) errorRestartNotification.show();

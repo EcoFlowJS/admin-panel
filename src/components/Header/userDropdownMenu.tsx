@@ -1,12 +1,22 @@
 import { Dropdown, Popover } from "rsuite";
 import HelpOutlineIcon from "@rsuite/icons/HelpOutline";
+import { useAtom } from "jotai";
+import { isLoggedOut } from "../../store/initStatusState.store";
+import signoutHandler from "./signoutHandler";
 
 const userDropdownMenu =
   (status: any) =>
   ({ onClose, left, top, className }: any, ref: any) => {
+    const [_signedOut, setSignOut] = useAtom(isLoggedOut);
+
     const handleSelect = (eventKey: string | undefined) => {
       onClose();
       console.log(eventKey);
+      switch (eventKey) {
+        case "signout":
+          signoutHandler(setSignOut);
+          break;
+      }
     };
     return (
       <Popover ref={ref} className={className} style={{ left, top }} full>
