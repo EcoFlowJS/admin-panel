@@ -1,12 +1,14 @@
 import { Outlet, useLocation } from "react-router-dom";
-import initService from "../../service/init/init.service";
+import { initService } from "../../service/init/init.service";
 import useNavagator from "../../utils/redirect/redirect";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Content, Divider, FlexboxGrid, Loader } from "rsuite";
 import Header from "../../components/Header/Header";
 import SideNav from "../../components/SideNav/SideNav";
 import { useAtom } from "jotai";
-import initStatusState from "../../store/initStatusState.store";
+import initStatusState, {
+  isLoggedOut,
+} from "../../store/initStatusState.store";
 import { AlertModal, useNotification } from "@eco-flow/components-lib";
 import { resartModalState } from "../../store/modals.store";
 import restartCloseServer from "../../service/server/restartCloseServer.service";
@@ -17,19 +19,16 @@ import {
 } from "../../store/server.store";
 import { ApiResponse } from "@eco-flow/types";
 import isServerOnline from "../../service/server/isServerOnline.service";
+import Loading from "../../components/Loading/Loading.component";
 
 export default function BaseAdminLayout() {
-  useLayoutEffect(() => {
-    document.title = "Admin Dashboard";
-  }, []);
-
   const redirect = (url: string) => {
     window.location.replace(window.location.origin + url);
   };
-  const status = initService();
   const navigate = useNavagator();
   const location = useLocation();
-  const [_initStatus, setinitStatus] = useAtom(initStatusState);
+  const [isLoading, setLoading] = useState(true);
+  const [initStatus, setinitStatus] = useAtom(initStatusState);
   const [restartModalOpen, setRestartModalOpen] = useAtom(resartModalState);
   const [_restartingServer, setRestartingServer] = useAtom(isRestartingServer);
   const [_clsoeServer, setCloseServer] = useAtom(isClosedServer);
@@ -37,16 +36,33 @@ export default function BaseAdminLayout() {
   const [onServerRestartedResponse, setOnServerRestartedResponse] = useAtom(
     serverRestartedResponse
   );
+  const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
 
   useEffect(() => {
-    setinitStatus({ ...status });
-    if (status.isNew && !status.isLoggedIn) redirect("/auth/setup");
-    if (!status.isNew && !status.isLoggedIn) redirect("/auth/login");
-    if (!status.isNew && status.isLoggedIn)
-      navigate(location.pathname.substring("/admin".length));
-    if (location.pathname === "/admin" || location.pathname === "/admin/")
-      navigate("/dashboard");
-  }, [location.pathname]);
+    document.title = "Admin Dashboard";
+    initService().then((status) => {
+      setinitStatus({ ...status });
+      setLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (loggedOut) {
+      setLoggedOut(false);
+      setinitStatus({ ...initStatus, isLoggedIn: false });
+    }
+  }, [loggedOut]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (initStatus.isNew && !initStatus.isLoggedIn) redirect("/auth/setup");
+      if (!initStatus.isNew && !initStatus.isLoggedIn) redirect("/auth/login");
+      if (!initStatus.isNew && initStatus.isLoggedIn)
+        navigate(location.pathname.substring("/admin".length));
+      if (location.pathname === "/admin" || location.pathname === "/admin/")
+        navigate("/dashboard");
+    }
+  }, [location.pathname, initStatus]);
 
   useEffect(() => {
     if (response.error) errorRestartNotification.show();
@@ -88,8 +104,10 @@ export default function BaseAdminLayout() {
 
   return (
     <>
-      {(!status.isNew && status.isLoggedIn) ||
-      (status.isNew && status.isLoggedIn) ? (
+      {isLoading ? (
+        <Loading />
+      ) : (!initStatus.isNew && initStatus.isLoggedIn) ||
+        (initStatus.isNew && initStatus.isLoggedIn) ? (
         <>
           <Container style={{ minHeight: "100vh" }}>
             <Header />
@@ -139,8 +157,12 @@ export default function BaseAdminLayout() {
             justify="center"
             align="middle"
           >
-            {status.isNew && !status.isLoggedIn ? "Redirecting to setup" : ""}
-            {!status.isNew && !status.isLoggedIn ? "Redirecting to Login" : ""}
+            {initStatus.isNew && !initStatus.isLoggedIn
+              ? "Redirecting to setup"
+              : ""}
+            {!initStatus.isNew && !initStatus.isLoggedIn
+              ? "Redirecting to Login"
+              : ""}
           </FlexboxGrid>
         </>
       )}
