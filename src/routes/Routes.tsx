@@ -9,19 +9,10 @@ import ServerEnvironments from "../pages/ServerEnvironments/ServerEnvironments";
 import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
 import ServerSettings from "../pages/ServerSettings/ServerSettings";
 
-const Redirect = () => {
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate("/admin");
-  }, []);
-  return null;
-};
-
 export default function () {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Redirect />} />
         <Route path="/admin" element={<BaseLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="profile" element={<UserProfile />} />
