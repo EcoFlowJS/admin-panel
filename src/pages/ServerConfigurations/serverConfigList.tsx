@@ -66,33 +66,6 @@ const defaultServerConfigsOptions = {
   databaseConfigurationSsl: false,
 };
 
-const routeList = ["GET", "HEAD", "PUT", "POST", "DELETE", "PATCH"].map(
-  (item) => ({ label: item, value: item })
-);
-
-const logLevel: LogLevel = {
-  ERROR: 0,
-  WARNING: 1,
-  INFO: 2,
-  VERBOSE: 4,
-  DEBUG: 5,
-};
-
-const DB_DriverList = ["MongoDB", "MySQL", "PostgreSQL", "Sqlite"].map(
-  (item) => ({
-    label: item,
-    value: item,
-  })
-);
-
-const logList = Object.keys(logLevel).map((item) => {
-  const value = logLevel as any;
-  return {
-    label: item,
-    value: value[item],
-  };
-});
-
 const DB_DriverParser = (driver: DB_Drivers): string => {
   switch (driver) {
     case "MONGO":
@@ -108,10 +81,4 @@ const DB_DriverParser = (driver: DB_Drivers): string => {
   }
 };
 
-export {
-  defaultServerConfigsOptions,
-  logList,
-  DB_DriverList,
-  routeList,
-  DB_DriverParser,
-};
+export { defaultServerConfigsOptions, DB_DriverParser };
