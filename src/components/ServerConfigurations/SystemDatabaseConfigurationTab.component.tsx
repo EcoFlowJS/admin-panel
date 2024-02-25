@@ -6,7 +6,7 @@ import {
   InputEnv,
   InputPasswordEnv,
 } from "@eco-flow/components-lib";
-import { Input, InputNumber, SelectPicker, Toggle } from "rsuite";
+import { FlexboxGrid, Input, InputNumber, SelectPicker, Toggle } from "rsuite";
 import DB_DriverList from "./DB_DriverList";
 
 interface SystemDatabaseConfigurationTabProps {
@@ -52,6 +52,12 @@ export default function SystemDatabaseConfigurationTab({
 
   return (
     <>
+      <FlexboxGrid justify="center" style={{ padding: "0 100px 2rem 100px" }}>
+        <small className="rs-form-help-text">
+          Note:- If given database connection is unable to validate it will
+          ignore the settings and will not be get updated.
+        </small>
+      </FlexboxGrid>
       <FormGroup
         name="databaseDriver"
         label="Database Driver"

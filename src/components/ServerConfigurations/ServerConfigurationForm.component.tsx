@@ -1,5 +1,5 @@
 import { Form } from "@eco-flow/components-lib";
-import React from "react";
+import React, { useState } from "react";
 import { FormProps, Tabs } from "rsuite";
 import ServerConfigurationTab from "./ServerConfigurationTab.component";
 import CorsConfigurationTab from "./CorsConfigurationTab.component";
@@ -40,6 +40,7 @@ export default function ServerConfigurationForm({
   ...props
 }: ServerConfigurationFormProps) {
   const [value, setValue] = formValue;
+  const [eventKey, setEventKey] = useState("SC");
 
   return (
     <>
@@ -54,64 +55,105 @@ export default function ServerConfigurationForm({
         formValue={value}
         {...props}
       >
-        <Tabs defaultActiveKey="1" vertical appearance="tabs">
-          <Tabs.Tab eventKey="1" title="Server Configutations">
-            <ServerConfigurationTab
-              defaultServerConfigs={defaultServerConfigs}
-              value={value}
-            />
+        <Tabs
+          defaultActiveKey="SC"
+          vertical
+          appearance="tabs"
+          onSelect={(eventKey) => setEventKey(eventKey!)}
+        >
+          <Tabs.Tab eventKey="SC" title="Server Configutations">
+            {eventKey === "SC" ? (
+              <ServerConfigurationTab
+                defaultServerConfigs={defaultServerConfigs}
+                value={value}
+              />
+            ) : (
+              <></>
+            )}
           </Tabs.Tab>
-          <Tabs.Tab eventKey="2" title="Cors Configutations">
-            <CorsConfigurationTab
-              defaultServerConfigs={defaultServerConfigs}
-              value={value}
-            />
+          <Tabs.Tab eventKey="CC" title="Cors Configutations">
+            {eventKey === "CC" ? (
+              <CorsConfigurationTab
+                defaultServerConfigs={defaultServerConfigs}
+                value={value}
+              />
+            ) : (
+              <></>
+            )}
           </Tabs.Tab>
-          <Tabs.Tab eventKey="3" title="EcoFlow Router Configutations">
-            <EcoFlowRouterConfigurationTab
-              defaultServerConfigs={defaultServerConfigs}
-              value={value}
-            />
+          <Tabs.Tab eventKey="ERC" title="EcoFlow Router Configutations">
+            {eventKey === "ERC" ? (
+              <EcoFlowRouterConfigurationTab
+                defaultServerConfigs={defaultServerConfigs}
+                value={value}
+              />
+            ) : (
+              <></>
+            )}
           </Tabs.Tab>
-          <Tabs.Tab eventKey="4" title="API Router Configutations">
-            <ApiRouterConfigurationTab
-              defaultServerConfigs={defaultServerConfigs}
-              value={value}
-            />
+          <Tabs.Tab eventKey="ARC" title="API Router Configutations">
+            {eventKey === "ARC" ? (
+              <ApiRouterConfigurationTab
+                defaultServerConfigs={defaultServerConfigs}
+                value={value}
+              />
+            ) : (
+              <></>
+            )}
           </Tabs.Tab>
-          <Tabs.Tab eventKey="5" title="Directory Configutations">
-            <DirectoryConfigurationTab
-              defaultServerConfigs={defaultServerConfigs}
-              value={value}
-            />
+          <Tabs.Tab eventKey="DC" title="Directory Configutations">
+            {eventKey === "DC" ? (
+              <DirectoryConfigurationTab
+                defaultServerConfigs={defaultServerConfigs}
+                value={value}
+              />
+            ) : (
+              <></>
+            )}
           </Tabs.Tab>
-          <Tabs.Tab eventKey="6" title="Flow Configutations">
-            <FlowConfigurationTab
-              defaultServerConfigs={defaultServerConfigs}
-              value={value}
-            />
+          <Tabs.Tab eventKey="FC" title="Flow Configutations">
+            {eventKey === "FC" ? (
+              <FlowConfigurationTab
+                defaultServerConfigs={defaultServerConfigs}
+                value={value}
+              />
+            ) : (
+              <></>
+            )}
           </Tabs.Tab>
-          <Tabs.Tab eventKey="7" title="Logging Configutations">
-            <LoggingConfigurationTab
-              defaultServerConfigs={defaultServerConfigs}
-              value={value}
-            />
+          <Tabs.Tab eventKey="LC" title="Logging Configutations">
+            {eventKey === "LC" ? (
+              <LoggingConfigurationTab
+                defaultServerConfigs={defaultServerConfigs}
+                value={value}
+              />
+            ) : (
+              <></>
+            )}
           </Tabs.Tab>
-          <Tabs.Tab eventKey="8" title="Editor Configutations">
-            <EditorConfigurationTab
-              defaultServerConfigs={defaultServerConfigs}
-              value={value}
-            />
+          <Tabs.Tab eventKey="EC" title="Editor Configutations">
+            {eventKey === "EC" ? (
+              <EditorConfigurationTab
+                defaultServerConfigs={defaultServerConfigs}
+                value={value}
+              />
+            ) : (
+              <></>
+            )}
           </Tabs.Tab>
-          <Tabs.Tab eventKey="9" title="System Database Configutations">
-            <SystemDatabaseConfigurationTab
-              value={value}
-              setValue={setValue}
-              connectionStringEnvs={connectionStringEnvs}
-              usernameEnvs={usernameEnvs}
-              passwordEnvs={passwordEnvs}
-              databaseEnvs={databaseEnvs}
-            />
+          <Tabs.Tab eventKey="SDBC" title="System Database Configutations">
+            {eventKey === "SDBC" ? (
+              <SystemDatabaseConfigurationTab
+                value={value}
+                setValue={setValue}
+                connectionStringEnvs={connectionStringEnvs}
+                usernameEnvs={usernameEnvs}
+                passwordEnvs={passwordEnvs}
+                databaseEnvs={databaseEnvs}
+              />
+            ) : (
+              <></>
+            )}
           </Tabs.Tab>
         </Tabs>
       </Form>
