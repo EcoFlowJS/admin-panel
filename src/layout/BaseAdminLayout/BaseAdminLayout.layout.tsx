@@ -2,7 +2,14 @@ import { Outlet, useLocation } from "react-router-dom";
 import { initService } from "../../service/init/init.service";
 import useNavagator from "../../utils/redirect/redirect";
 import { useEffect, useState } from "react";
-import { Container, Content, Divider, FlexboxGrid, Loader } from "rsuite";
+import {
+  Container,
+  Content,
+  Divider,
+  FlexboxGrid,
+  Loader,
+  Panel,
+} from "rsuite";
 import Header from "../../components/Header/Header";
 import SideNav from "../../components/SideNav/SideNav";
 import { useAtom } from "jotai";
@@ -136,7 +143,14 @@ export default function BaseAdminLayout() {
                     left: "0",
                   }}
                 >
-                  <Outlet />
+                  <Panel
+                    style={{
+                      backgroundColor: "var(--rs-gray-800)",
+                      overflow: "visible",
+                    }}
+                  >
+                    <Outlet />
+                  </Panel>
                 </Container>
               </Content>
             </Container>
