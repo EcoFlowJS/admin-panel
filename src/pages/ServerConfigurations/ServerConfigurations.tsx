@@ -9,7 +9,6 @@ import {
 } from "rsuite";
 import AdminLoading from "../../components/Loading/AdminLoading.component";
 import getAllServerConfigService from "../../service/config/getAllServerConfig.service";
-import { useNotification } from "@eco-flow/components-lib";
 import { ApiResponse, configOptions } from "@eco-flow/types";
 import ServerConfigParser from "./ServerConfigParser";
 import {
@@ -20,9 +19,13 @@ import isEnv from "../../utils/isEnv/inEnv";
 import updateConfigs from "../../service/config/updateConfig";
 import { resartModalState } from "../../store/modals.store";
 import { useAtom } from "jotai";
-import "./styles.less";
 import SaveConfigAlertModal from "../../components/ServerConfigurations/SaveConfigAlertModal.componnent";
 import ServerConfigurationForm from "../../components/ServerConfigurations/ServerConfigurationForm.component";
+import {
+  errorNotification,
+  successNotification,
+} from "../../store/notification.store";
+import { useNotification } from "@eco-flow/components-lib";
 
 export default function ServerConfigurations() {
   // Loading state
@@ -55,6 +58,10 @@ export default function ServerConfigurations() {
   const [responseLoading, setResponseLoading] = useState(false);
   const [response, setResponse] = useState<ApiResponse>({});
 
+  //Notifications state
+  const setSuccessNotification = useAtom(successNotification)[1];
+  const setErrorNotification = useAtom(errorNotification)[1];
+
   useEffect(() => {
     (async () => {
       const response = await getAllServerConfigService();
@@ -79,9 +86,18 @@ export default function ServerConfigurations() {
   }, [value.databaseDriver]);
 
   useEffect(() => {
-    if (response.error) errorResponse.show();
+    if (response.error)
+      setErrorNotification({
+        show: true,
+        header: "Configuration Update Error",
+        message: response.payload,
+      });
     if (response.success) {
-      successResponse.show();
+      setSuccessNotification({
+        show: true,
+        header: "Configuration Update Success",
+        message: response.payload.msg,
+      });
       const config = ServerConfigParser(response.payload.newConfigs);
       processEnvs(config);
       updateState(config, response.payload.newConfigs);
@@ -157,22 +173,10 @@ export default function ServerConfigurations() {
     });
   };
 
-  const successResponse = useNotification({
-    header: "Configuration Update Success",
-    type: "success",
-    children: <>{response.success ? response.payload.msg : <></>}</>,
-  });
-
   const warningResponse = useNotification({
     header: "Configuration update warning",
     type: "warning",
     children: <>No configuration is changed to be get updated.</>,
-  });
-
-  const errorResponse = useNotification({
-    header: "Configuration Update Error",
-    type: "error",
-    children: <>{response.error ? response.payload : <></>}</>,
   });
 
   const configProcessHandler = () =>

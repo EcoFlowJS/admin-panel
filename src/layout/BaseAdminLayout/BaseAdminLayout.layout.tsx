@@ -28,6 +28,10 @@ import {
 import { ApiResponse } from "@eco-flow/types";
 import isServerOnline from "../../service/server/isServerOnline.service";
 import Loading from "../../components/Loading/Loading.component";
+import {
+  errorNotification,
+  successNotification,
+} from "../../store/notification.store";
 
 export default function BaseAdminLayout() {
   const redirect = (url: string) => {
@@ -46,6 +50,11 @@ export default function BaseAdminLayout() {
   );
   const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
   const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
+
+  const [successNotificationMessage, setSuccessNotificationMessage] =
+    useAtom(successNotification);
+  const [errorNotificationMessage, setErrorNotificationMessage] =
+    useAtom(errorNotification);
 
   useEffect(() => {
     document.title = "Admin Dashboard";
@@ -81,7 +90,12 @@ export default function BaseAdminLayout() {
   }, [initStatus]);
 
   useEffect(() => {
-    if (response.error) errorRestartNotification.show();
+    if (response.error)
+      setErrorNotificationMessage({
+        show: true,
+        header: "Server Stop Failed",
+        message: response.payload.toString(),
+      });
     if (response.success) {
       setRestartModalOpen(false);
       warnRestartNotification.show();
@@ -97,14 +111,13 @@ export default function BaseAdminLayout() {
   }, [response]);
 
   useEffect(() => {
-    if (onServerRestartedResponse.success) successRestart.show();
+    if (onServerRestartedResponse.success)
+      setSuccessNotificationMessage({
+        show: true,
+        header: "Server Successfully Restarted",
+        message: "Server successfully restarted and ready to serve again",
+      });
   }, [onServerRestartedResponse]);
-
-  const successRestart = useNotification({
-    header: "Server Successfully Restarted",
-    type: "success",
-    children: <>Server successfully restarted and ready to serve again</>,
-  });
 
   const warnRestartNotification = useNotification({
     header: "Warning",
@@ -112,11 +125,61 @@ export default function BaseAdminLayout() {
     children: <>{response.payload}</>,
   });
 
-  const errorRestartNotification = useNotification({
-    header: "Server Stop Failed",
+  const errorNoti = useNotification({
     type: "error",
-    children: <>{response.error ? response.payload.toString() : <></>}</>,
+    header: (
+      <>
+        {errorNotificationMessage.header ? errorNotificationMessage.header : ""}
+      </>
+    ),
+    placement: errorNotificationMessage.placement,
+    children: (
+      <>
+        {errorNotificationMessage.message
+          ? errorNotificationMessage.message
+          : ""}
+      </>
+    ),
   });
+
+  const successNoti = useNotification({
+    type: "success",
+    header: (
+      <>
+        {successNotificationMessage.header
+          ? successNotificationMessage.header
+          : ""}
+      </>
+    ),
+    placement: successNotificationMessage.placement,
+    children: (
+      <>
+        {successNotificationMessage.message
+          ? successNotificationMessage.message
+          : ""}
+      </>
+    ),
+  });
+
+  useEffect(() => {
+    if (successNotificationMessage.show) {
+      setSuccessNotificationMessage({
+        ...successNotificationMessage,
+        show: false,
+      });
+      successNoti.show();
+    }
+  }, [successNotificationMessage]);
+
+  useEffect(() => {
+    if (errorNotificationMessage.show) {
+      setErrorNotificationMessage({
+        ...errorNotificationMessage,
+        show: false,
+      });
+      errorNoti.show();
+    }
+  }, [errorNotificationMessage]);
 
   return (
     <>
@@ -168,9 +231,11 @@ export default function BaseAdminLayout() {
               color: "red",
             }}
           >
-            <h5>Server Restart</h5>
-            <Divider />
-            <p>Are you sure you want to restart the server?</p>
+            <AlertModal.Body>
+              <h5>Server Restart</h5>
+              <Divider />
+              <p>Are you sure you want to restart the server?</p>
+            </AlertModal.Body>
           </AlertModal>
         </>
       ) : (

@@ -3,8 +3,12 @@ import React, { useEffect } from "react";
 import { Button, Divider, FlexboxGrid, Panel, Stack, Table } from "rsuite";
 import CellActionButton from "./CellActionButton.component";
 import EditableCell from "./EditableCell.component";
-import { useNotification } from "@eco-flow/components-lib";
 import commitEnvs from "../../../service/environments/commitEnvs.service";
+import { useAtom } from "jotai";
+import {
+  errorNotification,
+  successNotification,
+} from "../../../store/notification.store";
 const { Column, HeaderCell, Cell } = Table;
 
 interface EnvsTablesProps {
@@ -29,10 +33,17 @@ export default function EnvsTables({
   const [isLoading, setLoading] = React.useState(false);
   const [isDeleted, setDeleted] = React.useState(false);
   const [response, setResponse] = React.useState<ApiResponse>({});
+  const successNoti = useAtom(successNotification)[1];
+  const errorNoti = useAtom(errorNotification)[1];
 
   useEffect(() => {
     setLoading(false);
-    if (response.error) errorNotification.show();
+    if (response.error)
+      errorNoti({
+        show: true,
+        header: "Error updating Envs",
+        message: response.payload,
+      });
 
     if (response.success) {
       setDeleted(false);
@@ -43,23 +54,13 @@ export default function EnvsTables({
           return { id: index, name: val.name, value: val.value };
         })
       );
-      successNotification.show();
+      successNoti({
+        show: true,
+        header: "Envs updated successfully.",
+        message: response.payload.msg,
+      });
     }
   }, [response]);
-
-  const errorNotification = useNotification({
-    placement: "topEnd",
-    type: "error",
-    header: "Error updating Envs",
-    children: <>{response.error ? response.payload : ""}</>,
-  });
-
-  const successNotification = useNotification({
-    placement: "topEnd",
-    type: "success",
-    header: "Envs updated successfully.",
-    children: <>{response.success ? response.payload.msg : ""}</>,
-  });
 
   const handlecommitEnvs = () => {
     setLoading(true);

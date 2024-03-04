@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -14,6 +14,7 @@ import { isClosedServer } from "../../store/server.store";
 import { AlertModal, useNotification } from "@eco-flow/components-lib";
 import restartCloseServer from "../../service/server/restartCloseServer.service";
 import { ApiResponse } from "@eco-flow/types";
+import { errorNotification } from "../../store/notification.store";
 
 export default function ServerSettings() {
   const [_restartModalOpen, setRestartModalOpen] = useAtom(resartModalState);
@@ -21,25 +22,26 @@ export default function ServerSettings() {
   const [_closeServer, setCloseServer] = useAtom(isClosedServer);
   const [response, setResponse] = useState<ApiResponse>({});
 
+  const setErrorNotification = useAtom(errorNotification)[1];
+
   useEffect(() => {
     if (response.success) {
       setCloseModalOpen(false);
       successNotification.show();
       setTimeout(() => setCloseServer(true), 30 * 1000);
     }
-    if (response.error) errorNotification.show();
+    if (response.error)
+      setErrorNotification({
+        show: true,
+        header: "Server Stop Failed",
+        message: response.payload.toString(),
+      });
   }, [response]);
 
   const successNotification = useNotification({
     header: "Warning",
     type: "warning",
     children: <>{response.success ? response.payload : <></>}</>,
-  });
-
-  const errorNotification = useNotification({
-    header: "Server Stop Failed",
-    type: "error",
-    children: <>{response.error ? response.payload.toString() : <></>}</>,
   });
 
   return (
@@ -106,9 +108,11 @@ export default function ServerSettings() {
           color: "red",
         }}
       >
-        <h5>Server Stop</h5>
-        <Divider />
-        <p>Are you sure you want to Stop the server?</p>
+        <AlertModal.Body>
+          <h5>Server Stop</h5>
+          <Divider />
+          <p>Are you sure you want to Stop the server?</p>
+        </AlertModal.Body>
       </AlertModal>
     </>
   );

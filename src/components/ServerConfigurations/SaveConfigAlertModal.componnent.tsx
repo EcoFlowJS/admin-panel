@@ -36,15 +36,17 @@ export default function SaveConfigAlertModal({
         }}
         size="sm"
       >
-        <h5>Are You Sure?</h5>
-        <Divider />
-        <p>
-          Updating configuration need to restart the server for the updated
-          configuration to be get effective.
-          <br />
-          Please be patients be patient and restart the server once
-          configuration successfully gets updated.
-        </p>
+        <AlertModal.Body>
+          <h5>Are You Sure?</h5>
+          <Divider />
+          <p>
+            Updating configuration need to restart the server for the updated
+            configuration to be get effective.
+            <br />
+            Please be patients be patient and restart the server once
+            configuration successfully gets updated.
+          </p>
+        </AlertModal.Body>
       </AlertModal>
     </>
   );
