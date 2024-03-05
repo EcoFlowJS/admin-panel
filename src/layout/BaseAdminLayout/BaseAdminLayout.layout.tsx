@@ -208,7 +208,8 @@ export default function BaseAdminLayout() {
                 >
                   <Panel
                     style={{
-                      backgroundColor: "var(--rs-gray-800)",
+                      backgroundColor:
+                        "var(--dashboard-subcontent-background-color)",
                       overflow: "visible",
                     }}
                   >
