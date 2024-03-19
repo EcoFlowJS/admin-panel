@@ -8,6 +8,9 @@ import ServerConfigurations from "../pages/ServerConfigurations/ServerConfigurat
 import ServerEnvironments from "../pages/ServerEnvironments/ServerEnvironments";
 import AdminDashboard from "../pages/AdminDashboard/AdminDashboard";
 import ServerSettings from "../pages/ServerSettings/ServerSettings";
+import RoleManagement from "../pages/RoleManagement/RoleManagement";
+import InstalledPackages from "../pages/InstalledPackages/InstalledPackages";
+import AvailablePackages from "../pages/AvailablePackages/AvailablePackages";
 
 export default function () {
   return (
@@ -20,6 +23,9 @@ export default function () {
           <Route path="configurations" element={<ServerConfigurations />} />
           <Route path="environments" element={<ServerEnvironments />} />
           <Route path="serverSettings" element={<ServerSettings />} />
+          <Route path="roles" element={<RoleManagement />} />
+          <Route path="InstalledPackages" element={<InstalledPackages />} />
+          <Route path="availablePackages" element={<AvailablePackages />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

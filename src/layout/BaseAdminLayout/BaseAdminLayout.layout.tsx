@@ -2,14 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { initService } from "../../service/init/init.service";
 import useNavagator from "../../utils/redirect/redirect";
 import { useEffect, useState } from "react";
-import {
-  Container,
-  Content,
-  Divider,
-  FlexboxGrid,
-  Loader,
-  Panel,
-} from "rsuite";
+import { Container, Content, Divider, FlexboxGrid, Panel } from "rsuite";
 import Header from "../../components/Header/Header";
 import SideNav from "../../components/SideNav/SideNav";
 import { useAtom } from "jotai";
@@ -32,6 +25,16 @@ import {
   errorNotification,
   successNotification,
 } from "../../store/notification.store";
+import {
+  connectSocketIO,
+  disconnectSocketIO,
+} from "../../utils/socket.io/socket.io";
+import baseSocketIOHndlers from "./baseSocketIO.handlers";
+import { userPermissions } from "../../store/users.store";
+import fetchUserPermissions from "../../service/user/fetchUserPermissions.service";
+import permissionFormValueDefault from "../../defaults/permissionFormValue.default";
+
+const socket = connectSocketIO(["roles", "users"]);
 
 export default function BaseAdminLayout() {
   const redirect = (url: string) => {
@@ -50,6 +53,11 @@ export default function BaseAdminLayout() {
   );
   const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
   const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
+  const setUserPermissions = useAtom(userPermissions)[1];
+  const [isDisConnectedAfterConnect, setIsDisConnectedAfterConnect] =
+    useState(false);
+
+  socket.on("connect", () => setIsDisConnectedAfterConnect(true));
 
   const [successNotificationMessage, setSuccessNotificationMessage] =
     useAtom(successNotification);
@@ -68,6 +76,7 @@ export default function BaseAdminLayout() {
     if (loggedOut) {
       setLoggedOut(false);
       setinitStatus({ ...initStatus, isLoggedIn: false });
+      disconnectSocketIO(socket);
     }
   }, [loggedOut]);
 
@@ -75,17 +84,33 @@ export default function BaseAdminLayout() {
     if (loggedIn) {
       setLoggedIn(false);
       setinitStatus({ ...initStatus, isLoggedIn: true });
+      if (socket.disconnected && isDisConnectedAfterConnect) socket.connect();
     }
   }, [loggedIn]);
 
   useEffect(() => {
     if (!isLoading) {
+      disconnectSocketIO(socket);
       if (initStatus.isNew && !initStatus.isLoggedIn) redirect("/auth/setup");
       if (!initStatus.isNew && !initStatus.isLoggedIn) redirect("/auth/login");
-      if (!initStatus.isNew && initStatus.isLoggedIn)
+      if (!initStatus.isNew && initStatus.isLoggedIn) {
         navigate(location.pathname.substring("/admin".length));
-      if (location.pathname === "/admin" || location.pathname === "/admin/")
-        navigate("/dashboard");
+        if (location.pathname === "/admin" || location.pathname === "/admin/")
+          navigate("/dashboard");
+        if (socket.disconnected && isDisConnectedAfterConnect) socket.connect();
+        baseSocketIOHndlers(socket, initStatus.userID!).onRoleUpdate((value) =>
+          setUserPermissions({ ...permissionFormValueDefault, ...value })
+        );
+        fetchUserPermissions(initStatus.userID!).then((response) => {
+          console.log(response.payload);
+
+          if (response.success)
+            setUserPermissions({
+              ...permissionFormValueDefault,
+              ...response.payload,
+            });
+        });
+      }
     }
   }, [initStatus]);
 
@@ -180,6 +205,10 @@ export default function BaseAdminLayout() {
       errorNoti.show();
     }
   }, [errorNotificationMessage]);
+
+  useEffect(() => {
+    return disconnectSocketIO(socket);
+  }, []);
 
   return (
     <>

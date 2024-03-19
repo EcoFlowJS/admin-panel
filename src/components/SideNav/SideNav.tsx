@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Nav, Navbar, Sidebar, Sidenav } from "rsuite";
 
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
@@ -7,16 +7,20 @@ import MagicIcon from "@rsuite/icons/legacy/Magic";
 import { MdOutlineDashboard } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SiDotenv } from "react-icons/si";
-import { TbUsers } from "react-icons/tb";
+import { TbPackages, TbUserShield, TbUsers } from "react-icons/tb";
 import { ImProfile } from "react-icons/im";
 import { IconWrapper } from "@eco-flow/components-lib";
 import { GrConfigure } from "react-icons/gr";
 import { CiServer } from "react-icons/ci";
+import { LuPackageSearch } from "react-icons/lu";
+import { useAtom } from "jotai";
+import { userPermissions as userPermit } from "../../store/users.store";
 
 export default function SideNav() {
   const [expand, setExpand] = React.useState(true);
   const navigate = useNavigate();
   const loc = useLocation();
+  const [userPermissions] = useAtom(userPermit);
 
   const navigationHandler = (eventKey: string) => {
     switch (eventKey) {
@@ -38,10 +42,21 @@ export default function SideNav() {
       case "server":
         navigate("/admin/serverSettings");
         break;
+      case "roles":
+        navigate("/admin/roles");
+        break;
+      case "installedPackages":
+        navigate("/admin/installedPackages");
+        break;
+      case "availablePackages":
+        navigate("/admin/availablePackages");
+        break;
       default:
         console.log(eventKey);
     }
   };
+
+  useEffect(() => console.log(userPermissions), [userPermissions]);
 
   return (
     <Sidebar
@@ -73,12 +88,39 @@ export default function SideNav() {
               icon={<MagicIcon />}
               placement="rightStart"
             >
-              <Nav.Item eventKey="3-1">Geo</Nav.Item>
-              <Nav.Item eventKey="3-2">Devices</Nav.Item>
-              <Nav.Item eventKey="3-3">Brand</Nav.Item>
-              <Nav.Item eventKey="3-4">Loyalty</Nav.Item>
-              <Nav.Item eventKey="3-5" icon={<IconWrapper icon={SiDotenv} />}>
-                Visit Depth
+              <Nav.Item
+                eventKey="availablePackages"
+                active={loc.pathname.startsWith("/admin/availablePackages")}
+                icon={<IconWrapper icon={LuPackageSearch} />}
+              >
+                Available Packages
+              </Nav.Item>
+              <Nav.Item
+                eventKey="installedPackages"
+                active={loc.pathname.startsWith("/admin/installedPackages")}
+                icon={<IconWrapper icon={TbPackages} />}
+              >
+                Installed Packages
+              </Nav.Item>
+              <Nav.Item
+                eventKey="roles"
+                active={loc.pathname.startsWith("/admin/roles")}
+                icon={<IconWrapper icon={TbUserShield} />}
+              >
+                Roles
+              </Nav.Item>
+              <Nav.Item
+                eventKey="users"
+                active={loc.pathname.startsWith("/admin/users")}
+                icon={<IconWrapper icon={TbUsers} />}
+                disabled={
+                  !userPermissions.createUser &&
+                  !userPermissions.updateUser &&
+                  !userPermissions.deleteUser &&
+                  !userPermissions.showUser
+                }
+              >
+                Users
               </Nav.Item>
             </Nav.Menu>
             <Nav.Menu
@@ -92,6 +134,9 @@ export default function SideNav() {
                 eventKey="server"
                 active={loc.pathname.startsWith("/admin/serverSettings")}
                 icon={<IconWrapper icon={CiServer} />}
+                disabled={
+                  !userPermissions.stopServer && !userPermissions.restartServer
+                }
               >
                 Server
               </Nav.Item>
@@ -106,15 +151,13 @@ export default function SideNav() {
                 eventKey="env"
                 active={loc.pathname.startsWith("/admin/environments")}
                 icon={<IconWrapper icon={SiDotenv} />}
+                disabled={
+                  !userPermissions.createEnvs &&
+                  !userPermissions.deleteEnvs &&
+                  !userPermissions.updateEnvs
+                }
               >
                 Environments
-              </Nav.Item>
-              <Nav.Item
-                eventKey="users"
-                active={loc.pathname.startsWith("/admin/users")}
-                icon={<IconWrapper icon={TbUsers} />}
-              >
-                Users
               </Nav.Item>
             </Nav.Menu>
           </Nav>
