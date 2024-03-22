@@ -5,7 +5,6 @@ import { AlertModal, Form, FormGroup } from "@eco-flow/components-lib";
 import permissionList from "../../../defaults/permissionList.default";
 import "./style.less";
 import { useEffect, useState } from "react";
-import permissionFormValueDefault from "../../../defaults/permissionFormValue.default";
 import isEqual from "lodash/isEqual";
 import updateRoleService from "../../../service/role/updateRole.service";
 import { useAtom } from "jotai";
@@ -14,14 +13,15 @@ import {
   successNotification,
 } from "../../../store/notification.store";
 import deleteRoleService from "../../../service/role/deleteRole.service";
+import { userPermissions, userRolesList } from "../../../store/users.store";
+import defaultPermissions from "../../../defaults/defaultPermissions.default";
 
 interface PermissionPanelProps {
   id?: string;
   name?: string;
   isDefault?: boolean;
   permissions?: Permissions;
-  onSave?: (roles: Role[]) => void;
-  onDelete?: (roles: Role[]) => void;
+  onUpdate?: (roles: Role[]) => void;
 }
 
 export default function PermissionPanel({
@@ -29,11 +29,10 @@ export default function PermissionPanel({
   name = "",
   isDefault = false,
   permissions = {},
-  onSave = () => {},
-  onDelete = () => {},
+  onUpdate = () => {},
 }: PermissionPanelProps) {
   permissions = {
-    ...permissionFormValueDefault,
+    ...defaultPermissions,
     ...permissions,
   };
   isDefault =
@@ -45,6 +44,9 @@ export default function PermissionPanel({
   const [isModified, setModified] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
   const [removeLoading, setRemoveLoading] = useState(false);
+
+  const [userRoleList] = useAtom(userRolesList);
+  const [permissionsList] = useAtom(userPermissions);
 
   const errorNoti = useAtom(errorNotification)[1];
   const successNoti = useAtom(successNotification)[1];
@@ -60,7 +62,7 @@ export default function PermissionPanel({
         header: "Role saved success.",
         message: "Role updated successfully.",
       });
-      onSave(response.payload);
+      onUpdate(response.payload);
       setModified(false);
     }
   };
@@ -166,11 +168,7 @@ export default function PermissionPanel({
         }
       >
         <PanelGroup>
-          <Form
-            formValue={formValue}
-            onChange={handelFormChange}
-            disabled={isDefault}
-          >
+          <Form formValue={formValue} onChange={handelFormChange}>
             {permissionList.map((permission, index) => {
               return (
                 <Panel
@@ -190,6 +188,14 @@ export default function PermissionPanel({
                             accepter={RolePanel}
                             roleName={permission.label}
                             hintText={permission.hint}
+                            disabled={
+                              isDefault ||
+                              userRoleList.includes(id) ||
+                              (permission.name === "administrator" &&
+                                !permissionsList.administrator) ||
+                              (!permissionsList.administrator &&
+                                !permissionsList.updateRole)
+                            }
                           />
                         </Panel>
                       );
@@ -207,7 +213,13 @@ export default function PermissionPanel({
                 style={{ width: 250 }}
                 appearance="primary"
                 color="red"
-                disabled={isDefault || saveLoading}
+                disabled={
+                  isDefault ||
+                  saveLoading ||
+                  userRoleList.includes(id) ||
+                  (!permissionsList.administrator &&
+                    !permissionsList.deleteRole)
+                }
                 onClick={() => setOpenModal(true)}
               >
                 Delete

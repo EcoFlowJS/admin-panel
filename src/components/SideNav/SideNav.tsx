@@ -11,7 +11,7 @@ import { TbPackages, TbUserShield, TbUsers } from "react-icons/tb";
 import { ImProfile } from "react-icons/im";
 import { IconWrapper } from "@eco-flow/components-lib";
 import { GrConfigure } from "react-icons/gr";
-import { CiServer } from "react-icons/ci";
+import { CiServer, CiViewTimeline } from "react-icons/ci";
 import { LuPackageSearch } from "react-icons/lu";
 import { useAtom } from "jotai";
 import { userPermissions as userPermit } from "../../store/users.store";
@@ -51,12 +51,13 @@ export default function SideNav() {
       case "availablePackages":
         navigate("/admin/availablePackages");
         break;
+      case "auditLogs":
+        navigate("/admin/auditLogs");
+        break;
       default:
         console.log(eventKey);
     }
   };
-
-  useEffect(() => console.log(userPermissions), [userPermissions]);
 
   return (
     <Sidebar
@@ -74,6 +75,7 @@ export default function SideNav() {
             >
               Dashboard
             </Nav.Item>
+            <Nav.Item divider />
             <Nav.Item
               eventKey="profile"
               active={loc.pathname.startsWith("/admin/profile")}
@@ -81,6 +83,7 @@ export default function SideNav() {
             >
               Profile
             </Nav.Item>
+            <Nav.Item divider />
             <Nav.Menu
               eventKey="3"
               trigger="hover"
@@ -106,6 +109,21 @@ export default function SideNav() {
                 eventKey="roles"
                 active={loc.pathname.startsWith("/admin/roles")}
                 icon={<IconWrapper icon={TbUserShield} />}
+                disabled={
+                  !userPermissions.administrator &&
+                  !userPermissions.createRole &&
+                  !userPermissions.deleteRole &&
+                  !userPermissions.updateRole
+                }
+                style={{
+                  color:
+                    !userPermissions.administrator &&
+                    !userPermissions.createRole &&
+                    !userPermissions.deleteRole &&
+                    !userPermissions.updateRole
+                      ? "var(--rs-text-disabled)"
+                      : "inherit",
+                }}
               >
                 Roles
               </Nav.Item>
@@ -114,13 +132,40 @@ export default function SideNav() {
                 active={loc.pathname.startsWith("/admin/users")}
                 icon={<IconWrapper icon={TbUsers} />}
                 disabled={
+                  !userPermissions.administrator &&
                   !userPermissions.createUser &&
                   !userPermissions.updateUser &&
                   !userPermissions.deleteUser &&
                   !userPermissions.showUser
                 }
+                style={{
+                  color:
+                    !userPermissions.administrator &&
+                    !userPermissions.createUser &&
+                    !userPermissions.updateUser &&
+                    !userPermissions.deleteUser &&
+                    !userPermissions.showUser
+                      ? "var(--rs-text-disabled)"
+                      : "inherit",
+                }}
               >
                 Users
+              </Nav.Item>
+              <Nav.Item
+                eventKey="auditLogs"
+                active={loc.pathname.startsWith("/admin/auditLogs")}
+                icon={<IconWrapper icon={CiViewTimeline} />}
+                disabled={
+                  !userPermissions.administrator && !userPermissions.auditLogs
+                }
+                style={{
+                  color:
+                    !userPermissions.administrator && !userPermissions.auditLogs
+                      ? "var(--rs-text-disabled)"
+                      : "inherit",
+                }}
+              >
+                Audit Logs
               </Nav.Item>
             </Nav.Menu>
             <Nav.Menu
@@ -135,8 +180,18 @@ export default function SideNav() {
                 active={loc.pathname.startsWith("/admin/serverSettings")}
                 icon={<IconWrapper icon={CiServer} />}
                 disabled={
-                  !userPermissions.stopServer && !userPermissions.restartServer
+                  !userPermissions.administrator &&
+                  !userPermissions.stopServer &&
+                  !userPermissions.restartServer
                 }
+                style={{
+                  color:
+                    !userPermissions.administrator &&
+                    !userPermissions.stopServer &&
+                    !userPermissions.restartServer
+                      ? "var(--rs-text-disabled)"
+                      : "inherit",
+                }}
               >
                 Server
               </Nav.Item>
@@ -144,6 +199,19 @@ export default function SideNav() {
                 eventKey="config"
                 active={loc.pathname.startsWith("/admin/configurations")}
                 icon={<IconWrapper icon={GrConfigure} />}
+                disabled={
+                  !userPermissions.administrator &&
+                  !userPermissions.serverConfigurationShow &&
+                  !userPermissions.serverConfigurationUpdate
+                }
+                style={{
+                  color:
+                    !userPermissions.administrator &&
+                    !userPermissions.serverConfigurationShow &&
+                    !userPermissions.serverConfigurationUpdate
+                      ? "var(--rs-text-disabled)"
+                      : "inherit",
+                }}
               >
                 Configurations
               </Nav.Item>
@@ -152,10 +220,20 @@ export default function SideNav() {
                 active={loc.pathname.startsWith("/admin/environments")}
                 icon={<IconWrapper icon={SiDotenv} />}
                 disabled={
+                  !userPermissions.administrator &&
                   !userPermissions.createEnvs &&
                   !userPermissions.deleteEnvs &&
                   !userPermissions.updateEnvs
                 }
+                style={{
+                  color:
+                    !userPermissions.administrator &&
+                    !userPermissions.createEnvs &&
+                    !userPermissions.deleteEnvs &&
+                    !userPermissions.updateEnvs
+                      ? "var(--rs-text-disabled)"
+                      : "inherit",
+                }}
               >
                 Environments
               </Nav.Item>

@@ -26,8 +26,14 @@ import {
   successNotification,
 } from "../../store/notification.store";
 import { useNotification } from "@eco-flow/components-lib";
+import { useNavigate } from "react-router-dom";
+import { permissionFetched, userPermissions } from "../../store/users.store";
 
 export default function ServerConfigurations() {
+  // Importing user Permissions
+  const navigate = useNavigate();
+  const [permissionsList] = useAtom(userPermissions);
+  const [isPermissionFetched] = useAtom(permissionFetched);
   // Loading state
   const [isLoading, setLoading] = useState(true);
   const [isLoadingError, setLoadingError] = useState(false);
@@ -199,6 +205,16 @@ export default function ServerConfigurations() {
       setResponse(await updateConfigs(SendData));
     })();
 
+  useEffect(() => {
+    if (
+      isPermissionFetched &&
+      !permissionsList.administrator &&
+      !permissionsList.serverConfigurationShow &&
+      !permissionsList.serverConfigurationUpdate
+    )
+      navigate("/admin/403");
+  }, [permissionsList, isPermissionFetched]);
+
   return (
     <>
       {isLoading ? (
@@ -215,7 +231,11 @@ export default function ServerConfigurations() {
                   appearance="primary"
                   onClick={() => setModalOpen(true)}
                   loading={responseLoading}
-                  disabled={isLoadingError}
+                  disabled={
+                    isLoadingError ||
+                    (!permissionsList.administrator &&
+                      !permissionsList.serverConfigurationUpdate)
+                  }
                 >
                   Confirm
                 </Button>
@@ -225,7 +245,12 @@ export default function ServerConfigurations() {
           <Divider />
           <Content>
             <ServerConfigurationForm
-              disabled={isLoadingError || responseLoading}
+              disabled={
+                isLoadingError ||
+                responseLoading ||
+                (!permissionsList.administrator &&
+                  !permissionsList.serverConfigurationUpdate)
+              }
               layout="horizontal"
               style={{ paddingTop: "2rem" }}
               checkTrigger="none"

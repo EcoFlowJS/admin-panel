@@ -48,6 +48,16 @@ const permissionList = [
     name: "Server Management",
     permissions: [
       {
+        name: "serverConfigurationShow",
+        label: "Server configuration show",
+        hint: "Server configuration show only",
+      },
+      {
+        name: "serverConfigurationUpdate",
+        label: "Server configuration update",
+        hint: "Server configuration update only",
+      },
+      {
         name: "stopServer",
         label: "Stop Server",
         hint: "Stop server only",
@@ -83,11 +93,6 @@ const permissionList = [
     name: "Editor Management",
     permissions: [
       {
-        name: "adminEditor",
-        label: "Admin Editor",
-        hint: "Admin Editor only",
-      },
-      {
         name: "schemaEditor",
         label: "Schema Editor",
         hint: "schemna editor",
@@ -102,6 +107,11 @@ const permissionList = [
   {
     name: "Advanced Permissions",
     permissions: [
+      {
+        name: "auditLogs",
+        label: "Audit Logs",
+        hint: "Audit Logs",
+      },
       {
         name: "administrator",
         label: "Administrator",

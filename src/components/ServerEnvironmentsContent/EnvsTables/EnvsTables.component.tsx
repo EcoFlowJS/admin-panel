@@ -9,6 +9,7 @@ import {
   errorNotification,
   successNotification,
 } from "../../../store/notification.store";
+import { userPermissions } from "../../../store/users.store";
 const { Column, HeaderCell, Cell } = Table;
 
 interface EnvsTablesProps {
@@ -25,16 +26,23 @@ export default function EnvsTables({
   envList = [],
   isSystemEnvs = false,
 }: EnvsTablesProps) {
-  const [data, setData] = React.useState<EnvsLists[]>(
-    envList.map((val, index) => {
+  const [oldData, setOldDatas] = React.useState<EnvsLists[]>([
+    ...envList.map((val, index) => {
       return { id: index, name: val.name, value: val.value };
-    })
-  );
+    }),
+  ]);
+  const [data, setData] = React.useState<EnvsLists[]>([
+    ...envList.map((val, index) => {
+      return { id: index, name: val.name, value: val.value };
+    }),
+  ]);
   const [isLoading, setLoading] = React.useState(false);
   const [isDeleted, setDeleted] = React.useState(false);
   const [response, setResponse] = React.useState<ApiResponse>({});
   const successNoti = useAtom(successNotification)[1];
   const errorNoti = useAtom(errorNotification)[1];
+
+  const [permissionsList] = useAtom(userPermissions);
 
   useEffect(() => {
     setLoading(false);
@@ -47,10 +55,13 @@ export default function EnvsTables({
 
     if (response.success) {
       setDeleted(false);
-      console.log(response.payload.newEnvs);
-
       setData(
-        response.payload.newEnv.map((val: any, index: number) => {
+        response.payload.newEnvs.map((val: any, index: number) => {
+          return { id: index, name: val.name, value: val.value };
+        })
+      );
+      setOldDatas(
+        response.payload.newEnvs.map((val: any, index: number) => {
           return { id: index, name: val.name, value: val.value };
         })
       );
@@ -133,7 +144,10 @@ export default function EnvsTables({
         <FlexboxGrid.Item>
           <Stack spacing={10}>
             <Button
-              disabled={isSystemEnvs}
+              disabled={
+                isSystemEnvs ||
+                (!permissionsList.administrator && !permissionsList.createEnvs)
+              }
               appearance="primary"
               color="cyan"
               onClick={handleAddNewEnvs}
@@ -141,7 +155,13 @@ export default function EnvsTables({
               New Env
             </Button>
             <Button
-              disabled={(data.length === 0 && !isDeleted) || isLoading}
+              disabled={
+                (data.length === 0 && !isDeleted) ||
+                isLoading ||
+                (!permissionsList.administrator &&
+                  !permissionsList.createEnvs &&
+                  !permissionsList.updateEnvs)
+              }
               loading={isLoading}
               appearance="primary"
               color="green"
@@ -185,6 +205,7 @@ export default function EnvsTables({
             onClickEdit={handleEditState}
             onClickDelete={handleDelete}
             isSystemEnvs={isSystemEnvs}
+            oldDatas={oldData}
           />
         </Column>
       </Table>

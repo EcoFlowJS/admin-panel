@@ -30,9 +30,13 @@ import {
   disconnectSocketIO,
 } from "../../utils/socket.io/socket.io";
 import baseSocketIOHndlers from "./baseSocketIO.handlers";
-import { userPermissions } from "../../store/users.store";
+import {
+  permissionFetched,
+  userPermissions,
+  userRolesList,
+} from "../../store/users.store";
 import fetchUserPermissions from "../../service/user/fetchUserPermissions.service";
-import permissionFormValueDefault from "../../defaults/permissionFormValue.default";
+import defaultPermissions from "../../defaults/defaultPermissions.default";
 
 const socket = connectSocketIO(["roles", "users"]);
 
@@ -54,6 +58,8 @@ export default function BaseAdminLayout() {
   const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
   const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
   const setUserPermissions = useAtom(userPermissions)[1];
+  const setPermissionFetched = useAtom(permissionFetched)[1];
+  const setUserRolesList = useAtom(userRolesList)[1];
   const [isDisConnectedAfterConnect, setIsDisConnectedAfterConnect] =
     useState(false);
 
@@ -98,17 +104,20 @@ export default function BaseAdminLayout() {
         if (location.pathname === "/admin" || location.pathname === "/admin/")
           navigate("/dashboard");
         if (socket.disconnected && isDisConnectedAfterConnect) socket.connect();
-        baseSocketIOHndlers(socket, initStatus.userID!).onRoleUpdate((value) =>
-          setUserPermissions({ ...permissionFormValueDefault, ...value })
-        );
+        baseSocketIOHndlers(socket, initStatus.userID!)
+          .onRoleUpdate((value) =>
+            setUserPermissions({ ...defaultPermissions, ...value })
+          )
+          .onUserRoleListUpdate(setUserRolesList);
         fetchUserPermissions(initStatus.userID!).then((response) => {
-          console.log(response.payload);
-
-          if (response.success)
+          if (response.success) {
+            setPermissionFetched(true);
             setUserPermissions({
-              ...permissionFormValueDefault,
-              ...response.payload,
+              ...defaultPermissions,
+              ...response.payload.permissions,
             });
+            setUserRolesList(response.payload.rolesList);
+          }
         });
       }
     }

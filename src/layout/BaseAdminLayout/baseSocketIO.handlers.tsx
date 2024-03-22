@@ -7,17 +7,20 @@ const handlers = (IO: Socket) => {
       IO.on("roleUpdateResponse", callback);
       return handlers(IO);
     },
+    onUserRoleListUpdate: (callback: (rolesID: Array<any>) => void) => {
+      IO.on("userRoleListUpdateResponse", callback);
+      return handlers(IO);
+    },
   };
 };
 
 const baseSocketIOHndlers = (IO: Socket, UserID: string) => {
-  console.log(UserID);
-
   IO.on("roleUpdated", () => {
     IO.emit("fetchRole", { roomID: ["roles"], UserID: UserID });
   });
   IO.on("userUpdated", () => {
-    IO.emit("fetchRole", { roomID: ["roles"], UserID: UserID });
+    IO.emit("fetchRole", { roomID: ["users"], UserID: UserID });
+    IO.emit("fetchUserRoleListUpdate", { roomID: ["users"], UserID: UserID });
   });
   return handlers(IO);
 };

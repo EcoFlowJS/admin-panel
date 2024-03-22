@@ -1,59 +1,37 @@
-import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Content,
-  Divider,
-  Footer,
-  Header,
-  Placeholder,
-  Tabs,
-} from "rsuite";
-import SystemEnvvironments from "../../components/ServerEnvironments/SystemEnvvironments/SystemEnvvironments.components";
-import UserEnvironments from "../../components/ServerEnvironments/UserEnvironments/UserEnvironments.components";
+import React, { useEffect } from "react";
+import { Container, Content, Divider, Header, Placeholder, Tabs } from "rsuite";
+import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import { permissionFetched, userPermissions } from "../../store/users.store";
+import ServerEnvironmentsContent from "../../components/ServerEnvironmentsContent/ServerEnvironmentsContent.component";
 
 export default function ServerEnvironments() {
-  const [isLoading, setLoading] = useState(true);
-  const [tabKey, setTabKey] = useState("intro");
+  const navigate = useNavigate();
+  const [permissionsList] = useAtom(userPermissions);
+  const [isPermissionFetched] = useAtom(permissionFetched);
 
   useEffect(() => {
-    (async () => {
-      setLoading(false);
-    })();
-  }, []);
+    if (
+      isPermissionFetched &&
+      !permissionsList.administrator &&
+      !permissionsList.createEnvs &&
+      !permissionsList.deleteEnvs &&
+      !permissionsList.updateEnvs
+    )
+      navigate("/admin/403");
+  }, [permissionsList, isPermissionFetched]);
 
   return (
     <>
-      {isLoading ? (
-        <Container>
-          <Content>
-            <Placeholder.Paragraph rows={5} active />
-          </Content>
-        </Container>
-      ) : (
-        <Container>
-          <Header style={{ paddingLeft: "2rem", paddingRight: "2rem" }}>
-            <h4>Server Environments</h4>
-          </Header>
-          <Divider />
-          <Content>
-            <Tabs
-              onSelect={(key) => setTabKey(key!)}
-              defaultActiveKey="intro"
-              vertical
-            >
-              <Tabs.Tab eventKey="intro" title="Introductions">
-                <Placeholder.Paragraph graph="image" rows={5} />
-              </Tabs.Tab>
-              <Tabs.Tab eventKey="sysEnvs" title="System Environments">
-                {tabKey === "sysEnvs" ? <SystemEnvvironments /> : <></>}
-              </Tabs.Tab>
-              <Tabs.Tab eventKey="userEnvs" title="Users Environments">
-                {tabKey === "userEnvs" ? <UserEnvironments /> : <></>}
-              </Tabs.Tab>
-            </Tabs>
-          </Content>
-        </Container>
-      )}
+      <Container>
+        <Header style={{ paddingLeft: "2rem", paddingRight: "2rem" }}>
+          <h4>Server Environments</h4>
+        </Header>
+        <Divider />
+        <Content>
+          <ServerEnvironmentsContent />
+        </Content>
+      </Container>
     </>
   );
 }

@@ -25,6 +25,7 @@ import {
 } from "../../store/notification.store";
 import createRoleService from "../../service/role/createRole.service";
 import fetchRolesService from "../../service/role/fetchRoles.service";
+import { userPermissions } from "../../store/users.store";
 
 export default function RoleManagementContent() {
   const [isloading, setLoading] = useState(false);
@@ -34,6 +35,7 @@ export default function RoleManagementContent() {
 
   const errorNoti = useAtom(errorNotification)[1];
   const successNoti = useAtom(successNotification)[1];
+  const [permissionsList] = useAtom(userPermissions);
 
   const [newRoleModal, setNewRoleModal] = useState(false);
   const [newRoleValue, setNewRoleValue] = useState<Record<string, any>>({
@@ -95,6 +97,8 @@ export default function RoleManagementContent() {
                 });
                 setNewRoleModal(true);
               },
+              disabled:
+                !permissionsList.administrator && !permissionsList.createRole,
             }}
             refreshButtonProps={{
               appearance: "subtle",
@@ -125,8 +129,7 @@ export default function RoleManagementContent() {
                       name={role.name}
                       isDefault={role.isDefault}
                       permissions={role.permissions as Permissions}
-                      onSave={setRoles}
-                      onDelete={setRoles}
+                      onUpdate={setRoles}
                     />
                   </Tabs.Tab>
                 );

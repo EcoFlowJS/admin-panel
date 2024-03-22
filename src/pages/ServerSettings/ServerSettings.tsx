@@ -15,12 +15,18 @@ import { AlertModal, useNotification } from "@eco-flow/components-lib";
 import restartCloseServer from "../../service/server/restartCloseServer.service";
 import { ApiResponse } from "@eco-flow/types";
 import { errorNotification } from "../../store/notification.store";
+import { permissionFetched, userPermissions } from "../../store/users.store";
+import { useNavigate } from "react-router-dom";
 
 export default function ServerSettings() {
+  const navigate = useNavigate();
   const [_restartModalOpen, setRestartModalOpen] = useAtom(resartModalState);
   const [closeModalOpen, setCloseModalOpen] = useState(false);
   const [_closeServer, setCloseServer] = useAtom(isClosedServer);
   const [response, setResponse] = useState<ApiResponse>({});
+
+  const [permissionsList] = useAtom(userPermissions);
+  const [isPermissionFetched] = useAtom(permissionFetched);
 
   const setErrorNotification = useAtom(errorNotification)[1];
 
@@ -43,6 +49,16 @@ export default function ServerSettings() {
     type: "warning",
     children: <>{response.success ? response.payload : <></>}</>,
   });
+
+  useEffect(() => {
+    if (
+      isPermissionFetched &&
+      !permissionsList.administrator &&
+      !permissionsList.stopServer &&
+      !permissionsList.restartServer
+    )
+      navigate("/admin/403");
+  }, [permissionsList, isPermissionFetched]);
 
   return (
     <>
@@ -69,6 +85,10 @@ export default function ServerSettings() {
                   appearance="primary"
                   color="cyan"
                   onClick={() => setCloseModalOpen(true)}
+                  disabled={
+                    !permissionsList.administrator &&
+                    !permissionsList.stopServer
+                  }
                 >
                   Stop Server
                 </Button>
@@ -87,6 +107,10 @@ export default function ServerSettings() {
                   appearance="primary"
                   color="cyan"
                   onClick={() => setRestartModalOpen(true)}
+                  disabled={
+                    !permissionsList.administrator &&
+                    !permissionsList.restartServer
+                  }
                 >
                   Restart Server
                 </Button>

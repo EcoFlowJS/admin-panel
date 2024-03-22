@@ -1,7 +1,9 @@
 import { atom } from "jotai";
-import permissionFormValueDefault from "../defaults/permissionFormValue.default";
 import { UserPermissions } from "@eco-flow/types";
+import defaultPermissions from "../defaults/defaultPermissions.default";
 
-const userPermissions = atom<UserPermissions>(permissionFormValueDefault);
+const userRolesList = atom<Array<any>>([]);
+const userPermissions = atom<UserPermissions>(defaultPermissions);
+const permissionFetched = atom(false);
 
-export { userPermissions };
+export { userPermissions, userRolesList, permissionFetched };
