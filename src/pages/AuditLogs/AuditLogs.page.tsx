@@ -2,6 +2,8 @@ import { useAtom } from "jotai";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { permissionFetched, userPermissions } from "../../store/users.store";
+import { Container, Content, Divider, FlexboxGrid, Header } from "rsuite";
+import AuditLogsContent from "../../components/AuditLogsContent/AuditLogsContent.component";
 
 export default function AuditLogs() {
   const navigate = useNavigate();
@@ -16,5 +18,19 @@ export default function AuditLogs() {
     )
       navigate("/admin/403");
   }, [permissionsList, isPermissionFetched]);
-  return <div>AuditLogs</div>;
+  return (
+    <Container>
+      <Header style={{ paddingLeft: "2rem", paddingRight: "2rem" }}>
+        <FlexboxGrid justify="start">
+          <FlexboxGrid.Item>
+            <h4>Audit Logs</h4>
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
+      </Header>
+      <Divider />
+      <Content>
+        <AuditLogsContent />
+      </Content>
+    </Container>
+  );
 }
