@@ -6,12 +6,12 @@ import UserProfile from "./UserProfile/UserProfile.component";
 
 export default function UserProfileContent() {
   return (
-    <FlexboxGrid style={{ alignItems: "stretch", height: "100%" }}>
+    <FlexboxGrid style={{ alignItems: "stretch" }}>
       <FlexboxGrid.Item colspan={12} style={{ padding: "0 10px" }}>
         <UserProfile />
       </FlexboxGrid.Item>
       <FlexboxGrid.Item colspan={12} style={{ padding: "0 10px" }}>
-        <FlexboxGrid style={{ alignItems: "stretch", height: "100%" }}>
+        <FlexboxGrid>
           <FlexboxGrid.Item colspan={24} style={{ paddingBottom: 20 }}>
             <RolesList />
           </FlexboxGrid.Item>

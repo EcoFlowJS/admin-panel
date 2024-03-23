@@ -34,7 +34,7 @@ export default function RolesList() {
   useEffect(() => setLoading(true), []);
 
   return (
-    <Panel bordered shaded header="Roles" style={{ height: "100%" }}>
+    <Panel bordered shaded header="Roles">
       <Table height={250} data={roles} loading={isLoading} virtualized>
         <Column flexGrow={1} verticalAlign="center" fixed>
           <HeaderCell>Id</HeaderCell>

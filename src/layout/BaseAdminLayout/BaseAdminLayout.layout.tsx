@@ -256,28 +256,15 @@ export default function BaseAdminLayout() {
                     left: "0",
                   }}
                 >
-                  <FlexboxGrid
-                    style={{ alignItems: "stretch", minHeight: "100%" }}
+                  <Panel
+                    style={{
+                      overflow: "visible",
+                      backgroundColor:
+                        "var(--dashboard-subcontent-background-color)",
+                    }}
                   >
-                    <FlexboxGrid.Item colspan={24}>
-                      <FlexboxGrid
-                        style={{
-                          padding: 20,
-                          borderRadius: 6,
-                          alignItems: "stretch",
-                          boxSizing: "inherit",
-                          minHeight: "100%",
-                          overflow: "visible",
-                          backgroundColor:
-                            "var(--dashboard-subcontent-background-color)",
-                        }}
-                      >
-                        <FlexboxGrid.Item colspan={24}>
-                          <Outlet />
-                        </FlexboxGrid.Item>
-                      </FlexboxGrid>
-                    </FlexboxGrid.Item>
-                  </FlexboxGrid>
+                    <Outlet />
+                  </Panel>
                 </Container>
               </Content>
             </Container>

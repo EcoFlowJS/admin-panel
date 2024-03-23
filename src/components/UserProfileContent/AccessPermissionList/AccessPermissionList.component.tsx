@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import permissionList from "../../../defaults/permissionList.default";
 import { JSX } from "react/jsx-runtime";
 import { RowDataType, RowKeyType } from "rsuite/esm/Table";
+import PermisssionCell from "./PermisssionCell/PermisssionCell.component";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -52,7 +53,6 @@ export default function AccessPermissionList() {
       bordered
       shaded
       header="Access Permissions List"
-      style={{ height: "100%" }}
     >
       <Table
         height={250}
@@ -67,45 +67,9 @@ export default function AccessPermissionList() {
         </Column>
         <Column flexGrow={2} verticalAlign="center" fixed>
           <HeaderCell>Permissions</HeaderCell>
-          <NameCell />
+          <PermisssionCell />
         </Column>
       </Table>
     </Panel>
   );
 }
-
-const NameCell = ({
-  rowData,
-  dataKey,
-  ...props
-}: import("rsuite-table/lib/Cell").InnerCellProps<
-  RowDataType<any>,
-  RowKeyType
->) => {
-  return (
-    <Cell {...props}>
-      <div style={{ padding: "0 10px" }}>
-        <div
-          style={{
-            paddingBottom: 5,
-            whiteSpace: "nowrap",
-            fontWeight: 500,
-          }}
-        >
-          {rowData!.name}
-        </div>
-        <div
-          style={{
-            fontSize: "0.666em",
-            color: "#97969B",
-            fontWeight: "lighter",
-            paddingBottom: 5,
-            wordWrap: "break-word",
-          }}
-        >
-          {rowData!.hint}
-        </div>
-      </div>
-    </Cell>
-  );
-};
