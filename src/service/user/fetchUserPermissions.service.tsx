@@ -3,11 +3,10 @@ import axios from "../../utils/axios/axios";
 import { AxiosError } from "axios";
 
 const fetchUserPermissions = async (
-  userID: string,
   mode: "RoleList" | "Permissions" | null = null
 ): Promise<ApiResponse> => {
   const res = await axios.get(
-    `users/permissions/${userID}${mode !== null ? `/${mode}` : ""}`,
+    `users/permissions${mode !== null ? `/${mode}` : ""}`,
     {
       headers: { "Content-Type": "application/json" },
     }

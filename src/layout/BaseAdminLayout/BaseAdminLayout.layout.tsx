@@ -59,7 +59,7 @@ export default function BaseAdminLayout() {
   const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
   const setUserPermissions = useAtom(userPermissions)[1];
   const setPermissionFetched = useAtom(permissionFetched)[1];
-  const setUserRolesList = useAtom(userRolesList)[1];
+  const [userRoleList, setUserRolesList] = useAtom(userRolesList);
   const [isDisConnectedAfterConnect, setIsDisConnectedAfterConnect] =
     useState(false);
 
@@ -109,7 +109,7 @@ export default function BaseAdminLayout() {
             setUserPermissions({ ...defaultPermissions, ...value })
           )
           .onUserRoleListUpdate(setUserRolesList);
-        fetchUserPermissions(initStatus.userID!).then((response) => {
+        fetchUserPermissions().then((response) => {
           if (response.success) {
             setPermissionFetched(true);
             setUserPermissions({
@@ -122,6 +122,18 @@ export default function BaseAdminLayout() {
       }
     }
   }, [initStatus]);
+
+  useEffect(() => {
+    if (typeof initStatus.userID !== "undefined")
+      fetchUserPermissions().then((response) => {
+        if (response.success) {
+          setUserPermissions({
+            ...defaultPermissions,
+            ...response.payload.permissions,
+          });
+        }
+      });
+  }, [userRoleList]);
 
   useEffect(() => {
     if (response.error)
@@ -244,15 +256,28 @@ export default function BaseAdminLayout() {
                     left: "0",
                   }}
                 >
-                  <Panel
-                    style={{
-                      backgroundColor:
-                        "var(--dashboard-subcontent-background-color)",
-                      overflow: "visible",
-                    }}
+                  <FlexboxGrid
+                    style={{ alignItems: "stretch", minHeight: "100%" }}
                   >
-                    <Outlet />
-                  </Panel>
+                    <FlexboxGrid.Item colspan={24}>
+                      <FlexboxGrid
+                        style={{
+                          padding: 20,
+                          borderRadius: 6,
+                          alignItems: "stretch",
+                          boxSizing: "inherit",
+                          minHeight: "100%",
+                          overflow: "visible",
+                          backgroundColor:
+                            "var(--dashboard-subcontent-background-color)",
+                        }}
+                      >
+                        <FlexboxGrid.Item colspan={24}>
+                          <Outlet />
+                        </FlexboxGrid.Item>
+                      </FlexboxGrid>
+                    </FlexboxGrid.Item>
+                  </FlexboxGrid>
                 </Container>
               </Content>
             </Container>
