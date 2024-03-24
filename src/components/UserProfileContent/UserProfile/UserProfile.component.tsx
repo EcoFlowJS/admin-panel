@@ -14,6 +14,10 @@ import { FaUserGear } from "react-icons/fa6";
 import isEmpty from "lodash/isEmpty";
 import UserProfileForm from "./UserProfileForm/UserProfileForm.component";
 import UserChangePasswordForm from "./UserChangePasswordForm/UserChangePasswordForm.component";
+import {
+  connectSocketIO,
+  disconnectSocketIO,
+} from "../../../utils/socket.io/socket.io";
 
 export default function UserProfile() {
   const [userInfo, setUserInfo] = useState<UserInformations>({
@@ -25,12 +29,19 @@ export default function UserProfile() {
   });
   const [tabKey, setTabKey] = useState("userInfo");
 
-  useEffect(() => {
+  const fetchInfo = () =>
     fetchUserInformations().then((response) => {
       if (response.success) {
         setUserInfo(response.payload);
       }
     });
+
+  useEffect(() => {
+    const socket = connectSocketIO(["users"]);
+
+    socket.on("userUpdated", fetchInfo);
+    fetchInfo();
+    return disconnectSocketIO(socket);
   }, []);
 
   return (
