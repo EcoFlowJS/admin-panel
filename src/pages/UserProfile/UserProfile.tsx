@@ -1,35 +1,7 @@
-import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Content,
-  Divider,
-  FlexboxGrid,
-  Footer,
-  Header,
-  Placeholder,
-} from "rsuite";
-import { permissionFetched, userPermissions } from "../../store/users.store";
+import { Container, Content, Divider, FlexboxGrid, Header } from "rsuite";
 import UserProfileContent from "../../components/UserProfileContent/UserProfileContent.component";
 
 export default function UserProfile() {
-  const navigate = useNavigate();
-  const [permissionsList] = useAtom(userPermissions);
-  const [isPermissionFetched] = useAtom(permissionFetched);
-
-  useEffect(() => {
-    if (
-      isPermissionFetched &&
-      !permissionsList.administrator &&
-      !permissionsList.createUser &&
-      !permissionsList.showUser &&
-      !permissionsList.deleteUser &&
-      !permissionsList.updateUser
-    )
-      navigate("/admin/403");
-  }, [permissionsList, isPermissionFetched]);
-
   return (
     <>
       <Container style={{ height: "100%" }}>
@@ -41,11 +13,9 @@ export default function UserProfile() {
           </FlexboxGrid>
         </Header>
         <Divider />
-        <FlexboxGrid style={{ alignItems: "stretch", height: "100%" }}>
-          <FlexboxGrid.Item colspan={24}>
-            <UserProfileContent />
-          </FlexboxGrid.Item>
-        </FlexboxGrid>
+        <Content>
+          <UserProfileContent />
+        </Content>
       </Container>
     </>
   );
