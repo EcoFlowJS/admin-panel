@@ -29,7 +29,6 @@ import {
   connectSocketIO,
   disconnectSocketIO,
 } from "../../utils/socket.io/socket.io";
-import baseSocketIOHndlers from "./baseSocketIO.handlers";
 import {
   permissionFetched,
   userPermissions,
@@ -37,8 +36,9 @@ import {
 } from "../../store/users.store";
 import fetchUserPermissions from "../../service/user/fetchUserPermissions.service";
 import defaultPermissions from "../../defaults/defaultPermissions.default";
-
-const socket = connectSocketIO(["roles", "users"]);
+import { Socket } from "socket.io-client";
+import baseSocketIOHndlers from "./baseSocketIO.handlers";
+import userSignoutService from "../../service/user/userSignout.service";
 
 export default function BaseAdminLayout() {
   const redirect = (url: string) => {
@@ -60,55 +60,53 @@ export default function BaseAdminLayout() {
   const setUserPermissions = useAtom(userPermissions)[1];
   const setPermissionFetched = useAtom(permissionFetched)[1];
   const [userRoleList, setUserRolesList] = useAtom(userRolesList);
-  const [isDisConnectedAfterConnect, setIsDisConnectedAfterConnect] =
-    useState(false);
-
-  socket.on("connect", () => setIsDisConnectedAfterConnect(true));
+  const [isSocketConnected, setSocketConnected] = useState(false);
 
   const [successNotificationMessage, setSuccessNotificationMessage] =
     useAtom(successNotification);
   const [errorNotificationMessage, setErrorNotificationMessage] =
     useAtom(errorNotification);
 
+  let socket: Socket | null = null;
+
+  //initial state change
   useEffect(() => {
     document.title = "Admin Dashboard";
     initService().then((status) => {
       setinitStatus({ ...status });
       setLoading(false);
     });
+
+    return () => {
+      if (isSocketConnected && socket !== null) disconnectSocketIO(socket)();
+    };
   }, []);
 
+  //Logout state change
   useEffect(() => {
     if (loggedOut) {
       setLoggedOut(false);
       setinitStatus({ ...initStatus, isLoggedIn: false });
-      disconnectSocketIO(socket);
     }
   }, [loggedOut]);
 
+  //Login state chnage
   useEffect(() => {
     if (loggedIn) {
       setLoggedIn(false);
       setinitStatus({ ...initStatus, isLoggedIn: true });
-      if (socket.disconnected && isDisConnectedAfterConnect) socket.connect();
     }
   }, [loggedIn]);
 
+  //setting up user status
   useEffect(() => {
     if (!isLoading) {
-      disconnectSocketIO(socket);
       if (initStatus.isNew && !initStatus.isLoggedIn) redirect("/auth/setup");
       if (!initStatus.isNew && !initStatus.isLoggedIn) redirect("/auth/login");
       if (!initStatus.isNew && initStatus.isLoggedIn) {
         navigate(location.pathname.substring("/admin".length));
         if (location.pathname === "/admin" || location.pathname === "/admin/")
           navigate("/dashboard");
-        if (socket.disconnected && isDisConnectedAfterConnect) socket.connect();
-        baseSocketIOHndlers(socket, initStatus.userID!)
-          .onRoleUpdate((value) =>
-            setUserPermissions({ ...defaultPermissions, ...value })
-          )
-          .onUserRoleListUpdate(setUserRolesList);
         fetchUserPermissions().then((response) => {
           if (response.success) {
             setPermissionFetched(true);
@@ -123,6 +121,7 @@ export default function BaseAdminLayout() {
     }
   }, [initStatus]);
 
+  //updating user permissions
   useEffect(() => {
     if (typeof initStatus.userID !== "undefined")
       fetchUserPermissions().then((response) => {
@@ -227,9 +226,49 @@ export default function BaseAdminLayout() {
     }
   }, [errorNotificationMessage]);
 
+  //socket connection and disconnect
   useEffect(() => {
-    return disconnectSocketIO(socket);
-  }, []);
+    if (
+      !isLoading &&
+      !initStatus.isNew &&
+      initStatus.isLoggedIn &&
+      socket === null
+    ) {
+      socket = socket !== null ? socket : connectSocketIO(initStatus.userID);
+      socket.on("connect", () => setSocketConnected(true));
+      socket.on("disconnect", () => setSocketConnected(false));
+      baseSocketIOHndlers(socket, initStatus.userID!)
+        .onRoleUpdate(({ isActiveUser, roles }) => {
+          if (!isActiveUser) {
+            setinitStatus({ ...initStatus, isLoggedIn: false });
+            userSignoutService().then(() => {
+              if (socket !== null) {
+                disconnectSocketIO(socket)();
+                socket = null;
+              }
+            });
+            return;
+          }
+          setUserPermissions({ ...defaultPermissions, ...roles });
+        })
+        .onUserRoleListUpdate(({ isActiveUser, roles }) => {
+          if (!isActiveUser) {
+            setinitStatus({ ...initStatus, isLoggedIn: false });
+            userSignoutService().then(() => {
+              if (socket !== null) {
+                disconnectSocketIO(socket)();
+                socket = null;
+              }
+            });
+            return;
+          }
+          setUserRolesList(roles);
+        });
+      return;
+    }
+
+    if (socket !== null) disconnectSocketIO(socket)();
+  }, [initStatus]);
 
   return (
     <>

@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button, FlexboxGrid, Panel, Tabs, Tag } from "rsuite";
+import { FlexboxGrid, Panel, Tabs, Tag } from "rsuite";
 import fetchUserInformations from "../../../service/user/fetchUserInformations.service";
 import { UserInformations } from "@eco-flow/types";
 import UserProfileSubContent from "./UserProfileSubContent/UserProfileSubContent.component";
-import {
-  Form,
-  FormGroup,
-  IconWrapper,
-  InputPassword,
-} from "@eco-flow/components-lib";
+import { IconWrapper } from "@eco-flow/components-lib";
 import { PiPasswordDuotone } from "react-icons/pi";
 import { FaUserGear } from "react-icons/fa6";
-import isEmpty from "lodash/isEmpty";
 import UserProfileForm from "./UserProfileForm/UserProfileForm.component";
 import UserChangePasswordForm from "./UserChangePasswordForm/UserChangePasswordForm.component";
 import {
@@ -37,8 +31,7 @@ export default function UserProfile() {
     });
 
   useEffect(() => {
-    const socket = connectSocketIO(["users"]);
-
+    const socket = connectSocketIO();
     socket.on("userUpdated", fetchInfo);
     fetchInfo();
     return disconnectSocketIO(socket);

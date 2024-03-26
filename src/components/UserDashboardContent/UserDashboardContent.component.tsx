@@ -1,11 +1,11 @@
-import { Button, FlexboxGrid, Panel, Placeholder, Tabs } from "rsuite";
-import { IconWrapper } from "@eco-flow/components-lib";
-import { LuUserPlus } from "react-icons/lu";
+import { FlexboxGrid, Panel, Placeholder, Tabs } from "rsuite";
 import { useEffect, useState } from "react";
 import fetchUserLists from "../../service/user/fetchUserLists.service";
 import UserDashBoardForm from "./UserDashBoardForm/UserDashBoardForm.component";
-import { useAtom } from "jotai";
-import { userPermissions } from "../../store/users.store";
+import {
+  connectSocketIO,
+  disconnectSocketIO,
+} from "../../utils/socket.io/socket.io";
 
 interface UserDashboardContentProps {
   isAddClicked: boolean;
@@ -16,10 +16,7 @@ export default function UserDashboardContent({
   isAddClicked,
   Loading,
 }: UserDashboardContentProps) {
-  const [permissionsList] = useAtom(userPermissions);
-
   const [isLoading, setLoading] = useState(false);
-  const [isAddUserLoading, setAddUserLoading] = useState(false);
   const [tabActiveKey, setTabActiveKey] = useState<string | undefined>("");
   const [userList, setUserList] = useState<
     (
@@ -43,6 +40,21 @@ export default function UserDashboardContent({
     );
   };
 
+  const handleUserAddedOrUpdate = (index: number, username: string) => {
+    userList.splice(index, 1, username);
+    setUserList(userList);
+    setTabActiveKey(username);
+  };
+
+  const handleUpdateUsernames = (usernames: string[]) => {
+    setUserList([
+      ...userList,
+      ...usernames.filter((username) => {
+        return !userList.includes(username);
+      }),
+    ]);
+  };
+
   useEffect(() => {
     if (isAddClicked) {
       setUserList((userList) => {
@@ -61,6 +73,9 @@ export default function UserDashboardContent({
   useEffect(() => {
     setLoading(true);
     Loading(true);
+    const socket = connectSocketIO();
+    socket.on("createdUser", handleUpdateUsernames);
+
     fetchUserLists().then((response) => {
       if (response.success) {
         setLoading(false);
@@ -69,7 +84,10 @@ export default function UserDashboardContent({
         setTabActiveKey(response.payload.length > 0 ? response.payload[0] : "");
       }
     }, console.error);
+
+    return disconnectSocketIO(socket);
   }, []);
+
   return (
     <>
       <Panel>
@@ -90,11 +108,26 @@ export default function UserDashboardContent({
                       eventKey={typeof user === "string" ? user : user.value}
                       title={typeof user === "string" ? user : user.label}
                     >
-                      <UserDashBoardForm
-                        index={index}
-                        username={user}
-                        onUserRemoved={handleUserRemoved}
-                      />
+                      {typeof user === "string" && user === tabActiveKey ? (
+                        <UserDashBoardForm
+                          index={index}
+                          username={user}
+                          onUserRemoved={handleUserRemoved}
+                          onUserAdded={handleUserAddedOrUpdate}
+                          onUserUpdated={handleUserAddedOrUpdate}
+                        />
+                      ) : typeof user !== "string" &&
+                        user.value === tabActiveKey ? (
+                        <UserDashBoardForm
+                          index={index}
+                          username={user}
+                          onUserRemoved={handleUserRemoved}
+                          onUserAdded={handleUserAddedOrUpdate}
+                          onUserUpdated={handleUserAddedOrUpdate}
+                        />
+                      ) : (
+                        <></>
+                      )}
                     </Tabs.Tab>
                   );
                 })}

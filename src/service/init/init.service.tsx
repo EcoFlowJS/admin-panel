@@ -2,7 +2,7 @@ import axios from "../../utils/axios/axios";
 import { ApiResponse } from "@eco-flow/types";
 
 const promise = async (): Promise<any> => {
-  let result = {
+  const result = {
     isAuth: false,
     isNew: false,
     isLoggedIn: false,

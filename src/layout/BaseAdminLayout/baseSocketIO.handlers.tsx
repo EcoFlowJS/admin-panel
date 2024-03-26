@@ -1,13 +1,20 @@
-import { Role, UserPermissions } from "@eco-flow/types";
+import { UserPermissions } from "@eco-flow/types";
 import { Socket } from "socket.io-client";
 
 const handlers = (IO: Socket) => {
   return {
-    onRoleUpdate: (callback: (role: UserPermissions) => void) => {
+    onRoleUpdate: (
+      callback: (result: {
+        isActiveUser: boolean;
+        roles: UserPermissions;
+      }) => void
+    ) => {
       IO.on("roleUpdateResponse", callback);
       return handlers(IO);
     },
-    onUserRoleListUpdate: (callback: (rolesID: Array<any>) => void) => {
+    onUserRoleListUpdate: (
+      callback: (result: { isActiveUser: boolean; roles: Array<any> }) => void
+    ) => {
       IO.on("userRoleListUpdateResponse", callback);
       return handlers(IO);
     },
@@ -16,12 +23,14 @@ const handlers = (IO: Socket) => {
 
 const baseSocketIOHndlers = (IO: Socket, UserID: string) => {
   IO.on("roleUpdated", () => {
-    IO.emit("fetchRole", { roomID: ["roles"], UserID: UserID });
+    IO.emit("fetchRole", { roomID: UserID });
   });
+
   IO.on("userUpdated", () => {
-    IO.emit("fetchRole", { roomID: ["users"], UserID: UserID });
-    IO.emit("fetchUserRoleListUpdate", { roomID: ["users"], UserID: UserID });
+    IO.emit("fetchRole", { roomID: UserID });
+    IO.emit("fetchUserRoleListUpdate", { roomID: UserID });
   });
+
   return handlers(IO);
 };
 

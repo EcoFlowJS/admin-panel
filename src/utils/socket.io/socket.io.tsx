@@ -11,8 +11,8 @@ const connectSocketIO = (roomID?: string[] | string): Socket => {
   return socket;
 };
 
-const disconnectSocketIO = (socket: Socket): void => {
-  if (socket.connected) socket.disconnect();
+const disconnectSocketIO = (socket: Socket) => (): void => {
+  if (socket.connected) socket.disconnect().close();
 };
 
 export { connectSocketIO, disconnectSocketIO };
