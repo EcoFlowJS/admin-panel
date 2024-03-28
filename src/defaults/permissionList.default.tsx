@@ -1,4 +1,17 @@
-const permissionList = [
+import { ReactNode } from "react";
+
+export interface PermissionList {
+  name: string;
+  permissions: PermissionsInformation[];
+}
+
+export interface PermissionsInformation {
+  name: string;
+  label: string;
+  hint?: string | ReactNode;
+}
+
+const permissionList: PermissionList[] = [
   {
     name: "User Management",
     permissions: [
@@ -101,6 +114,66 @@ const permissionList = [
         name: "flowEditor",
         label: "Flow Editor",
         hint: "Flow Editor",
+      },
+    ],
+  },
+  {
+    name: "Schema Editor",
+    permissions: [
+      {
+        name: "createDBConnection",
+        label: "Create DBConnection",
+        hint: "Create DBConnection only",
+      },
+      {
+        name: "modifyDBConnection",
+        label: "Modify DBConnection",
+        hint: "Modify DBConnection",
+      },
+      {
+        name: "removeDBConnection",
+        label: "Remove DBConnection",
+        hint: "Remove DBConnection",
+      },
+      {
+        name: "createCollectionTable",
+        label: "Create Collection Table",
+        hint: "Create Collection Table",
+      },
+      {
+        name: "modifyCollectionTable",
+        label: "Modify Collection Table",
+        hint: "Modify Collection Table",
+      },
+      {
+        name: "removeCollectionTable",
+        label: "Remove Collection Table",
+        hint: "Remove Collection Table",
+      },
+      {
+        name: "modifyDBStructure",
+        label: "Modify DB Structure",
+        hint: "Modify DB Structure",
+      },
+      {
+        name: "displayDBRecord",
+        label: "Display DB Record",
+        hint: "Display DB Record",
+      },
+      {
+        name: "insertDBRecord",
+        label: "Insert DB Record",
+        hint: "Insert DB Record",
+      },
+      {
+        name: "modifyDBRecord",
+        label: "Modify DB Record",
+        hint: "Modify DB Record",
+      },
+      {
+        name: "removeDBRecord",
+        label: "Remove DB Record",
+        hint: "Remove DB Record",
       },
     ],
   },

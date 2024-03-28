@@ -1,10 +1,8 @@
 import { useAtom } from "jotai";
-import { FlexboxGrid, Panel, Table } from "rsuite";
+import { Panel, Table } from "rsuite";
 import { userPermissions } from "../../../store/users.store";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import permissionList from "../../../defaults/permissionList.default";
-import { JSX } from "react/jsx-runtime";
-import { RowDataType, RowKeyType } from "rsuite/esm/Table";
 import PermisssionCell from "./PermisssionCell/PermisssionCell.component";
 
 const { Column, HeaderCell, Cell } = Table;
@@ -15,7 +13,7 @@ export default function AccessPermissionList() {
     {
       id: number;
       name: string;
-      hint: string | JSX.Element;
+      hint: string | ReactNode;
     }[]
   >([]);
   const [userPermissionsList] = useAtom(userPermissions);
@@ -27,7 +25,7 @@ export default function AccessPermissionList() {
     const userPermisssions: {
       id: number;
       name: string;
-      hint: string | JSX.Element;
+      hint: string | ReactNode;
     }[] = [];
     permissionList.map((permission) => {
       permission.permissions.map((permission, index) => {

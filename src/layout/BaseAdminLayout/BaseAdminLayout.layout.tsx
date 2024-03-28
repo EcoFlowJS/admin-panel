@@ -58,7 +58,8 @@ export default function BaseAdminLayout() {
   const [loggedOut, setLoggedOut] = useAtom(isLoggedOut);
   const [loggedIn, setLoggedIn] = useAtom(isLoggedIn);
   const setUserPermissions = useAtom(userPermissions)[1];
-  const setPermissionFetched = useAtom(permissionFetched)[1];
+  const [isPermissionsFetched, setPermissionFetched] =
+    useAtom(permissionFetched);
   const [userRoleList, setUserRolesList] = useAtom(userRolesList);
   const [isSocketConnected, setSocketConnected] = useState(false);
 
@@ -272,7 +273,7 @@ export default function BaseAdminLayout() {
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || !isPermissionsFetched ? (
         <Loading />
       ) : (!initStatus.isNew && initStatus.isLoggedIn) ||
         (initStatus.isNew && initStatus.isLoggedIn) ? (

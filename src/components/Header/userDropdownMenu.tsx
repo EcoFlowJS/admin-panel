@@ -3,16 +3,20 @@ import HelpOutlineIcon from "@rsuite/icons/HelpOutline";
 import { useAtom } from "jotai";
 import { isLoggedOut } from "../../store/initStatusState.store";
 import signoutHandler from "./signoutHandler";
+import { useNavigate } from "react-router-dom";
 
 const userDropdownMenu =
   (status: any) =>
   ({ onClose, left, top, className }: any, ref: any) => {
+    const navigate = useNavigate();
     const [_signedOut, setSignOut] = useAtom(isLoggedOut);
 
     const handleSelect = (eventKey: string | undefined) => {
       onClose();
-      console.log(eventKey);
       switch (eventKey) {
+        case "profile":
+          navigate("/admin/profile");
+          break;
         case "signout":
           signoutHandler(setSignOut);
           break;
