@@ -10,7 +10,7 @@ import initStatusState, {
   isLoggedIn,
   isLoggedOut,
 } from "../../store/initStatusState.store";
-import { AlertModal, useNotification } from "@eco-flow/components-lib";
+import { AlertModal, useNotification } from "@ecoflow/components-lib";
 import { resartModalState } from "../../store/modals.store";
 import restartCloseServer from "../../service/server/restartCloseServer.service";
 import {
@@ -18,7 +18,7 @@ import {
   isRestartingServer,
   serverRestartedResponse,
 } from "../../store/server.store";
-import { ApiResponse } from "@eco-flow/types";
+import { ApiResponse } from "@ecoflow/types";
 import isServerOnline from "../../service/server/isServerOnline.service";
 import Loading from "../../components/Loading/Loading.component";
 import {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Content, Placeholder } from "rsuite";
 import getAllSystemEnvsServices from "../../../service/environments/getAllSystemEnvs.services";
-import { Environment } from "@eco-flow/types";
+import { Environment } from "@ecoflow/types";
 import EnvsTables from "../EnvsTables/EnvsTables.component";
 
 export default function SystemEnvvironments() {

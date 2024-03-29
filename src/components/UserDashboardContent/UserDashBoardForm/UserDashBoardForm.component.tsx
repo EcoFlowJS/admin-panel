@@ -14,14 +14,14 @@ import {
   FormGroup,
   IconWrapper,
   InputPassword,
-} from "@eco-flow/components-lib";
+} from "@ecoflow/components-lib";
 import { LuUserMinus } from "react-icons/lu";
 import {
   connectSocketIO,
   disconnectSocketIO,
 } from "../../../utils/socket.io/socket.io";
 import fetchRolesService from "../../../service/role/fetchRoles.service";
-import { ApiResponse, Role, UserInfo } from "@eco-flow/types";
+import { ApiResponse, Role, UserInfo } from "@ecoflow/types";
 import createUser from "../../../service/user/createUser.service";
 import {
   errorNotification,

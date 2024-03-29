@@ -1,5 +1,5 @@
-import { FormGroup } from "@eco-flow/components-lib";
-import { configOptions } from "@eco-flow/types";
+import { FormGroup } from "@ecoflow/components-lib";
+import { configOptions } from "@ecoflow/types";
 import React from "react";
 import { Input, Toggle } from "rsuite";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";

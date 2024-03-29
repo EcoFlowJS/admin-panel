@@ -1,7 +1,7 @@
-import { ApiResponse, Permissions, Role } from "@eco-flow/types";
+import { ApiResponse, Permissions, Role } from "@ecoflow/types";
 import { Button, Divider, FlexboxGrid, Panel, PanelGroup, Stack } from "rsuite";
 import RolePanel from "./RolePanel/RolePanel.component";
-import { AlertModal, Form, FormGroup } from "@eco-flow/components-lib";
+import { AlertModal, Form, FormGroup } from "@ecoflow/components-lib";
 import permissionList from "../../../defaults/permissionList.default";
 import "./style.less";
 import { useEffect, useState } from "react";

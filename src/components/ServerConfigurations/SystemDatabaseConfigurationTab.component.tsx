@@ -1,11 +1,7 @@
-import { configOptions } from "@eco-flow/types";
+import { configOptions } from "@ecoflow/types";
 import React from "react";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
-import {
-  FormGroup,
-  InputEnv,
-  InputPasswordEnv,
-} from "@eco-flow/components-lib";
+import { FormGroup, InputEnv, InputPasswordEnv } from "@ecoflow/components-lib";
 import { FlexboxGrid, Input, InputNumber, SelectPicker, Toggle } from "rsuite";
 import DB_DriverList from "./DB_DriverList";
 

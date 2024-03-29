@@ -1,4 +1,4 @@
-import { ApiResponse, Permissions } from "@eco-flow/types";
+import { ApiResponse, Permissions } from "@ecoflow/types";
 import axios from "../../utils/axios/axios";
 import { AxiosError } from "axios";
 

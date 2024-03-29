@@ -6,7 +6,7 @@ import {
 } from "../../utils/socket.io/socket.io";
 import AuditLogsHeader from "./AuditLogsHeader/AuditLogsHeader.component";
 import fetchAuditLogs from "../../service/auditLog/fetchAuditLogs.service";
-import { AuditLogSchemaStruct } from "@eco-flow/types";
+import { AuditLogSchemaStruct } from "@ecoflow/types";
 
 export default function AuditLogsContent() {
   const [isLoading, setLoading] = useState(false);

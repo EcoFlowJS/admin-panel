@@ -7,7 +7,7 @@ import {
   SelectPicker,
   Tabs,
 } from "rsuite";
-import { Role, Permissions } from "@eco-flow/types";
+import { Role, Permissions } from "@ecoflow/types";
 import PermissionPanel from "./PermissionPanel/PermissionPanel.component";
 import RoleManagementHeader from "./RoleManagementHeader/RoleManagementHeader.component";
 import { TbRefresh, TbShieldPlus } from "react-icons/tb";
@@ -16,7 +16,7 @@ import {
   FormGroup,
   Form,
   IconWrapper,
-} from "@eco-flow/components-lib";
+} from "@ecoflow/components-lib";
 import "./style.less";
 import { useAtom } from "jotai";
 import {

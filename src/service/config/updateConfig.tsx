@@ -1,4 +1,4 @@
-import { ApiResponse } from "@eco-flow/types";
+import { ApiResponse } from "@ecoflow/types";
 import axios from "../../utils/axios/axios";
 
 const updateConfigs = async (Data: any): Promise<ApiResponse> => {

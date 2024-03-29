@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { FlexboxGrid, Panel, Tabs, Tag } from "rsuite";
 import fetchUserInformations from "../../../service/user/fetchUserInformations.service";
-import { UserInformations } from "@eco-flow/types";
+import { UserInformations } from "@ecoflow/types";
 import UserProfileSubContent from "./UserProfileSubContent/UserProfileSubContent.component";
-import { IconWrapper } from "@eco-flow/components-lib";
+import { IconWrapper } from "@ecoflow/components-lib";
 import { PiPasswordDuotone } from "react-icons/pi";
 import { FaUserGear } from "react-icons/fa6";
 import UserProfileForm from "./UserProfileForm/UserProfileForm.component";

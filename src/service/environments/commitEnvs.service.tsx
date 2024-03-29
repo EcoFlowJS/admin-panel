@@ -1,4 +1,4 @@
-import { ApiResponse, Environment } from "@eco-flow/types";
+import { ApiResponse, Environment } from "@ecoflow/types";
 import axios from "../../utils/axios/axios";
 
 interface EnvsLists extends Environment {

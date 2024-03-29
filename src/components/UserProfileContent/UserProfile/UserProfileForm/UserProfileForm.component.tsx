@@ -1,9 +1,9 @@
-import { Form, FormGroup } from "@eco-flow/components-lib";
+import { Form, FormGroup } from "@ecoflow/components-lib";
 import { useEffect, useState } from "react";
 import { Button, Panel } from "rsuite";
 import TextInput from "./TextInput/TextInput.componet";
 import isEqual from "lodash/isEqual";
-import { ApiResponse, UserInformations } from "@eco-flow/types";
+import { ApiResponse, UserInformations } from "@ecoflow/types";
 import UserProfileFormModel from "./UserProfileFormModel";
 import updateUserInformations from "../../../../service/user/updateUserInformations.service";
 import { useAtom } from "jotai";

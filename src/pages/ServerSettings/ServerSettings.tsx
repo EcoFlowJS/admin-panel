@@ -11,9 +11,9 @@ import {
 } from "rsuite";
 import { resartModalState } from "../../store/modals.store";
 import { isClosedServer } from "../../store/server.store";
-import { AlertModal, useNotification } from "@eco-flow/components-lib";
+import { AlertModal, useNotification } from "@ecoflow/components-lib";
 import restartCloseServer from "../../service/server/restartCloseServer.service";
-import { ApiResponse } from "@eco-flow/types";
+import { ApiResponse } from "@ecoflow/types";
 import { errorNotification } from "../../store/notification.store";
 import { permissionFetched, userPermissions } from "../../store/users.store";
 import { useNavigate } from "react-router-dom";

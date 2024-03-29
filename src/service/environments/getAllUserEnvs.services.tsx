@@ -1,4 +1,4 @@
-import { Environment } from "@eco-flow/types";
+import { Environment } from "@ecoflow/types";
 import axios from "../../utils/axios/axios";
 
 const getAllUserEnvsServices = async (): Promise<Environment[]> => {

@@ -1,4 +1,4 @@
-import { ApiResponse, Environment } from "@eco-flow/types";
+import { ApiResponse, Environment } from "@ecoflow/types";
 import React, { useEffect } from "react";
 import { Button, Divider, FlexboxGrid, Panel, Stack, Table } from "rsuite";
 import CellActionButton from "./CellActionButton.component";

@@ -1,4 +1,4 @@
-import { DB_Drivers, LogLevel } from "@eco-flow/types";
+import { DB_Drivers, LogLevel } from "@ecoflow/types";
 
 const defaultServerConfigsOptions = {
   userDir: "",

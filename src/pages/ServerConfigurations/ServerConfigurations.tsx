@@ -9,7 +9,7 @@ import {
 } from "rsuite";
 import AdminLoading from "../../components/Loading/AdminLoading.component";
 import getAllServerConfigService from "../../service/config/getAllServerConfig.service";
-import { ApiResponse, configOptions } from "@eco-flow/types";
+import { ApiResponse, configOptions } from "@ecoflow/types";
 import ServerConfigParser from "./ServerConfigParser";
 import {
   DB_DriverParser,
@@ -25,7 +25,7 @@ import {
   errorNotification,
   successNotification,
 } from "../../store/notification.store";
-import { useNotification } from "@eco-flow/components-lib";
+import { useNotification } from "@ecoflow/components-lib";
 import { useNavigate } from "react-router-dom";
 import { permissionFetched, userPermissions } from "../../store/users.store";
 

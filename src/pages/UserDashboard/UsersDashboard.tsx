@@ -11,7 +11,7 @@ import { permissionFetched, userPermissions } from "../../store/users.store";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { IconWrapper } from "@eco-flow/components-lib";
+import { IconWrapper } from "@ecoflow/components-lib";
 import { LuUserPlus } from "react-icons/lu";
 
 export default function UsersDashboard() {

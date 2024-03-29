@@ -1,4 +1,4 @@
-import { IconWrapper } from "@eco-flow/components-lib";
+import { IconWrapper } from "@ecoflow/components-lib";
 import { useEffect, useState } from "react";
 import { HiMiniPencilSquare } from "react-icons/hi2";
 import { Input, InputGroup } from "rsuite";

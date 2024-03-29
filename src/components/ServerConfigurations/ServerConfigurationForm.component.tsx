@@ -1,4 +1,4 @@
-import { Form } from "@eco-flow/components-lib";
+import { Form } from "@ecoflow/components-lib";
 import React, { useState } from "react";
 import { FormProps, Tabs } from "rsuite";
 import ServerConfigurationTab from "./ServerConfigurationTab.component";
@@ -10,7 +10,7 @@ import FlowConfigurationTab from "./FlowConfigurationTab.component";
 import LoggingConfigurationTab from "./LoggingConfigurationTab.component";
 import EditorConfigurationTab from "./EditorConfigurationTab.componnent";
 import SystemDatabaseConfigurationTab from "./SystemDatabaseConfigurationTab.component";
-import { configOptions } from "@eco-flow/types";
+import { configOptions } from "@ecoflow/types";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
 
 interface ServerConfigurationFormProps extends FormProps {

@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SiDotenv } from "react-icons/si";
 import { TbPackages, TbUserShield, TbUsers } from "react-icons/tb";
 import { ImProfile } from "react-icons/im";
-import { IconWrapper } from "@eco-flow/components-lib";
+import { IconWrapper } from "@ecoflow/components-lib";
 import { GrConfigure } from "react-icons/gr";
 import { CiServer, CiViewTimeline } from "react-icons/ci";
 import { LuPackageSearch } from "react-icons/lu";

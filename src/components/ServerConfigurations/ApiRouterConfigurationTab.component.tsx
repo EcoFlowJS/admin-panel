@@ -1,7 +1,7 @@
-import { configOptions } from "@eco-flow/types";
+import { configOptions } from "@ecoflow/types";
 import React from "react";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
-import { FormGroup } from "@eco-flow/components-lib";
+import { FormGroup } from "@ecoflow/components-lib";
 import { CheckPicker, Input, Toggle } from "rsuite";
 import routeList from "./routeList";
 

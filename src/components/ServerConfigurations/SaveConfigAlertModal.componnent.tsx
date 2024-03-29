@@ -1,4 +1,4 @@
-import { AlertModal } from "@eco-flow/components-lib";
+import { AlertModal } from "@ecoflow/components-lib";
 import React from "react";
 import { Divider } from "rsuite";
 
