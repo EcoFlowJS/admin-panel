@@ -1,5 +1,4 @@
 import { configOptions } from "@ecoflow/types";
-import React from "react";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
 import { FormGroup } from "@ecoflow/components-lib";
 import { Input } from "rsuite";
@@ -28,6 +27,13 @@ export default function DirectoryConfigurationTab({
         accepter={Input}
         autoComplete="off"
         placeholder={defaultServerConfigs?.moduleDir}
+      />
+      <FormGroup
+        name="flowDir"
+        label="Flow directory :- "
+        accepter={Input}
+        autoComplete="off"
+        placeholder={defaultServerConfigs?.flowDir}
       />
       <FormGroup
         name="envDir"
