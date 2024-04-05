@@ -74,6 +74,8 @@ export default function ServerConfigurations() {
       if (response.success) {
         const { defaultConfig, serverConfig } = response.payload;
         setDefaultServerConfig(defaultConfig);
+        console.log(serverConfig);
+
         const config = ServerConfigParser(serverConfig);
         processEnvs(config);
         updateState(config, serverConfig);
@@ -92,6 +94,7 @@ export default function ServerConfigurations() {
   }, [value.databaseDriver]);
 
   useEffect(() => {
+    setResponseLoading(false);
     if (response.error)
       setErrorNotification({
         show: true,
@@ -107,7 +110,6 @@ export default function ServerConfigurations() {
       const config = ServerConfigParser(response.payload.newConfigs);
       processEnvs(config);
       updateState(config, response.payload.newConfigs);
-      setResponseLoading(false);
       setRestartModalOpen(true);
     }
   }, [response]);

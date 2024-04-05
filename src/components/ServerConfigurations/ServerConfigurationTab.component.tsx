@@ -41,7 +41,7 @@ export default function ServerConfigurationTab({
         name="httpsEnabled"
         label="Https :- "
         accepter={Toggle}
-        defaultChecked={value.httpsEnabled}
+        checked={value.httpsEnabled}
       />
       {value.httpsEnabled ? (
         <>

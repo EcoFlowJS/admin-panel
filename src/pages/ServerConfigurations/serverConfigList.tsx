@@ -3,6 +3,7 @@ import { DB_Drivers, LogLevel } from "@ecoflow/types";
 const defaultServerConfigsOptions = {
   userDir: "",
   moduleDir: "",
+  flowDir: "",
   envDir: "",
   DB_Directory: "",
   flowFile: "",
