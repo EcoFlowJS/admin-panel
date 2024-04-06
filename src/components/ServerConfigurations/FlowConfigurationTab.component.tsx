@@ -16,17 +16,31 @@ export default function FlowConfigurationTab({
   return (
     <>
       <FormGroup
-        name="flowFile"
-        label="Flow File Name :- "
+        name="flowNodeDefinitions"
+        label="Flow definitions file name :- "
         accepter={Input}
         autoComplete="off"
-        placeholder={defaultServerConfigs?.flowFile}
+        placeholder={defaultServerConfigs?.flowNodeDefinitions}
+      />
+      <FormGroup
+        name="flowNodeConnections"
+        label="Flow connections file name :- "
+        accepter={Input}
+        autoComplete="off"
+        placeholder={defaultServerConfigs?.flowNodeConnections}
+      />
+      <FormGroup
+        name="flowNodeConfigurations"
+        label="Flow node configurations file name :- "
+        accepter={Input}
+        autoComplete="off"
+        placeholder={defaultServerConfigs?.flowNodeConfigurations}
       />
       <FormGroup
         name="flowFilePretty"
         label="Pretty Flow File :- "
         accepter={Toggle}
-        defaultChecked={value.flowFilePretty}
+        checked={value.flowFilePretty}
       />
     </>
   );

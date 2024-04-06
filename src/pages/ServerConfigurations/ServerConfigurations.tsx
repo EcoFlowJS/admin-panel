@@ -74,8 +74,6 @@ export default function ServerConfigurations() {
       if (response.success) {
         const { defaultConfig, serverConfig } = response.payload;
         setDefaultServerConfig(defaultConfig);
-        console.log(serverConfig);
-
         const config = ServerConfigParser(serverConfig);
         processEnvs(config);
         updateState(config, serverConfig);
