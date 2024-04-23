@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Divider,
   FlexboxGrid,
+  Form,
   Panel,
   Placeholder,
   SelectPicker,
@@ -11,12 +12,7 @@ import { Role, Permissions } from "@ecoflow/types";
 import PermissionPanel from "./PermissionPanel/PermissionPanel.component";
 import RoleManagementHeader from "./RoleManagementHeader/RoleManagementHeader.component";
 import { TbRefresh, TbShieldPlus } from "react-icons/tb";
-import {
-  AlertModal,
-  FormGroup,
-  Form,
-  IconWrapper,
-} from "@ecoflow/components-lib";
+import { AlertModal, FormGroup, IconWrapper } from "@ecoflow/components-lib";
 import "./style.less";
 import { useAtom } from "jotai";
 import {

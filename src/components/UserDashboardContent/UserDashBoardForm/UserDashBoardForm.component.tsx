@@ -5,16 +5,12 @@ import {
   Button,
   CheckPicker,
   FlexboxGrid,
+  Form,
   Panel,
   Placeholder,
   Stack,
 } from "rsuite";
-import {
-  Form,
-  FormGroup,
-  IconWrapper,
-  InputPassword,
-} from "@ecoflow/components-lib";
+import { FormGroup, IconWrapper, InputPassword } from "@ecoflow/components-lib";
 import { LuUserMinus } from "react-icons/lu";
 import {
   connectSocketIO,

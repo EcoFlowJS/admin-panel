@@ -1,6 +1,6 @@
-import { Form, FormGroup } from "@ecoflow/components-lib";
+import { FormGroup } from "@ecoflow/components-lib";
 import { useEffect, useState } from "react";
-import { Button, Panel } from "rsuite";
+import { Button, Form, Panel } from "rsuite";
 import TextInput from "./TextInput/TextInput.componet";
 import isEqual from "lodash/isEqual";
 import { ApiResponse, UserInformations } from "@ecoflow/types";
