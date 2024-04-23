@@ -1,6 +1,5 @@
-import { Form } from "@ecoflow/components-lib";
 import React, { useState } from "react";
-import { FormProps, Tabs } from "rsuite";
+import { Form, FormProps, Tabs } from "rsuite";
 import ServerConfigurationTab from "./ServerConfigurationTab.component";
 import CorsConfigurationTab from "./CorsConfigurationTab.component";
 import EcoFlowRouterConfigurationTab from "./EcoFlowRouterConfigurationTab.component";

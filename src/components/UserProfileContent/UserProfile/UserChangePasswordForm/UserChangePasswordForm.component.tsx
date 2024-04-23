@@ -1,7 +1,7 @@
-import { Form, FormGroup, InputPassword } from "@ecoflow/components-lib";
+import { FormGroup, InputPassword } from "@ecoflow/components-lib";
 import isEmpty from "lodash/isEmpty";
 import { useEffect, useState } from "react";
-import { Button, Panel } from "rsuite";
+import { Button, Form, Panel } from "rsuite";
 import UserChangePasswordFormModel from "./UserChangePasswordFormModel";
 import updateUserInformations from "../../../../service/user/updateUserInformations.service";
 import { ApiResponse } from "@ecoflow/types";
