@@ -1,5 +1,4 @@
-import React from "react";
-import { FlexboxGrid, Panel, Placeholder, Stack } from "rsuite";
+import { FlexboxGrid } from "rsuite";
 import AccessPermissionList from "./AccessPermissionList/AccessPermissionList.component";
 import RolesList from "./RolesList/RolesList.component";
 import UserProfile from "./UserProfile/UserProfile.component";

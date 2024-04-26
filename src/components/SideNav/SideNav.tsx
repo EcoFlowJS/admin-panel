@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
 import { Nav, Navbar, Sidebar, Sidenav } from "rsuite";
-
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import GearCircleIcon from "@rsuite/icons/legacy/GearCircle";
 import MagicIcon from "@rsuite/icons/legacy/Magic";
@@ -15,9 +13,10 @@ import { CiServer, CiViewTimeline } from "react-icons/ci";
 import { LuPackageSearch } from "react-icons/lu";
 import { useAtom } from "jotai";
 import { userPermissions as userPermit } from "../../store/users.store";
+import { useState } from "react";
 
 export default function SideNav() {
-  const [expand, setExpand] = React.useState(true);
+  const [expand, setExpand] = useState(true);
   const navigate = useNavigate();
   const loc = useLocation();
   const [userPermissions] = useAtom(userPermit);

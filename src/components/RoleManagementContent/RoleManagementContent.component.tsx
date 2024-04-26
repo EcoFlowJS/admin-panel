@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, Dispatch, SetStateAction } from "react";
 import {
   Divider,
   FlexboxGrid,
@@ -64,7 +64,7 @@ export default function RoleManagementContent() {
     );
   };
 
-  const getRoles = (loading: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const getRoles = (loading: Dispatch<SetStateAction<boolean>>) => {
     loading(true);
     fetchRolesService().then((response) => {
       loading(false);

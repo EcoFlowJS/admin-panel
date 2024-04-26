@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Container, Content, Footer, Header, Placeholder } from "rsuite";
-import getAllServerConfigService from "../../service/config/getAllServerConfig.service";
+import { useEffect, useState } from "react";
+import { Container, Content, Footer, Header } from "rsuite";
 import AdminLoading from "../../components/Loading/AdminLoading.component";
 
 export default function AdminDashboard() {

@@ -1,5 +1,4 @@
 import axios from "axios";
-import isServerOnline from "../../service/server/isServerOnline.service";
 
 const instance = axios.create({ withCredentials: true });
 

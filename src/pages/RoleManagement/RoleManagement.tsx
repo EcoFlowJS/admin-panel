@@ -1,12 +1,5 @@
-import React, { useEffect } from "react";
-import {
-  Container,
-  Content,
-  Divider,
-  FlexboxGrid,
-  Header,
-  Panel,
-} from "rsuite";
+import { useEffect } from "react";
+import { Container, Content, Divider, FlexboxGrid, Header } from "rsuite";
 import RoleManagementContent from "../../components/RoleManagementContent/RoleManagementContent.component";
 import { useAtom } from "jotai";
 import { permissionFetched, userPermissions } from "../../store/users.store";

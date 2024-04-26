@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Container, Content, Divider, Header, Placeholder, Tabs } from "rsuite";
+import { useEffect } from "react";
+import { Container, Content, Divider, Header } from "rsuite";
 import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { permissionFetched, userPermissions } from "../../store/users.store";

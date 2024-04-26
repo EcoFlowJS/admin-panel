@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import { Children } from "react";
 
 interface ArrayLoopProps {
   render: Function;

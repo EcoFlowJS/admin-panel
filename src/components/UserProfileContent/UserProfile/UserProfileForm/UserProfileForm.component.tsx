@@ -1,5 +1,5 @@
 import { FormGroup } from "@ecoflow/components-lib";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button, Form, Panel } from "rsuite";
 import TextInput from "./TextInput/TextInput.componet";
 import isEqual from "lodash/isEqual";
@@ -66,10 +66,7 @@ export default function UserProfileForm({ userInfo }: UserProfileFormProps) {
         model={UserProfileFormModel}
         formValue={formValueUserDetails}
         onChange={(value: any) => setFormValueUserDetails(value)}
-        onSubmit={(
-          checkStatus: boolean,
-          event: React.FormEvent<HTMLFormElement>
-        ) => {
+        onSubmit={(checkStatus: boolean, event: FormEvent<HTMLFormElement>) => {
           event.preventDefault();
           if (checkStatus) handelFormSubmit();
         }}

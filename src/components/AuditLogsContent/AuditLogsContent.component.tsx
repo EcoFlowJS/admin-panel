@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Panel, Timeline } from "rsuite";
+import { FlexboxGrid, Panel, Timeline } from "rsuite";
 import {
   connectSocketIO,
   disconnectSocketIO,
@@ -7,6 +7,7 @@ import {
 import AuditLogsHeader from "./AuditLogsHeader/AuditLogsHeader.component";
 import fetchAuditLogs from "../../service/auditLog/fetchAuditLogs.service";
 import { AuditLogSchemaStruct } from "@ecoflow/types";
+import { LoadingDotInfinity } from "@ecoflow/components-lib";
 
 export default function AuditLogsContent() {
   const [isLoading, setLoading] = useState(false);
@@ -14,13 +15,16 @@ export default function AuditLogsContent() {
   const [total, setTotal] = useState(0);
 
   const fetchLogs = (page: number) => {
-    fetchAuditLogs(page).then((response) => {
-      if (response.success) {
-        setTotal(response.payload.totalDocs);
-        setLogs(response.payload.logs);
-        setLoading(false);
-      }
-    });
+    fetchAuditLogs(page).then(
+      (response) => {
+        if (response.success) {
+          setTotal(response.payload.totalDocs);
+          setLogs(response.payload.logs);
+          setLoading(false);
+        }
+      },
+      () => setLoading(false)
+    );
   };
 
   const handlePageChnage = (page: number) => {
@@ -40,20 +44,32 @@ export default function AuditLogsContent() {
   }, []);
 
   return (
-    <Panel bodyFill>
-      <AuditLogsHeader total={total} onChange={handlePageChnage} />
-      <Panel style={{ padding: "20px 30px" }}>
-        <Timeline isItemActive={Timeline.ACTIVE_FIRST}>
-          {logs.map((log: AuditLogSchemaStruct, index) => {
-            return (
-              <Timeline.Item key={index}>
-                <p>{log.timeSpan as unknown as string}</p>
-                <p>{log.message}</p>
-              </Timeline.Item>
-            );
-          })}
-        </Timeline>
+    <>
+      <Panel bodyFill>
+        <AuditLogsHeader total={total} onChange={handlePageChnage} />
+        <Panel style={{ padding: "20px 30px" }}>
+          {isLoading ? (
+            <FlexboxGrid
+              justify="center"
+              align="middle"
+              style={{ height: 350 }}
+            >
+              <LoadingDotInfinity />
+            </FlexboxGrid>
+          ) : (
+            <Timeline isItemActive={Timeline.ACTIVE_FIRST}>
+              {logs.map((log: AuditLogSchemaStruct, index) => {
+                return (
+                  <Timeline.Item key={index}>
+                    <p>{log.timeSpan as unknown as string}</p>
+                    <p>{log.message}</p>
+                  </Timeline.Item>
+                );
+              })}
+            </Timeline>
+          )}
+        </Panel>
       </Panel>
-    </Panel>
+    </>
   );
 }

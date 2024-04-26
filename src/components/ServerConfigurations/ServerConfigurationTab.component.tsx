@@ -1,6 +1,6 @@
 import { FormGroup } from "@ecoflow/components-lib";
 import { configOptions } from "@ecoflow/types";
-import { Input, InputNumber, Tabs, Toggle } from "rsuite";
+import { Input, InputNumber, Toggle } from "rsuite";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
 
 interface ServerConfigurationTabProps {

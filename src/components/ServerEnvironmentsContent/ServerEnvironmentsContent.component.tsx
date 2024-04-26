@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Placeholder, Tabs } from "rsuite";
 import SystemEnvvironments from "./SystemEnvvironments/SystemEnvvironments.components";
 import UserEnvironments from "./UserEnvironments/UserEnvironments.components";

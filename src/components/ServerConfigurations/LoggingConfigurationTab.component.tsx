@@ -1,27 +1,18 @@
-import { configOptions } from "@ecoflow/types";
-import React from "react";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
 import { FormGroup } from "@ecoflow/components-lib";
 import { Input, InputNumber, SelectPicker, Toggle } from "rsuite";
 import logList from "./logList";
 
 interface LoggingConfigurationTabProps {
-  defaultServerConfigs?: configOptions;
   value: typeof defaultServerConfigsOptions;
 }
 
 export default function LoggingConfigurationTab({
-  defaultServerConfigs,
   value,
 }: LoggingConfigurationTabProps) {
   return (
     <>
-      <FormGroup
-        name="loggingEnabled"
-        label="Enable Logs "
-        accepter={Toggle}
-        defaultChecked={value.loggingEnabled}
-      />
+      <FormGroup name="loggingEnabled" label="Enable Logs " accepter={Toggle} />
       {value.loggingEnabled ? (
         <>
           <FormGroup
@@ -42,13 +33,11 @@ export default function LoggingConfigurationTab({
             name="loggingPrettyPrint"
             label="Logs Pretty Print "
             accepter={Toggle}
-            defaultChecked={value.loggingPrettyPrint}
           />
           <FormGroup
             name="loggingLableEnable"
             label="Logs Lable Enable "
             accepter={Toggle}
-            defaultChecked={value.loggingLableEnable}
           />
           {value.loggingLableEnable ? (
             <FormGroup
@@ -64,13 +53,11 @@ export default function LoggingConfigurationTab({
             name="loggingConsole"
             label="Logs Enable Console "
             accepter={Toggle}
-            defaultChecked={value.loggingConsole}
           />
           <FormGroup
             name="loggingFileEnabled"
             label="Logs Enable File "
             accepter={Toggle}
-            defaultChecked={value.loggingFileEnabled}
           />
           {value.loggingFileEnabled ? (
             <>
@@ -95,7 +82,6 @@ export default function LoggingConfigurationTab({
             name="loggingWebEnabled"
             label="Logs Enable Web "
             accepter={Toggle}
-            defaultChecked={value.loggingWebEnabled}
           />
           {value.loggingWebEnabled ? (
             <>

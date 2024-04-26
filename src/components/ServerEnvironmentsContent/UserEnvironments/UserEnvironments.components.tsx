@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Content, Placeholder } from "rsuite";
 import getAllUserEnvsServices from "../../../service/environments/getAllUserEnvs.services";
 import { Environment } from "@ecoflow/types";
