@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { FlexboxGrid, Panel, Toggle } from "rsuite";
 
 interface RolePanelProps {

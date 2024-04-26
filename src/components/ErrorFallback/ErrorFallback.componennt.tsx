@@ -1,6 +1,7 @@
-export default function ErrorFallback({ error, resetErrorBoundary }: any) {
-  // Call resetErrorBoundary() to reset the error boundary and retry the render.
+import { FallbackProps } from "react-error-boundary";
 
+export default function ErrorFallback({ error }: FallbackProps) {
+  // Call resetErrorBoundary() to reset the error boundary and retry the render.
   return (
     <>
       {error.error ? (

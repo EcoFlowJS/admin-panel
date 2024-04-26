@@ -12,7 +12,7 @@ import RolePanel from "./RolePanel/RolePanel.component";
 import { AlertModal, FormGroup } from "@ecoflow/components-lib";
 import permissionList from "../../../defaults/permissionList.default";
 import "./style.less";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import isEqual from "lodash/isEqual";
 import updateRoleService from "../../../service/role/updateRole.service";
 import { useAtom } from "jotai";
@@ -61,7 +61,7 @@ export default function PermissionPanel({
 
   const handleResponse = (
     response: ApiResponse,
-    loading: React.Dispatch<React.SetStateAction<boolean>>
+    loading: Dispatch<SetStateAction<boolean>>
   ) => {
     loading(false);
     if (response.success) {
@@ -77,7 +77,7 @@ export default function PermissionPanel({
 
   const handleReject = (
     reject: ApiResponse,
-    loading: React.Dispatch<React.SetStateAction<boolean>>
+    loading: Dispatch<SetStateAction<boolean>>
   ) => {
     loading(false);
     if (reject.error)

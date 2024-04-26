@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { userPermissions } from "../../../store/users.store";
 import {
   Button,
@@ -17,7 +17,7 @@ import {
   disconnectSocketIO,
 } from "../../../utils/socket.io/socket.io";
 import fetchRolesService from "../../../service/role/fetchRoles.service";
-import { ApiResponse, Role, UserInfo } from "@ecoflow/types";
+import { ApiResponse, Role } from "@ecoflow/types";
 import createUser from "../../../service/user/createUser.service";
 import {
   errorNotification,
@@ -111,7 +111,7 @@ export default function UserDashBoardForm({
 
   const handleFormSubmit = (
     checkStatus: boolean,
-    event: React.FormEvent<HTMLFormElement>
+    event: FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
     if (checkStatus) {

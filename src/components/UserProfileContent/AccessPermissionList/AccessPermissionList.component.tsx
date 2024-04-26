@@ -28,7 +28,7 @@ export default function AccessPermissionList() {
       hint: string | ReactNode;
     }[] = [];
     permissionList.map((permission) => {
-      permission.permissions.map((permission, index) => {
+      permission.permissions.map((permission) => {
         for (const accesskey of accessPermissions) {
           if (permission.name.includes(accesskey)) {
             userPermisssions.push({

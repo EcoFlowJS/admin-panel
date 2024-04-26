@@ -1,9 +1,9 @@
 import { AlertModal } from "@ecoflow/components-lib";
-import React from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Divider } from "rsuite";
 
 interface SaveConfigAlertModalProps {
-  modalControl?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  modalControl?: [boolean, Dispatch<SetStateAction<boolean>>];
   handler?: () => void;
 }
 
@@ -13,7 +13,7 @@ export default function SaveConfigAlertModal({
 }: SaveConfigAlertModalProps) {
   const [modalOpen, setModalOpen] = modalControl
     ? modalControl
-    : [false, (val: boolean) => {}];
+    : [false, () => {}];
 
   return (
     <>

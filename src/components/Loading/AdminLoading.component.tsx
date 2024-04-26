@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, Content, Placeholder } from "rsuite";
 
 export default function AdminLoading() {

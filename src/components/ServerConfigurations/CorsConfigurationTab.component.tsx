@@ -1,5 +1,4 @@
 import { configOptions } from "@ecoflow/types";
-import React from "react";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
 import { FormGroup } from "@ecoflow/components-lib";
 import { CheckPicker, Input, Toggle } from "rsuite";
@@ -16,12 +15,7 @@ export default function CorsConfigurationTab({
 }: CorsConfigurationTabProps) {
   return (
     <>
-      <FormGroup
-        name="httpCorsEnabled"
-        label="Enable  "
-        accepter={Toggle}
-        defaultChecked={value.httpCorsEnabled}
-      />
+      <FormGroup name="httpCorsEnabled" label="Enable  " accepter={Toggle} />
       {value.httpCorsEnabled ? (
         <>
           <FormGroup
@@ -74,25 +68,21 @@ export default function CorsConfigurationTab({
             name="httpCorsCredentials"
             label="Cors Credentials :-"
             accepter={Toggle}
-            defaultChecked={value.httpCorsCredentials}
           />
           <FormGroup
             name="httpCorsKeepHeadersOnError"
             label="Cors KeepHeadersOnError:-"
             accepter={Toggle}
-            defaultChecked={value.httpCorsKeepHeadersOnError}
           />
           <FormGroup
             name="httpCorsSecureContext"
             label="Cors SecureContext:-"
             accepter={Toggle}
-            defaultChecked={value.httpCorsSecureContext}
           />
           <FormGroup
             name="httpCorsPrivateNetworkAccess"
             label="Cors PrivateNetworkAccess:-"
             accepter={Toggle}
-            defaultChecked={value.httpCorsPrivateNetworkAccess}
           />
         </>
       ) : (

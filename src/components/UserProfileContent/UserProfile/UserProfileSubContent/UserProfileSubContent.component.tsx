@@ -1,11 +1,11 @@
-import React from "react";
+import { ReactNode } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { FlexboxGrid, Panel, Stack } from "rsuite";
 
 export default function UserProfileSubContent({
   children,
 }: {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }) {
   return (
     <Stack direction="column" alignItems="stretch">

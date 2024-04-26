@@ -1,5 +1,4 @@
 import { useAtom } from "jotai";
-import React from "react";
 import { Table, Button, Divider } from "rsuite";
 import { userPermissions } from "../../../store/users.store";
 

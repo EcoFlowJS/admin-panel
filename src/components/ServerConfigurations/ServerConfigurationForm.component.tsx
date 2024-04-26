@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
 import { Form, FormProps, Tabs } from "rsuite";
 import ServerConfigurationTab from "./ServerConfigurationTab.component";
 import CorsConfigurationTab from "./CorsConfigurationTab.component";
@@ -16,16 +16,13 @@ interface ServerConfigurationFormProps extends FormProps {
   defaultServerConfigs?: configOptions;
   formValue: [
     typeof defaultServerConfigsOptions,
-    React.Dispatch<React.SetStateAction<typeof defaultServerConfigsOptions>>
+    Dispatch<SetStateAction<typeof defaultServerConfigsOptions>>
   ];
 
-  connectionStringEnvs?: [
-    boolean,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ];
-  usernameEnvs?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  passwordEnvs?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  databaseEnvs?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  connectionStringEnvs?: [boolean, Dispatch<SetStateAction<boolean>>];
+  usernameEnvs?: [boolean, Dispatch<SetStateAction<boolean>>];
+  passwordEnvs?: [boolean, Dispatch<SetStateAction<boolean>>];
+  databaseEnvs?: [boolean, Dispatch<SetStateAction<boolean>>];
 }
 
 export default function ServerConfigurationForm({
@@ -46,7 +43,7 @@ export default function ServerConfigurationForm({
       <Form
         onChange={(
           formValue: Record<string, any>,
-          event?: React.SyntheticEvent<Element, Event> | undefined
+          event?: SyntheticEvent<Element, Event> | undefined
         ) => {
           onChange(formValue, event);
           setValue({ ...value, ...formValue });
@@ -84,7 +81,6 @@ export default function ServerConfigurationForm({
             {eventKey === "ERC" ? (
               <EcoFlowRouterConfigurationTab
                 defaultServerConfigs={defaultServerConfigs}
-                value={value}
               />
             ) : (
               <></>
@@ -94,7 +90,6 @@ export default function ServerConfigurationForm({
             {eventKey === "ARC" ? (
               <ApiRouterConfigurationTab
                 defaultServerConfigs={defaultServerConfigs}
-                value={value}
               />
             ) : (
               <></>
@@ -104,7 +99,6 @@ export default function ServerConfigurationForm({
             {eventKey === "DC" ? (
               <DirectoryConfigurationTab
                 defaultServerConfigs={defaultServerConfigs}
-                value={value}
               />
             ) : (
               <></>
@@ -122,20 +116,14 @@ export default function ServerConfigurationForm({
           </Tabs.Tab>
           <Tabs.Tab eventKey="LC" title="Logging Configutations">
             {eventKey === "LC" ? (
-              <LoggingConfigurationTab
-                defaultServerConfigs={defaultServerConfigs}
-                value={value}
-              />
+              <LoggingConfigurationTab value={value} />
             ) : (
               <></>
             )}
           </Tabs.Tab>
           <Tabs.Tab eventKey="EC" title="Editor Configutations">
             {eventKey === "EC" ? (
-              <EditorConfigurationTab
-                defaultServerConfigs={defaultServerConfigs}
-                value={value}
-              />
+              <EditorConfigurationTab value={value} />
             ) : (
               <></>
             )}

@@ -1,27 +1,19 @@
-import { configOptions } from "@ecoflow/types";
-import React from "react";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
 import { FormGroup, InputEnv, InputPasswordEnv } from "@ecoflow/components-lib";
 import { FlexboxGrid, Input, InputNumber, SelectPicker, Toggle } from "rsuite";
 import DB_DriverList from "./DB_DriverList";
+import { Dispatch, SetStateAction } from "react";
 
 interface SystemDatabaseConfigurationTabProps {
-  defaultServerConfigs?: configOptions;
   value: typeof defaultServerConfigsOptions;
-  setValue: React.Dispatch<
-    React.SetStateAction<typeof defaultServerConfigsOptions>
-  >;
-  connectionStringEnvs?: [
-    boolean,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ];
-  usernameEnvs?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  passwordEnvs?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  databaseEnvs?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  setValue: Dispatch<SetStateAction<typeof defaultServerConfigsOptions>>;
+  connectionStringEnvs?: [boolean, Dispatch<SetStateAction<boolean>>];
+  usernameEnvs?: [boolean, Dispatch<SetStateAction<boolean>>];
+  passwordEnvs?: [boolean, Dispatch<SetStateAction<boolean>>];
+  databaseEnvs?: [boolean, Dispatch<SetStateAction<boolean>>];
 }
 
 export default function SystemDatabaseConfigurationTab({
-  defaultServerConfigs,
   value,
   setValue,
   connectionStringEnvs,
@@ -151,7 +143,6 @@ export default function SystemDatabaseConfigurationTab({
               name="databaseConfigurationSsl"
               label="SSL  "
               accepter={Toggle}
-              defaultChecked={value.databaseConfigurationSsl}
             />
           </>
         )

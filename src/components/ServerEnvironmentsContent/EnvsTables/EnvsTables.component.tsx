@@ -1,6 +1,6 @@
 import { ApiResponse, Environment } from "@ecoflow/types";
-import React, { useEffect } from "react";
-import { Button, Divider, FlexboxGrid, Panel, Stack, Table } from "rsuite";
+import { useEffect, useState } from "react";
+import { Button, FlexboxGrid, Panel, Stack, Table } from "rsuite";
 import CellActionButton from "./CellActionButton.component";
 import EditableCell from "./EditableCell.component";
 import commitEnvs from "../../../service/environments/commitEnvs.service";
@@ -10,7 +10,7 @@ import {
   successNotification,
 } from "../../../store/notification.store";
 import { userPermissions } from "../../../store/users.store";
-const { Column, HeaderCell, Cell } = Table;
+const { Column, HeaderCell } = Table;
 
 interface EnvsTablesProps {
   envList: Environment[];
@@ -26,19 +26,19 @@ export default function EnvsTables({
   envList = [],
   isSystemEnvs = false,
 }: EnvsTablesProps) {
-  const [oldData, setOldDatas] = React.useState<EnvsLists[]>([
+  const [oldData, setOldDatas] = useState<EnvsLists[]>([
     ...envList.map((val, index) => {
       return { id: index, name: val.name, value: val.value };
     }),
   ]);
-  const [data, setData] = React.useState<EnvsLists[]>([
+  const [data, setData] = useState<EnvsLists[]>([
     ...envList.map((val, index) => {
       return { id: index, name: val.name, value: val.value };
     }),
   ]);
-  const [isLoading, setLoading] = React.useState(false);
-  const [isDeleted, setDeleted] = React.useState(false);
-  const [response, setResponse] = React.useState<ApiResponse>({});
+  const [isLoading, setLoading] = useState(false);
+  const [isDeleted, setDeleted] = useState(false);
+  const [response, setResponse] = useState<ApiResponse>({});
   const successNoti = useAtom(successNotification)[1];
   const errorNoti = useAtom(errorNotification)[1];
 

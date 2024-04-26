@@ -1,16 +1,13 @@
 import { configOptions } from "@ecoflow/types";
-import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
 import { FormGroup } from "@ecoflow/components-lib";
 import { Input } from "rsuite";
 
 interface DirectoryConfigurationTabProps {
   defaultServerConfigs?: configOptions;
-  value: typeof defaultServerConfigsOptions;
 }
 
 export default function DirectoryConfigurationTab({
   defaultServerConfigs,
-  value,
 }: DirectoryConfigurationTabProps) {
   return (
     <>

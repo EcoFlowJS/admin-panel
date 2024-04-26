@@ -1,18 +1,14 @@
 import { FormGroup } from "@ecoflow/components-lib";
 import { configOptions } from "@ecoflow/types";
-import React from "react";
-import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
 import { CheckPicker, Input, Toggle } from "rsuite";
 import routeList from "./routeList";
 
 interface EcoFlowRouterConfigurationTabProps {
   defaultServerConfigs?: configOptions;
-  value: typeof defaultServerConfigsOptions;
 }
 
 export default function EcoFlowRouterConfigurationTab({
   defaultServerConfigs,
-  value,
 }: EcoFlowRouterConfigurationTabProps) {
   return (
     <>
@@ -50,19 +46,16 @@ export default function EcoFlowRouterConfigurationTab({
         name="systemRouterOptionsSensitive"
         label="EcoFlow Router case-sensitive :- "
         accepter={Toggle}
-        defaultChecked={value.systemRouterOptionsSensitive}
       />
       <FormGroup
         name="systemRouterOptionsStrict"
         label="EcoFlow Router Strict Mode "
         accepter={Toggle}
-        defaultChecked={value.systemRouterOptionsStrict}
       />
       <FormGroup
         name="systemRouterOptionsExclusive"
         label="EcoFlow Router Exclusive Mode "
         accepter={Toggle}
-        defaultChecked={value.systemRouterOptionsExclusive}
       />
     </>
   );
