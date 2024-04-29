@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { List } from "rsuite";
+import { List, Loader } from "rsuite";
 import fetchInstalledPackagesDescription from "../../../service/module/fetchInstalledPackagesDescription.service";
+import { ApiResponse, InstalledPackagesDescription } from "@ecoflow/types";
+import ListItem from "./ListItem/ListItem.component";
+import defaultEcoPackageList from "../../../defaults/defaultEcoPackageList";
 
 interface InstalledPakageListProps {
   isloading?: boolean;
@@ -13,6 +16,9 @@ export default function InstalledPakageList({
 }: InstalledPakageListProps) {
   const [isInstalledPackageLoading, setInstalledPackageLoading] =
     useState(false);
+  const [installedPackages, setInstalledPackages] = useState<
+    InstalledPackagesDescription[]
+  >([]);
 
   useEffect(() => {
     setInstalledPackageLoading(true);
@@ -23,18 +29,43 @@ export default function InstalledPakageList({
 
     Promise.all(promise).then((response) => {
       setInstalledPackageLoading(false);
-      console.log(response);
+      setInstalledPackages(
+        response.map((ecoPackages: ApiResponse) => {
+          if (ecoPackages.success) return ecoPackages.payload;
+        })
+      );
     }, console.error);
   }, [packages]);
 
   return (
     <>
       {isloading || isInstalledPackageLoading ? (
-        <>isloading</>
+        <div style={{ position: "relative" }}>
+          {packages.length > 0 ? (
+            <>
+              <List>
+                {packages.map((ecoPackage, key) => (
+                  <ListItem
+                    key={key}
+                    ecoPackage={{
+                      ...defaultEcoPackageList,
+                      name: ecoPackage,
+                    }}
+                  />
+                ))}
+              </List>
+              <Loader backdrop content="loading..." />
+            </>
+          ) : (
+            <>
+              <Loader content="loading..." center />
+            </>
+          )}
+        </div>
       ) : (
-        <List bordered>
-          {packages.map((ecoPackage, key) => (
-            <List.Item key={key}>{ecoPackage}</List.Item>
+        <List>
+          {installedPackages.map((ecoPackage, key) => (
+            <ListItem key={key} index={key + 1} ecoPackage={ecoPackage} />
           ))}
         </List>
       )}
