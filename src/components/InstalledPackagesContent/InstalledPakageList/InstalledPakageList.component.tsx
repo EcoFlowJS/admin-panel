@@ -47,6 +47,7 @@ export default function InstalledPakageList({
                 {packages.map((ecoPackage, key) => (
                   <ListItem
                     key={key}
+                    isLoading
                     ecoPackage={{
                       ...defaultEcoPackageList,
                       name: ecoPackage,

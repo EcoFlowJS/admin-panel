@@ -30,19 +30,28 @@ const titleStyle: CSSProperties = {
 
 interface ListItemProps {
   index?: number;
+  isLoading?: boolean;
   ecoPackage: InstalledPackagesDescription;
 }
 
-export default function ListItem({ index, ecoPackage }: ListItemProps) {
+export default function ListItem({
+  index,
+  isLoading = false,
+  ecoPackage,
+}: ListItemProps) {
   const removePackageHandler = (name: string) => {
     console.log(name);
+  };
+
+  const upgradePackageHandler = (ecoPackage: InstalledPackagesDescription) => {
+    console.log(ecoPackage);
   };
 
   return (
     <List.Item index={index}>
       <div style={{ position: "relative" }}>
         <FlexboxGrid>
-          {/*icon*/}
+          {/*Icon*/}
           <FlexboxGrid.Item colspan={2} style={styleCenter}>
             {cloneElement(<IconWrapper icon={PiPackageFill} />, {
               style: {
@@ -51,7 +60,7 @@ export default function ListItem({ index, ecoPackage }: ListItemProps) {
               },
             })}
           </FlexboxGrid.Item>
-          {/*base info*/}
+          {/*Package Details*/}
           <FlexboxGrid.Item
             colspan={6}
             style={{
@@ -61,7 +70,10 @@ export default function ListItem({ index, ecoPackage }: ListItemProps) {
               overflow: "hidden",
             }}
           >
-            <div style={titleStyle}>{ecoPackage.name}</div>
+            <div style={titleStyle}>
+              {ecoPackage.name}{" "}
+              {ecoPackage.isLocalPackage ? <>(Local)</> : <></>}
+            </div>
             <div style={slimText}>
               <div>version: {ecoPackage.currentVersion}</div>
               <div>
@@ -70,21 +82,28 @@ export default function ListItem({ index, ecoPackage }: ListItemProps) {
               </div>
             </div>
           </FlexboxGrid.Item>
-          {/*peak data*/}
+          {/*Downloads*/}
           <FlexboxGrid.Item colspan={6} style={styleCenter}>
             <div style={{ textAlign: "right" }}>
               <div style={slimText}>Downloads</div>
               <Text muted>{ecoPackage.download}</Text>
             </div>
           </FlexboxGrid.Item>
-          {/*uv data*/}
+          {/*Status*/}
           <FlexboxGrid.Item colspan={6} style={styleCenter}>
             <div style={{ textAlign: "right" }}>
               <div style={slimText}>status</div>
-              <Text muted>{ecoPackage.isInUse ? "In use" : "Available"}</Text>
+
+              <Text muted>
+                {isLoading
+                  ? "N/A"
+                  : ecoPackage.isInUse
+                  ? "In use"
+                  : "Available"}
+              </Text>
             </div>
           </FlexboxGrid.Item>
-          {/*uv data*/}
+          {/*Actions*/}
           <FlexboxGrid.Item
             colspan={4}
             style={{
@@ -94,6 +113,7 @@ export default function ListItem({ index, ecoPackage }: ListItemProps) {
             <Stack divider={<Divider vertical />}>
               <IconButton
                 appearance="subtle"
+                title={ecoPackage.isLocalPackage ? "N/A" : "Upgrade package"}
                 disabled={
                   ecoPackage.isLocalPackage ||
                   !compare(
@@ -103,12 +123,19 @@ export default function ListItem({ index, ecoPackage }: ListItemProps) {
                   )
                 }
                 icon={<IconWrapper icon={GrUpgrade} />}
+                onClick={() =>
+                  isLoading ? () => {} : upgradePackageHandler(ecoPackage)
+                }
               />
               <IconButton
-                appearance="subtle"
                 color="red"
+                appearance="subtle"
+                disabled={ecoPackage.isInUse}
+                title={ecoPackage.isInUse ? "Package is in use" : undefined}
                 icon={<IconWrapper icon={BiTrash} />}
-                onClick={() => removePackageHandler(ecoPackage.name)}
+                onClick={() =>
+                  isLoading ? () => {} : removePackageHandler(ecoPackage.name)
+                }
               />
             </Stack>
           </FlexboxGrid.Item>
