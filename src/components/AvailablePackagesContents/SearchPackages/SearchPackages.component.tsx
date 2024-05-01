@@ -63,6 +63,7 @@ export default function SearchPackages({
         </InputGroup>
         <Button
           appearance="default"
+          loading={isLoading}
           disabled={isLoading}
           style={{ minWidth: 100 }}
           endIcon={<IconWrapper icon={BiSearch} />}
