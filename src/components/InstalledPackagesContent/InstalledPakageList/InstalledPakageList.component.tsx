@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { List, Loader } from "rsuite";
 import fetchInstalledPackagesDescription from "../../../service/module/fetchInstalledPackagesDescription.service";
 import { ApiResponse, InstalledPackagesDescription } from "@ecoflow/types";
@@ -19,6 +19,14 @@ export default function InstalledPakageList({
   const [installedPackages, setInstalledPackages] = useState<
     InstalledPackagesDescription[]
   >([]);
+
+  const handlePackageRemoved = useCallback(
+    (ecoPackage: InstalledPackagesDescription) =>
+      setInstalledPackages((installedPackages) =>
+        installedPackages.filter((p) => p.name !== ecoPackage.name)
+      ),
+    [installedPackages]
+  );
 
   useEffect(() => {
     setInstalledPackageLoading(true);
@@ -66,7 +74,12 @@ export default function InstalledPakageList({
       ) : (
         <List>
           {installedPackages.map((ecoPackage, key) => (
-            <ListItem key={key} index={key + 1} ecoPackage={ecoPackage} />
+            <ListItem
+              key={key}
+              index={key + 1}
+              ecoPackage={{ ...ecoPackage }}
+              onPackageRemoved={handlePackageRemoved}
+            />
           ))}
         </List>
       )}
