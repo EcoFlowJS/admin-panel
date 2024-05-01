@@ -113,7 +113,11 @@ export default function ListItem({
             <Stack divider={<Divider vertical />}>
               <IconButton
                 appearance="subtle"
-                title={ecoPackage.isLocalPackage ? "N/A" : "Upgrade package"}
+                title={
+                  ecoPackage.isLocalPackage
+                    ? "N/A"
+                    : "Upgrade package to Latest."
+                }
                 disabled={
                   ecoPackage.isLocalPackage ||
                   !compare(

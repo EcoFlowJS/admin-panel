@@ -23,9 +23,9 @@ export default function InstalledPakageList({
   useEffect(() => {
     setInstalledPackageLoading(true);
     const promise: Promise<any>[] = [];
-    packages.forEach((ecoPackage) => {
-      promise.push(fetchInstalledPackagesDescription(ecoPackage));
-    });
+    packages.forEach((ecoPackage) =>
+      promise.push(fetchInstalledPackagesDescription(ecoPackage))
+    );
 
     Promise.all(promise).then((response) => {
       setInstalledPackageLoading(false);

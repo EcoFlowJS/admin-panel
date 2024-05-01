@@ -3,7 +3,7 @@ import axios from "../../utils/axios/axios";
 import { AxiosError } from "axios";
 
 const fetchInstalledModule = async (): Promise<ApiResponse> => {
-  const res = await axios.get(`module/installedPackages`, {
+  const res = await axios.get(`module/installPackages`, {
     headers: { "Content-Type": "application/json" },
   });
 
