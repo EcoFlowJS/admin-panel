@@ -103,6 +103,21 @@ const permissionList: PermissionList[] = [
     ],
   },
   {
+    name: "Backup and Restore",
+    permissions: [
+      {
+        name: "backup",
+        label: "Backup Configurtions",
+        hint: "Backup Configurtions",
+      },
+      {
+        name: "restore",
+        label: "Restore Configurtions",
+        hint: "Restore Configurtions",
+      },
+    ],
+  },
+  {
     name: "Editor Management",
     permissions: [
       {

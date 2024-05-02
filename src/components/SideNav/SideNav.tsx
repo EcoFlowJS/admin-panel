@@ -14,6 +14,7 @@ import { LuPackageSearch } from "react-icons/lu";
 import { useAtom } from "jotai";
 import { userPermissions as userPermit } from "../../store/users.store";
 import { useState } from "react";
+import { RiFolderZipFill } from "react-icons/ri";
 
 export default function SideNav() {
   const [expand, setExpand] = useState(true);
@@ -53,8 +54,9 @@ export default function SideNav() {
       case "auditLogs":
         navigate("/admin/auditLogs");
         break;
-      default:
-        console.log(eventKey);
+      case "backup":
+        navigate("/admin/backups");
+        break;
     }
   };
 
@@ -235,6 +237,24 @@ export default function SideNav() {
                 }}
               >
                 Environments
+              </Nav.Item>
+              <Nav.Item
+                eventKey="backup"
+                active={loc.pathname.startsWith("/admin/backups")}
+                icon={<IconWrapper icon={RiFolderZipFill} />}
+                disabled={
+                  // !userPermissions.administrator &&
+                  !userPermissions.backup && !userPermissions.restore
+                }
+                style={{
+                  color:
+                    // !userPermissions.administrator &&
+                    !userPermissions.backup && !userPermissions.restore
+                      ? "var(--rs-text-disabled)"
+                      : "inherit",
+                }}
+              >
+                Backup and restore
               </Nav.Item>
             </Nav.Menu>
           </Nav>
