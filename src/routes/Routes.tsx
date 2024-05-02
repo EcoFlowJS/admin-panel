@@ -11,6 +11,7 @@ import RoleManagement from "../pages/RoleManagement/RoleManagement";
 import InstalledPackages from "../pages/InstalledPackages/InstalledPackages";
 import AvailablePackages from "../pages/AvailablePackages/AvailablePackages";
 import AuditLogs from "../pages/AuditLogs/AuditLogs.page";
+import BackupRestore from "../pages/BackupRestore/BackupRestore";
 
 export default function () {
   return (
@@ -27,6 +28,7 @@ export default function () {
           <Route path="InstalledPackages" element={<InstalledPackages />} />
           <Route path="availablePackages" element={<AvailablePackages />} />
           <Route path="auditLogs" element={<AuditLogs />} />
+          <Route path="backups" element={<BackupRestore />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

@@ -15,6 +15,8 @@ const defaultPermissions: UserPermissions = {
   createEnvs: false,
   deleteEnvs: false,
   updateEnvs: false,
+  backup: false,
+  restore: false,
   schemaEditor: false,
   createDBConnection: false,
   modifyDBConnection: false,

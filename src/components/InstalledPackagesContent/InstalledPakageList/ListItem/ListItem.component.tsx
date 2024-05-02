@@ -1,4 +1,4 @@
-import { AlertModal, IconWrapper } from "@ecoflow/components-lib";
+import { IconWrapper } from "@ecoflow/components-lib";
 import { ApiResponse, InstalledPackagesDescription } from "@ecoflow/types";
 import { CSSProperties, cloneElement, useEffect, useState } from "react";
 import { PiPackageFill } from "react-icons/pi";
@@ -14,6 +14,8 @@ import {
   successNotification,
 } from "../../../../store/notification.store";
 import removeEcoPackage from "../../../../service/module/removeEcoPackage.service";
+import UpgradeDowngradeModal from "../../../Modals/UpgradeDowngradeModal/UpgradeDowngradeModal.component";
+import RemovalPackageModal from "../../../Modals/RemovalPackageModal/RemovalPackageModal.component";
 
 const styleCenter: CSSProperties = {
   display: "flex",
@@ -219,48 +221,21 @@ export default function ListItem({
         </div>
       </List.Item>
       {/* Upgrade Modal */}
-      <AlertModal
+      <UpgradeDowngradeModal
         open={openUpgrade}
-        CancelButtonProps={{
-          appearance: "subtle",
-          onClick: () => setOpenUpgrade(false),
-        }}
-        confirmButtonText="Upgrade"
-        confirmButtonProps={{
-          appearance: "subtle",
-          loading: isLoadingUpgrade,
-          color: "red",
-          startIcon: <IconWrapper icon={FaCircleArrowUp} />,
-          onClick: upgradeDowngradeHandler,
-        }}
-      >
-        <AlertModal.Header>Are you sure?</AlertModal.Header>
-        <AlertModal.Body>
-          Upgrading or Downgrading version may leads to crash of application and
-          re-setup of the flow.
-        </AlertModal.Body>
-      </AlertModal>
+        version={ecoPackage.currentVersion}
+        loading={isLoadingUpgrade}
+        onClose={() => setOpenUpgrade(false)}
+        onUpgrade={upgradeDowngradeHandler}
+        installedVersion={ecoPackage.latestVersion}
+      />
       {/* Remove Modal */}
-      <AlertModal
+      <RemovalPackageModal
         open={openRemoval}
-        CancelButtonProps={{
-          appearance: "subtle",
-          onClick: () => setOpenRemoval(false),
-        }}
-        confirmButtonText="Remove"
-        confirmButtonProps={{
-          appearance: "subtle",
-          loading: isLoadingRemoval,
-          color: "red",
-          startIcon: <IconWrapper icon={BiTrash} />,
-          onClick: removePackageHandler,
-        }}
-      >
-        <AlertModal.Header>Are you sure?</AlertModal.Header>
-        <AlertModal.Body>
-          Removing the package will also remove the flow connectable nodes.
-        </AlertModal.Body>
-      </AlertModal>
+        loading={isLoadingRemoval}
+        onRemove={removePackageHandler}
+        onClose={() => setOpenRemoval(false)}
+      />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { AlertModal, IconWrapper } from "@ecoflow/components-lib";
+import { IconWrapper } from "@ecoflow/components-lib";
 import { ApiResponse, ModuleResults } from "@ecoflow/types";
 import { CSSProperties, cloneElement, useState } from "react";
 import { PiPackageFill } from "react-icons/pi";
@@ -20,6 +20,8 @@ import installEcoPackages from "../../../service/module/installEcoPackages.servi
 import { useSetAtom } from "jotai";
 import { errorNotification } from "../../../store/notification.store";
 import upgradeDowngradePackage from "../../../service/module/upgradeDowngradePackage.service";
+import { AiOutlineExport } from "react-icons/ai";
+import UpgradeDowngradeModal from "../../Modals/UpgradeDowngradeModal/UpgradeDowngradeModal.component";
 
 const styleCenter: CSSProperties = {
   display: "flex",
@@ -137,7 +139,16 @@ export default function PackageList({
               overflow: "hidden",
             }}
           >
-            <div style={titleStyle}>{module.name}</div>
+            <div style={titleStyle}>
+              {module.name}{" "}
+              {module.gitRepository ? (
+                <a href={module.gitRepository} target="_blank">
+                  <IconWrapper icon={AiOutlineExport} />
+                </a>
+              ) : (
+                <></>
+              )}
+            </div>
             <div style={slimText}>
               <div>version: {module.latestVersion}</div>
               <div>
@@ -213,16 +224,8 @@ export default function PackageList({
                     icon={
                       module.isInstalled
                         ? version !== null && module.installedVersions !== null
-                          ? compare(
-                              version,
-                              module.installedVersions ,
-                              ">"
-                            ) ||
-                            compare(
-                              version,
-                              module.installedVersions ,
-                              "="
-                            )
+                          ? compare(version, module.installedVersions, ">") ||
+                            compare(version, module.installedVersions, "=")
                             ? FaCircleArrowUp
                             : FaCircleArrowDown
                           : FaCircleArrowUp
@@ -247,38 +250,14 @@ export default function PackageList({
           </FlexboxGrid.Item>
         </FlexboxGrid>
       </List.Item>
-      <AlertModal
+      <UpgradeDowngradeModal
         open={open}
-        CancelButtonProps={{
-          appearance: "subtle",
-          onClick: () => setOpen(false),
-        }}
-        confirmButtonText="Upgrade"
-        confirmButtonProps={{
-          appearance: "subtle",
-          loading: isLoading,
-          color: "red",
-          startIcon: (
-            <IconWrapper
-              icon={
-                version !== null && module.installedVersions !== null
-                  ? compare(version, module.installedVersions, ">") ||
-                    compare(version, module.installedVersions, "=")
-                    ? FaCircleArrowUp
-                    : FaCircleArrowDown
-                  : FaCircleArrowUp
-              }
-            />
-          ),
-          onClick: upgradeDowngradeHandler,
-        }}
-      >
-        <AlertModal.Header>Are you sure?</AlertModal.Header>
-        <AlertModal.Body>
-          Upgrading or Downgrading version may leads to crash of application and
-          re-setup of the flow.
-        </AlertModal.Body>
-      </AlertModal>
+        version={version}
+        loading={isLoading}
+        onClose={() => setOpen(false)}
+        onUpgrade={upgradeDowngradeHandler}
+        installedVersion={module.installedVersions}
+      />
     </>
   );
 }
