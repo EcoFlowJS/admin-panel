@@ -4,6 +4,12 @@ import { BiSearch } from "react-icons/bi";
 import { RiFolderZipFill } from "react-icons/ri";
 import { Button, Input, InputGroup, Panel, Stack } from "rsuite";
 import importEcoPackages from "../../../service/module/importEcoPackages.service";
+import { ApiResponse } from "@ecoflow/types";
+import { useSetAtom } from "jotai";
+import {
+  errorNotification,
+  successNotification,
+} from "../../../store/notification.store";
 
 interface SearchPackagesProps {
   loading?: boolean;
@@ -18,6 +24,11 @@ export default function SearchPackages({
 }: SearchPackagesProps) {
   const [searchValue, setSearchValue] = useState("");
   const [file, setFile] = useState<FileList | null>(null);
+  const [isLocalPackageInstalling, setLocalPackageInsalling] = useState(false);
+
+  //Notifications
+  const setSuccessNotification = useSetAtom(successNotification);
+  const setErrorNotifications = useSetAtom(errorNotification);
 
   const handleSearchPackage = () => onSearch(searchValue);
 
@@ -28,7 +39,29 @@ export default function SearchPackages({
   useEffect(() => {
     if (file !== null) {
       setFile(null);
-      importEcoPackages(file).then(console.log, console.error);
+      setLocalPackageInsalling(true);
+      importEcoPackages(file).then(
+        ({ success }: ApiResponse) => {
+          setLocalPackageInsalling(false);
+          if (success)
+            setSuccessNotification({
+              show: true,
+              header: "Installation success",
+              message: "Successfully insalled local packages",
+            });
+        },
+        ({ error, payload }: ApiResponse) => {
+          setLocalPackageInsalling(false);
+          if (error) {
+            setErrorNotifications({
+              show: true,
+              header: "Installation Error",
+              message: "Error installing local packages.",
+            });
+            console.error(payload);
+          }
+        }
+      );
     }
   }, [file]);
 
@@ -54,15 +87,21 @@ export default function SearchPackages({
         >
           Search
         </Button>
-        <Uploader
-          multiple
-          value={file}
-          hideTextArea
-          onChange={setFile}
-          buttonText="Upload"
-          accept="application/zip"
-          icon={<IconWrapper icon={RiFolderZipFill} />}
-        />
+        {isLocalPackageInstalling ? (
+          <Button startIcon={<IconWrapper icon={RiFolderZipFill} />} loading>
+            Upload
+          </Button>
+        ) : (
+          <Uploader
+            multiple
+            value={file}
+            hideTextArea
+            onChange={setFile}
+            buttonText="Upload"
+            accept="application/zip"
+            icon={<IconWrapper icon={RiFolderZipFill} />}
+          />
+        )}
       </Stack>
     </Panel>
   );
