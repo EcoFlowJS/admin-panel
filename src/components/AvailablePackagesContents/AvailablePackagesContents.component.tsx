@@ -60,7 +60,8 @@ export default function AvailablePackagesContents() {
     <FlexboxGrid justify="center">
       <FlexboxGrid.Item>
         <SearchPackages
-          loading={isLoading.initializing || isLoading.searching}
+          loading={isLoading.searching}
+          disabled={isLoading.initializing || isLoading.searching}
           onSearch={handleSearchPackage}
         />
       </FlexboxGrid.Item>
