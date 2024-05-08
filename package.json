@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@ecoflow/components-lib": "^0.1.1",
-    "@ecoflow/types": "^0.0.18",
+    "@ecoflow/types": "^0.0.19",
     "@koa/router": "^11.0.2",
     "axios": "^1.6.8",
     "compare-versions": "^6.1.0",
