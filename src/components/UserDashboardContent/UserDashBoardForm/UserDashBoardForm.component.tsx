@@ -110,10 +110,10 @@ export default function UserDashBoardForm({
   };
 
   const handleFormSubmit = (
-    checkStatus: boolean,
-    event: FormEvent<HTMLFormElement>
+    checkStatus: Record<string, any> | null,
+    event?: FormEvent<HTMLFormElement>
   ) => {
-    event.preventDefault();
+    event?.preventDefault();
     if (checkStatus) {
       setFormLoading(true);
       if (typeof username === "string")
