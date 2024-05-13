@@ -61,9 +61,12 @@ export default function UserChangePasswordForm() {
       <Form
         fluid
         model={UserChangePasswordFormModel}
-        onSubmit={(checkStatus: boolean, event: FormEvent<HTMLFormElement>) => {
-          event.preventDefault();
-          if (checkStatus) handleFormSubmit();
+        onSubmit={(
+          formValue: Record<string, any> | null,
+          event?: FormEvent<HTMLFormElement>
+        ) => {
+          event?.preventDefault();
+          if (formValue) handleFormSubmit();
         }}
         disabled={isUpdateing}
         formValue={formValueChangePassword}

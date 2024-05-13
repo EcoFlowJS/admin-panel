@@ -66,9 +66,12 @@ export default function UserProfileForm({ userInfo }: UserProfileFormProps) {
         model={UserProfileFormModel}
         formValue={formValueUserDetails}
         onChange={(value: any) => setFormValueUserDetails(value)}
-        onSubmit={(checkStatus: boolean, event: FormEvent<HTMLFormElement>) => {
-          event.preventDefault();
-          if (checkStatus) handelFormSubmit();
+        onSubmit={(
+          formValue: Record<string, any> | null,
+          event?: FormEvent<HTMLFormElement>
+        ) => {
+          event?.preventDefault();
+          if (formValue) handelFormSubmit();
         }}
       >
         <FormGroup name="username" label="Username" readOnly />
