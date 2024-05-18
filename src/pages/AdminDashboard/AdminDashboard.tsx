@@ -1,27 +1,20 @@
-import { useEffect, useState } from "react";
-import { Container, Content, Footer, Header } from "rsuite";
-import AdminLoading from "../../components/Loading/AdminLoading.component";
+import { Container, Content, Divider, FlexboxGrid, Header } from "rsuite";
+import AdminDashboardContent from "../../components/AdminDashboardContent/AdminDashboardContent.component";
 
 export default function AdminDashboard() {
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      setLoading(false);
-    })();
-  }, []);
-
   return (
-    <>
-      {isLoading ? (
-        <AdminLoading />
-      ) : (
-        <Container>
-          <Header>Header</Header>
-          <Content>sdgt</Content>
-          <Footer>Footer</Footer>
-        </Container>
-      )}
-    </>
+    <Container>
+      <Header style={{ paddingLeft: "2rem", paddingRight: "2rem" }}>
+        <FlexboxGrid justify="start">
+          <FlexboxGrid.Item>
+            <h4>Dashboard</h4>
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
+      </Header>
+      <Divider style={{ margin: "20px 0" }} />
+      <Content>
+        <AdminDashboardContent />
+      </Content>
+    </Container>
   );
 }
