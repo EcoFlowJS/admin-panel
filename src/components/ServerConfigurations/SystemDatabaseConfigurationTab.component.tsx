@@ -1,8 +1,14 @@
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
-import { FormGroup, InputEnv, InputPasswordEnv } from "@ecoflow/components-lib";
+import {
+  FolderSelector,
+  FormGroup,
+  InputEnv,
+  InputPasswordEnv,
+} from "@ecoflow/components-lib";
 import { FlexboxGrid, Input, InputNumber, SelectPicker, Toggle } from "rsuite";
 import DB_DriverList from "./DB_DriverList";
 import { Dispatch, SetStateAction } from "react";
+import directoryFetcher from "../../service/common/directoryFetcher.service";
 
 interface SystemDatabaseConfigurationTabProps {
   value: typeof defaultServerConfigsOptions;
@@ -75,11 +81,16 @@ export default function SystemDatabaseConfigurationTab({
             <FormGroup
               name="databaseConfigurationFilename"
               label="Sqlite File "
-              accepter={Input}
+              accepter={FolderSelector}
+              fileType="File"
+              width={350}
               autoComplete="off"
               placeholder="Sqlite File"
               helperTextStyle={{ marginLeft: 242 }}
               helperText="File will create automatically if not exists"
+              fetchDirectory={(path?: string, type?: "Directory" | "File") =>
+                directoryFetcher(path, type)
+              }
             />
           </>
         ) : (

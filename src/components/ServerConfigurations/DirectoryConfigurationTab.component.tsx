@@ -1,6 +1,6 @@
 import { configOptions } from "@ecoflow/types";
-import { FormGroup } from "@ecoflow/components-lib";
-import { Input } from "rsuite";
+import { FolderSelector, FormGroup } from "@ecoflow/components-lib";
+import directoryFetcher from "../../service/common/directoryFetcher.service";
 
 interface DirectoryConfigurationTabProps {
   defaultServerConfigs?: configOptions;
@@ -13,45 +13,75 @@ export default function DirectoryConfigurationTab({
     <>
       <FormGroup
         name="userDir"
+        fileType="Directory"
         label="Base directory :- "
-        accepter={Input}
+        accepter={FolderSelector}
         autoComplete="off"
+        width={350}
         placeholder={defaultServerConfigs?.userDir}
+        fetchDirectory={(path?: string, type?: "Directory" | "File") =>
+          directoryFetcher(path, type)
+        }
       />
       <FormGroup
         name="moduleDir"
+        fileType="Directory"
         label="Module directory :- "
-        accepter={Input}
+        accepter={FolderSelector}
         autoComplete="off"
+        width={350}
         placeholder={defaultServerConfigs?.moduleDir}
+        fetchDirectory={(path?: string, type?: "Directory" | "File") =>
+          directoryFetcher(path, type)
+        }
       />
       <FormGroup
         name="flowDir"
+        fileType="Directory"
         label="Flow directory :- "
-        accepter={Input}
+        accepter={FolderSelector}
         autoComplete="off"
+        width={350}
         placeholder={defaultServerConfigs?.flowDir}
+        fetchDirectory={(path?: string, type?: "Directory" | "File") =>
+          directoryFetcher(path, type)
+        }
       />
       <FormGroup
         name="envDir"
+        fileType="Directory"
         label="Environment directory :- "
-        accepter={Input}
+        accepter={FolderSelector}
         autoComplete="off"
+        width={350}
         placeholder={defaultServerConfigs?.envDir}
+        fetchDirectory={(path?: string, type?: "Directory" | "File") =>
+          directoryFetcher(path, type)
+        }
       />
       <FormGroup
+        fileType="Directory"
         name="DB_Directory"
         label="Database directory :- "
-        accepter={Input}
+        accepter={FolderSelector}
         autoComplete="off"
+        width={350}
         placeholder={defaultServerConfigs?.DB_Directory}
+        fetchDirectory={(path?: string, type?: "Directory" | "File") =>
+          directoryFetcher(path, type)
+        }
       />
       <FormGroup
+        fileType="Directory"
         name="httpStaticRoot"
         label="Static Serve Location :- "
-        accepter={Input}
+        accepter={FolderSelector}
         autoComplete="off"
+        width={350}
         placeholder={defaultServerConfigs?.httpStaticRoot}
+        fetchDirectory={(path?: string, type?: "Directory" | "File") =>
+          directoryFetcher(path, type)
+        }
       />
     </>
   );
