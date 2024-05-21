@@ -36,19 +36,3 @@ export default function App() {
     </>
   );
 }
-
-/*
-  const isServerOnline = (loaded = false) => {
-    isBackedEndOnlineService()
-      .then((val) => {
-        console.log(val);
-
-        if (val.success) setTimeout(() => setRestartingServer(false), 1000);
-        if (val.error) {
-          setRestartingServer(true);
-          setTimeout(() => isServerOnline(true), 1000);
-        }
-      })
-      .finally(() => (!loaded ? setLoaded(true) : null));
-  };
-  */

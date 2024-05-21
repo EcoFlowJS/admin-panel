@@ -1,5 +1,5 @@
 import { atom } from "jotai";
 
-const resartModalState = atom(false);
+const restartModalState = atom(false);
 
-export { resartModalState };
+export { restartModalState };
