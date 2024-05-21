@@ -17,9 +17,9 @@ import {
 } from "./serverConfigList";
 import isEnv from "../../utils/isEnv/inEnv";
 import updateConfigs from "../../service/config/updateConfig";
-import { resartModalState } from "../../store/modals.store";
-import { useAtom } from "jotai";
-import SaveConfigAlertModal from "../../components/ServerConfigurations/SaveConfigAlertModal.componnent";
+import { restartModalState } from "../../store/modals.store";
+import { useAtom, useSetAtom } from "jotai";
+import SaveConfigAlertModal from "../../components/ServerConfigurations/SaveConfigAlertModal.component";
 import ServerConfigurationForm from "../../components/ServerConfigurations/ServerConfigurationForm.component";
 import {
   errorNotification,
@@ -43,7 +43,7 @@ export default function ServerConfigurations() {
     useState<configOptions>();
   const [value, setValue] = useState(defaultServerConfigsOptions);
   const [modalOpen, setModalOpen] = useState(false);
-  const [_restartModalOpen, setRestartModalOpen] = useAtom(resartModalState);
+  const setRestartModalOpen = useSetAtom(restartModalState);
 
   //Env Inputs states
   const [isEnvMongoConnectionString, setEnvMongoConnectionString] =

@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import { Container, Content, Divider, FlexboxGrid, Panel } from "rsuite";
 import Header from "../../components/Header/Header";
 import SideNav from "../../components/SideNav/SideNav";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import initStatusState, {
   isLoggedIn,
   isLoggedOut,
 } from "../../store/initStatusState.store";
 import { AlertModal, useNotification } from "@ecoflow/components-lib";
-import { resartModalState } from "../../store/modals.store";
+import { restartModalState } from "../../store/modals.store";
 import restartCloseServer from "../../service/server/restartCloseServer.service";
 import {
   isClosedServer,
@@ -48,9 +48,9 @@ export default function BaseAdminLayout() {
   const location = useLocation();
   const [isLoading, setLoading] = useState(true);
   const [initStatus, setinitStatus] = useAtom(initStatusState);
-  const [restartModalOpen, setRestartModalOpen] = useAtom(resartModalState);
-  const [_restartingServer, setRestartingServer] = useAtom(isRestartingServer);
-  const [_clsoeServer, setCloseServer] = useAtom(isClosedServer);
+  const [restartModalOpen, setRestartModalOpen] = useAtom(restartModalState);
+  const setRestartingServer = useSetAtom(isRestartingServer);
+  const setCloseServer = useSetAtom(isClosedServer);
   const [response, setResponse] = useState<ApiResponse>({});
   const [onServerRestartedResponse, setOnServerRestartedResponse] = useAtom(
     serverRestartedResponse

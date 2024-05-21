@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -9,7 +9,7 @@ import {
   Header,
   Panel,
 } from "rsuite";
-import { resartModalState } from "../../store/modals.store";
+import { restartModalState } from "../../store/modals.store";
 import { isClosedServer } from "../../store/server.store";
 import { AlertModal, useNotification } from "@ecoflow/components-lib";
 import restartCloseServer from "../../service/server/restartCloseServer.service";
@@ -20,9 +20,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function ServerSettings() {
   const navigate = useNavigate();
-  const [_restartModalOpen, setRestartModalOpen] = useAtom(resartModalState);
+  const setRestartModalOpen = useSetAtom(restartModalState);
   const [closeModalOpen, setCloseModalOpen] = useState(false);
-  const [_closeServer, setCloseServer] = useAtom(isClosedServer);
+  const setCloseServer = useSetAtom(isClosedServer);
   const [response, setResponse] = useState<ApiResponse>({});
 
   const [permissionsList] = useAtom(userPermissions);
