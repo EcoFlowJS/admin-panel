@@ -12,6 +12,7 @@ import InstalledPackages from "../pages/InstalledPackages/InstalledPackages";
 import AvailablePackages from "../pages/AvailablePackages/AvailablePackages";
 import AuditLogs from "../pages/AuditLogs/AuditLogs.page";
 import BackupRestore from "../pages/BackupRestore/BackupRestore";
+import Export from "../pages/Export/Export.page";
 
 export default function () {
   return (
@@ -29,6 +30,7 @@ export default function () {
           <Route path="availablePackages" element={<AvailablePackages />} />
           <Route path="auditLogs" element={<AuditLogs />} />
           <Route path="backups" element={<BackupRestore />} />
+          <Route path="exports" element={<Export />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

@@ -1,19 +1,19 @@
 import { Container, Content, Divider, FlexboxGrid, Header } from "rsuite";
-import BackupRestoreContent from "../../components/BackupRestoreContent/BackupRestoreContent.component";
+import ExportContent from "../../components/ExportContent/ExportContent.component";
 
-export default function BackupRestore() {
+export default function Export() {
   return (
     <Container>
       <Header style={{ paddingLeft: "2rem", paddingRight: "2rem" }}>
         <FlexboxGrid justify="start">
           <FlexboxGrid.Item>
-            <h4>Backup and Restore</h4>
+            <h4>Exports</h4>
           </FlexboxGrid.Item>
         </FlexboxGrid>
       </Header>
       <Divider style={{ margin: "20px 0" }} />
       <Content>
-        <BackupRestoreContent />
+        <ExportContent />
       </Content>
     </Container>
   );

@@ -15,6 +15,7 @@ import { useAtom } from "jotai";
 import { userPermissions as userPermit } from "../../store/users.store";
 import { useState } from "react";
 import { RiFolderZipFill } from "react-icons/ri";
+import { TiExport } from "react-icons/ti";
 
 export default function SideNav() {
   const [expand, setExpand] = useState(true);
@@ -56,6 +57,9 @@ export default function SideNav() {
         break;
       case "backup":
         navigate("/admin/backups");
+        break;
+      case "exports":
+        navigate("/admin/exports");
         break;
     }
   };
@@ -243,18 +247,27 @@ export default function SideNav() {
                 active={loc.pathname.startsWith("/admin/backups")}
                 icon={<IconWrapper icon={RiFolderZipFill} />}
                 disabled={
-                  // !userPermissions.administrator &&
-                  !userPermissions.backup && !userPermissions.restore
+                  !userPermissions.administrator &&
+                  !userPermissions.backup &&
+                  !userPermissions.restore
                 }
                 style={{
                   color:
-                    // !userPermissions.administrator &&
-                    !userPermissions.backup && !userPermissions.restore
+                    !userPermissions.administrator &&
+                    !userPermissions.backup &&
+                    !userPermissions.restore
                       ? "var(--rs-text-disabled)"
                       : "inherit",
                 }}
               >
                 Backup and restore
+              </Nav.Item>
+              <Nav.Item
+                eventKey="exports"
+                active={loc.pathname.startsWith("/admin/exports")}
+                icon={<IconWrapper icon={TiExport} />}
+              >
+                Exports
               </Nav.Item>
             </Nav.Menu>
           </Nav>
