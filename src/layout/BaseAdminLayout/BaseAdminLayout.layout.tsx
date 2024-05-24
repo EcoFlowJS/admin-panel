@@ -152,7 +152,7 @@ export default function BaseAdminLayout() {
           setRestartingServer,
           setOnServerRestartedResponse,
         ]);
-      }, 30 * 1000);
+      }, 5 * 1000);
     }
   }, [response]);
 

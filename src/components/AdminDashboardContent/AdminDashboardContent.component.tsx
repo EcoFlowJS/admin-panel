@@ -20,7 +20,6 @@ export default function AdminDashboardContent() {
       ({ success, payload }: ApiResponse) => {
         setLoading(false);
         if (success) setDashboardStatus(payload);
-        console.log(payload);
       },
       ({ error, payload }: ApiResponse) => {
         setLoading(false);
