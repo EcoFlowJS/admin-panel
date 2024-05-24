@@ -11,7 +11,11 @@ export default function RoutesInfoTable({
   loading,
 }: RoutesInfoTableProps) {
   return (
-    <Panel header="Api Routes Details" className="card">
+    <Panel
+      header="Api Routes Details"
+      className="card"
+      style={{ backgroundColor: "var(--rs-bg-card)" }}
+    >
       <Table
         loading={loading}
         height={250}

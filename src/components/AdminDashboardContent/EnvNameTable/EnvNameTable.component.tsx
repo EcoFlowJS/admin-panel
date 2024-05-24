@@ -11,7 +11,11 @@ export default function EnvNameTable({
   loading,
 }: EnvNameTableProps) {
   return (
-    <Panel header="Environment Variables" className="card">
+    <Panel
+      header="Environment Variables"
+      className="card"
+      style={{ backgroundColor: "var(--rs-bg-card)" }}
+    >
       <Table
         loading={loading}
         height={340}
