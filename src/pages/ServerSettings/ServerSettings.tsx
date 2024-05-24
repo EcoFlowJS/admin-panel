@@ -34,7 +34,7 @@ export default function ServerSettings() {
     if (response.success) {
       setCloseModalOpen(false);
       successNotification.show();
-      setTimeout(() => setCloseServer(true), 30 * 1000);
+      setTimeout(() => setCloseServer(true), 5 * 1000);
     }
     if (response.error)
       setErrorNotification({

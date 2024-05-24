@@ -20,7 +20,6 @@ export default function AdminDashboardContent() {
       ({ success, payload }: ApiResponse) => {
         setLoading(false);
         if (success) setDashboardStatus(payload);
-        console.log(payload);
       },
       ({ error, payload }: ApiResponse) => {
         setLoading(false);
@@ -39,7 +38,7 @@ export default function AdminDashboardContent() {
               style={{ height: 112, borderRadius: 6 }}
             />
           ) : (
-            <Panel className="header-info bg-gradient-red">
+            <Panel className="header-info bg-available-packages">
               <div className="icon">
                 <IconWrapper icon={PiPackageFill} />
               </div>
@@ -57,7 +56,7 @@ export default function AdminDashboardContent() {
               style={{ height: 112, borderRadius: 6 }}
             />
           ) : (
-            <Panel className="header-info bg-gradient-green">
+            <Panel className="header-info bg-installed-packages">
               <div className="icon">
                 <IconWrapper icon={GrInstall} />
               </div>
@@ -75,7 +74,7 @@ export default function AdminDashboardContent() {
               style={{ height: 112, borderRadius: 6 }}
             />
           ) : (
-            <Panel className="header-info bg-gradient-blue">
+            <Panel className="header-info bg-db-connections">
               <div className="icon">
                 <IconWrapper icon={PiDatabase} />
               </div>
@@ -90,7 +89,12 @@ export default function AdminDashboardContent() {
 
       <Row gutter={30}>
         <Col xs={16}>
-          <Calendar className="card" compact bordered />
+          <Calendar
+            className="card"
+            compact
+            bordered
+            style={{ backgroundColor: "var(--rs-bg-card)" }}
+          />
         </Col>
         <Col xs={8}>
           <EnvNameTable
