@@ -2,12 +2,11 @@ import { Dispatch, SetStateAction, SyntheticEvent, useState } from "react";
 import { Form, FormProps, Tabs } from "rsuite";
 import ServerConfigurationTab from "./ServerConfigurationTab.component";
 import CorsConfigurationTab from "./CorsConfigurationTab.component";
-import EcoFlowRouterConfigurationTab from "./EcoFlowRouterConfigurationTab.component";
 import ApiRouterConfigurationTab from "./ApiRouterConfigurationTab.component";
 import DirectoryConfigurationTab from "./DirectoryConfigurationTab.component";
 import FlowConfigurationTab from "./FlowConfigurationTab.component";
 import LoggingConfigurationTab from "./LoggingConfigurationTab.component";
-import EditorConfigurationTab from "./EditorConfigurationTab.componnent";
+import EditorConfigurationTab from "./EditorConfigurationTab.component";
 import SystemDatabaseConfigurationTab from "./SystemDatabaseConfigurationTab.component";
 import { configOptions } from "@ecoflow/types";
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
@@ -72,15 +71,6 @@ export default function ServerConfigurationForm({
               <CorsConfigurationTab
                 defaultServerConfigs={defaultServerConfigs}
                 value={value}
-              />
-            ) : (
-              <></>
-            )}
-          </Tabs.Tab>
-          <Tabs.Tab eventKey="ERC" title="EcoFlow Router Configutations">
-            {eventKey === "ERC" ? (
-              <EcoFlowRouterConfigurationTab
-                defaultServerConfigs={defaultServerConfigs}
               />
             ) : (
               <></>
