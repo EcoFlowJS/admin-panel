@@ -1,6 +1,6 @@
 import axios from "../../utils/axios/axios";
 import { AxiosError } from "axios";
-import { DataItemValue } from "rsuite/esm/@types/common";
+import { DataItemValue } from "rsuite/esm/internals/types";
 
 const generateBackupFile = async (backup: DataItemValue[]): Promise<Blob> => {
   const res = await axios.post(

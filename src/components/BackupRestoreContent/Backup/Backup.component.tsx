@@ -5,7 +5,7 @@ import { Button, FlexboxGrid, MultiCascadeTree, Panel, Text } from "rsuite";
 import fetchBackupInfos from "../../../service/backupRestore/fetchBackupInfos.service";
 import { ApiResponse } from "@ecoflow/types";
 import { ItemDataType } from "rsuite/esm/MultiCascadeTree";
-import { DataItemValue } from "rsuite/esm/@types/common";
+import { DataItemValue } from "rsuite/esm/internals/types";
 import { useSetAtom } from "jotai";
 import {
   errorNotification,
