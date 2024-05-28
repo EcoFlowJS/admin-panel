@@ -18,6 +18,7 @@ export default function DirectoryConfigurationTab({
         accepter={FolderSelector}
         autoComplete="off"
         width={350}
+        showIndentLine
         placeholder={defaultServerConfigs?.userDir}
         fetchDirectory={(path?: string, type?: "Directory" | "File") =>
           directoryFetcher(path, type)
@@ -30,6 +31,7 @@ export default function DirectoryConfigurationTab({
         accepter={FolderSelector}
         autoComplete="off"
         width={350}
+        showIndentLine
         placeholder={defaultServerConfigs?.moduleDir}
         fetchDirectory={(path?: string, type?: "Directory" | "File") =>
           directoryFetcher(path, type)
@@ -42,6 +44,7 @@ export default function DirectoryConfigurationTab({
         accepter={FolderSelector}
         autoComplete="off"
         width={350}
+        showIndentLine
         placeholder={defaultServerConfigs?.flowDir}
         fetchDirectory={(path?: string, type?: "Directory" | "File") =>
           directoryFetcher(path, type)
@@ -54,6 +57,7 @@ export default function DirectoryConfigurationTab({
         accepter={FolderSelector}
         autoComplete="off"
         width={350}
+        showIndentLine
         placeholder={defaultServerConfigs?.envDir}
         fetchDirectory={(path?: string, type?: "Directory" | "File") =>
           directoryFetcher(path, type)
@@ -66,6 +70,7 @@ export default function DirectoryConfigurationTab({
         accepter={FolderSelector}
         autoComplete="off"
         width={350}
+        showIndentLine
         placeholder={defaultServerConfigs?.DB_Directory}
         fetchDirectory={(path?: string, type?: "Directory" | "File") =>
           directoryFetcher(path, type)
@@ -78,6 +83,7 @@ export default function DirectoryConfigurationTab({
         accepter={FolderSelector}
         autoComplete="off"
         width={350}
+        showIndentLine
         placeholder={defaultServerConfigs?.httpStaticRoot}
         fetchDirectory={(path?: string, type?: "Directory" | "File") =>
           directoryFetcher(path, type)

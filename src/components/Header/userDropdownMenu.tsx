@@ -2,14 +2,21 @@ import { Dropdown, Popover } from "rsuite";
 import HelpOutlineIcon from "@rsuite/icons/HelpOutline";
 import { useAtom } from "jotai";
 import { isLoggedOut } from "../../store/initStatusState.store";
-import signoutHandler from "./signoutHandler";
 import { useNavigate } from "react-router-dom";
+import userSignoutService from "../../service/user/userSignout.service";
+import { ApiResponse } from "@ecoflow/types";
 
 const userDropdownMenu =
   (status: any) =>
   ({ onClose, left, top, className }: any, ref: any) => {
     const navigate = useNavigate();
     const [_signedOut, setSignOut] = useAtom(isLoggedOut);
+
+    const signoutHandler = (setSignOut: any) => {
+      userSignoutService().then((response: ApiResponse) => {
+        if (response.success) setSignOut(true);
+      });
+    };
 
     const handleSelect = (eventKey: string | undefined) => {
       onClose();
