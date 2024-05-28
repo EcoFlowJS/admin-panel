@@ -1,21 +1,21 @@
 import { Nav, Navbar, Sidebar, Sidenav } from "rsuite";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
-import GearCircleIcon from "@rsuite/icons/legacy/GearCircle";
-import MagicIcon from "@rsuite/icons/legacy/Magic";
 import { MdOutlineDashboard } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SiDotenv } from "react-icons/si";
 import { TbPackages, TbUserShield, TbUsers } from "react-icons/tb";
 import { ImProfile } from "react-icons/im";
 import { IconWrapper } from "@ecoflow/components-lib";
-import { GrConfigure } from "react-icons/gr";
 import { CiServer, CiViewTimeline } from "react-icons/ci";
-import { LuPackageSearch } from "react-icons/lu";
+import { LuPackageSearch, LuSettings2 } from "react-icons/lu";
 import { useAtom } from "jotai";
 import { userPermissions as userPermit } from "../../store/users.store";
 import { useState } from "react";
 import { RiFolderZipFill } from "react-icons/ri";
 import { TiExport } from "react-icons/ti";
+import { GiGears } from "react-icons/gi";
+import NavLabel from "./NavLabel/NavLabel.component";
+import { HiWrenchScrewdriver } from "react-icons/hi2";
 
 export default function SideNav() {
   const [expand, setExpand] = useState(true);
@@ -74,46 +74,46 @@ export default function SideNav() {
         <Sidenav.Body>
           <Nav onSelect={navigationHandler}>
             <Nav.Item
+              as="div"
               eventKey="dashboard"
               active={loc.pathname.startsWith("/admin/dashboard")}
               icon={<IconWrapper icon={MdOutlineDashboard} />}
             >
               Dashboard
             </Nav.Item>
-            <Nav.Item divider />
             <Nav.Item
+              as="div"
               eventKey="profile"
               active={loc.pathname.startsWith("/admin/profile")}
               icon={<IconWrapper icon={ImProfile} />}
             >
               Profile
             </Nav.Item>
-            <Nav.Item divider />
             <Nav.Menu
               eventKey="3"
               trigger="hover"
               title="Advanced"
-              icon={<MagicIcon />}
+              icon={<IconWrapper icon={GiGears} />}
               placement="rightStart"
             >
               <Nav.Item
+                as="div"
                 eventKey="availablePackages"
                 active={loc.pathname.startsWith("/admin/availablePackages")}
-                icon={<IconWrapper icon={LuPackageSearch} />}
               >
-                Available Packages
+                <NavLabel icon={LuPackageSearch} label="Available Packages" />
               </Nav.Item>
               <Nav.Item
+                as="div"
                 eventKey="installedPackages"
                 active={loc.pathname.startsWith("/admin/installedPackages")}
-                icon={<IconWrapper icon={TbPackages} />}
               >
-                Installed Packages
+                <NavLabel icon={TbPackages} label="Installed Packages" />
               </Nav.Item>
               <Nav.Item
+                as="div"
                 eventKey="roles"
                 active={loc.pathname.startsWith("/admin/roles")}
-                icon={<IconWrapper icon={TbUserShield} />}
                 disabled={
                   !userPermissions.administrator &&
                   !userPermissions.createRole &&
@@ -130,12 +130,12 @@ export default function SideNav() {
                       : "inherit",
                 }}
               >
-                Roles
+                <NavLabel icon={TbUserShield} label="Roles" />
               </Nav.Item>
               <Nav.Item
+                as="div"
                 eventKey="users"
                 active={loc.pathname.startsWith("/admin/users")}
-                icon={<IconWrapper icon={TbUsers} />}
                 disabled={
                   !userPermissions.administrator &&
                   !userPermissions.createUser &&
@@ -154,12 +154,12 @@ export default function SideNav() {
                       : "inherit",
                 }}
               >
-                Users
+                <NavLabel icon={TbUsers} label="Users" />
               </Nav.Item>
               <Nav.Item
+                as="div"
                 eventKey="auditLogs"
                 active={loc.pathname.startsWith("/admin/auditLogs")}
-                icon={<IconWrapper icon={CiViewTimeline} />}
                 disabled={
                   !userPermissions.administrator && !userPermissions.auditLogs
                 }
@@ -170,20 +170,20 @@ export default function SideNav() {
                       : "inherit",
                 }}
               >
-                Audit Logs
+                <NavLabel icon={CiViewTimeline} label="Audit Logs" />
               </Nav.Item>
             </Nav.Menu>
             <Nav.Menu
               eventKey="4"
               trigger="hover"
               title="Settings"
-              icon={<GearCircleIcon />}
+              icon={<IconWrapper icon={LuSettings2} />}
               placement="rightStart"
             >
               <Nav.Item
+                as="div"
                 eventKey="server"
                 active={loc.pathname.startsWith("/admin/serverSettings")}
-                icon={<IconWrapper icon={CiServer} />}
                 disabled={
                   !userPermissions.administrator &&
                   !userPermissions.stopServer &&
@@ -198,12 +198,12 @@ export default function SideNav() {
                       : "inherit",
                 }}
               >
-                Server
+                <NavLabel icon={CiServer} label="Server" />
               </Nav.Item>
               <Nav.Item
+                as="div"
                 eventKey="config"
                 active={loc.pathname.startsWith("/admin/configurations")}
-                icon={<IconWrapper icon={GrConfigure} />}
                 disabled={
                   !userPermissions.administrator &&
                   !userPermissions.serverConfigurationShow &&
@@ -218,12 +218,12 @@ export default function SideNav() {
                       : "inherit",
                 }}
               >
-                Configurations
+                <NavLabel icon={HiWrenchScrewdriver} label="Configurations" />
               </Nav.Item>
               <Nav.Item
+                as="div"
                 eventKey="env"
                 active={loc.pathname.startsWith("/admin/environments")}
-                icon={<IconWrapper icon={SiDotenv} />}
                 disabled={
                   !userPermissions.administrator &&
                   !userPermissions.createEnvs &&
@@ -240,12 +240,12 @@ export default function SideNav() {
                       : "inherit",
                 }}
               >
-                Environments
+                <NavLabel icon={SiDotenv} label="Environments" />
               </Nav.Item>
               <Nav.Item
+                as="div"
                 eventKey="backup"
                 active={loc.pathname.startsWith("/admin/backups")}
-                icon={<IconWrapper icon={RiFolderZipFill} />}
                 disabled={
                   !userPermissions.administrator &&
                   !userPermissions.backup &&
@@ -260,14 +260,14 @@ export default function SideNav() {
                       : "inherit",
                 }}
               >
-                Backup and restore
+                <NavLabel icon={RiFolderZipFill} label="Backup and restore" />
               </Nav.Item>
               <Nav.Item
+                as="div"
                 eventKey="exports"
                 active={loc.pathname.startsWith("/admin/exports")}
-                icon={<IconWrapper icon={TiExport} />}
               >
-                Exports
+                <NavLabel icon={TiExport} label="Exports" />
               </Nav.Item>
             </Nav.Menu>
           </Nav>
@@ -279,6 +279,7 @@ export default function SideNav() {
       >
         <Nav pullRight>
           <Nav.Item
+            as="div"
             onClick={() => setExpand(!expand)}
             style={{ width: 56, textAlign: "center", fontSize: "2rem" }}
           >
