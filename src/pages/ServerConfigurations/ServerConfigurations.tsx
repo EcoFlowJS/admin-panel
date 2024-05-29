@@ -28,6 +28,9 @@ import {
 import { useNotification } from "@ecoflow/components-lib";
 import { useNavigate } from "react-router-dom";
 import { permissionFetched, userPermissions } from "../../store/users.store";
+import isEqual from "lodash/isEqual";
+import DBConfigConfirmModal from "./DBConfigConfirmModal/DBConfigConfirmModal.component";
+import extractDBConfig from "./helper/extractDBConfig";
 
 export default function ServerConfigurations() {
   // Importing user Permissions
@@ -37,6 +40,12 @@ export default function ServerConfigurations() {
   // Loading state
   const [isLoading, setLoading] = useState(true);
   const [isLoadingError, setLoadingError] = useState(false);
+
+  //Confirm DB Migration
+  const [migrationConfirmationModal, setMigrationConfirmationModal] = useState<{
+    open: boolean;
+    sendData?: any;
+  }>({ open: false });
 
   // Component states
   const [defaultServerConfigs, setDefaultServerConfig] =
@@ -185,25 +194,66 @@ export default function ServerConfigurations() {
     children: <>No configuration is changed to be get updated.</>,
   });
 
-  const configProcessHandler = () =>
+  const processUpdate = (
+    SendData: any,
+    migrate?:
+      | true
+      | {
+          name: string;
+          username: string;
+          password: string;
+          email: string;
+        }
+  ) =>
     (async () => {
-      const SendData = { ...value };
-      if (isEnvMongoConnectionString)
-        SendData.databaseConfigurationConnectionString = `env(${value.databaseConfigurationConnectionString})`;
-      if (isEnvUsername)
-        SendData.databaseConfigurationUser = `env(${value.databaseConfigurationUser})`;
-      if (isEnvPassword)
-        SendData.databaseConfigurationPassword = `env(${value.databaseConfigurationPassword})`;
-      if (isEnvDatabase)
-        SendData.databaseConfigurationDatabase = `env(${value.databaseConfigurationDatabase})`;
-
-      if (JSON.stringify(SendData) === JSON.stringify(serverConfigs)) {
-        warningResponse.show();
-        return;
-      }
       setResponseLoading(true);
-      setResponse(await updateConfigs(SendData));
+      setResponse(await updateConfigs(SendData, migrate));
     })();
+
+  const configProcessHandler = () => {
+    const SendData = { ...value };
+    if (isEnvMongoConnectionString)
+      SendData.databaseConfigurationConnectionString = `env(${value.databaseConfigurationConnectionString})`;
+    if (isEnvUsername)
+      SendData.databaseConfigurationUser = `env(${value.databaseConfigurationUser})`;
+    if (isEnvPassword)
+      SendData.databaseConfigurationPassword = `env(${value.databaseConfigurationPassword})`;
+    if (isEnvDatabase)
+      SendData.databaseConfigurationDatabase = `env(${value.databaseConfigurationDatabase})`;
+
+    if (isEqual(SendData, serverConfigs)) {
+      warningResponse.show();
+      return;
+    }
+
+    if (isEqual(extractDBConfig(SendData), extractDBConfig(serverConfigs))) {
+      processUpdate(SendData);
+      return;
+    }
+
+    setMigrationConfirmationModal({ open: true, sendData: SendData });
+  };
+
+  const handelMigrationConfirm = (
+    value?:
+      | true
+      | {
+          name: string;
+          username: string;
+          password: string;
+          email: string;
+        }
+  ) => {
+    if (value) {
+      processUpdate(migrationConfirmationModal.sendData, value);
+      return;
+    }
+    setErrorNotification({
+      show: true,
+      header: "Configuration Update Error",
+      message: "Correctly select migration method",
+    });
+  };
 
   useEffect(() => {
     if (
@@ -217,33 +267,34 @@ export default function ServerConfigurations() {
 
   return (
     <>
-      {isLoading ? (
-        <AdminLoading />
-      ) : (
-        <Container>
-          <Header style={{ paddingLeft: "2rem", paddingRight: "2rem" }}>
-            <FlexboxGrid justify="space-between">
-              <FlexboxGrid.Item>
-                <h4>Server Configurations</h4>
-              </FlexboxGrid.Item>
-              <FlexboxGrid.Item>
-                <Button
-                  appearance="primary"
-                  onClick={() => setModalOpen(true)}
-                  loading={responseLoading}
-                  disabled={
-                    isLoadingError ||
-                    (!permissionsList.administrator &&
-                      !permissionsList.serverConfigurationUpdate)
-                  }
-                >
-                  Confirm
-                </Button>
-              </FlexboxGrid.Item>
-            </FlexboxGrid>
-          </Header>
-          <Divider />
-          <Content>
+      <Container>
+        <Header style={{ paddingLeft: "2rem", paddingRight: "2rem" }}>
+          <FlexboxGrid justify="space-between">
+            <FlexboxGrid.Item>
+              <h4>Server Configurations</h4>
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item>
+              <Button
+                appearance="primary"
+                onClick={() => setModalOpen(true)}
+                loading={responseLoading}
+                disabled={
+                  isLoading ||
+                  isLoadingError ||
+                  (!permissionsList.administrator &&
+                    !permissionsList.serverConfigurationUpdate)
+                }
+              >
+                Confirm
+              </Button>
+            </FlexboxGrid.Item>
+          </FlexboxGrid>
+        </Header>
+        <Divider />
+        <Content>
+          {isLoading ? (
+            <AdminLoading />
+          ) : (
             <ServerConfigurationForm
               disabled={
                 isLoadingError ||
@@ -264,13 +315,21 @@ export default function ServerConfigurations() {
               passwordEnvs={[isEnvPasswordChecked, setEnvPassword]}
               databaseEnvs={[isEnvDatabaseChecked, setEnvDatabase]}
             />
-          </Content>
-        </Container>
-      )}
+          )}
+        </Content>
+      </Container>
 
       <SaveConfigAlertModal
         handler={configProcessHandler}
         modalControl={[modalOpen, setModalOpen]}
+      />
+
+      <DBConfigConfirmModal
+        open={migrationConfirmationModal.open}
+        onClose={() =>
+          setMigrationConfirmationModal((val) => ({ ...val, open: false }))
+        }
+        onConfirm={handelMigrationConfirm}
       />
     </>
   );
