@@ -11,7 +11,15 @@ import {
 } from "../../../../store/notification.store";
 import { useAtom } from "jotai";
 
-export default function UserChangePasswordForm() {
+interface UserChangePasswordFormProps {
+  onSuccess?: (message: string) => void;
+  onFailure?: (message: string) => void;
+}
+
+export default function UserChangePasswordForm({
+  onSuccess = () => {},
+  onFailure = () => {},
+}: UserChangePasswordFormProps) {
   const successNoti = useAtom(successNotification)[1];
   const errNoti = useAtom(errorNotification)[1];
 
@@ -37,11 +45,12 @@ export default function UserChangePasswordForm() {
             header: "Password Updated",
             message: "Password updated successfully.",
           });
+          onSuccess("Password updated successfully.");
         }
       },
       (reject: ApiResponse) => {
         setUpdating(false);
-        if (reject.error)
+        if (reject.error) {
           errNoti({
             show: true,
             header: "Password Upadte Error",
@@ -52,6 +61,14 @@ export default function UserChangePasswordForm() {
                 ? JSON.stringify(reject.payload)
                 : reject.payload.toString(),
           });
+          onFailure(
+            typeof reject.payload === "string"
+              ? reject.payload
+              : typeof reject.payload === "object"
+              ? JSON.stringify(reject.payload)
+              : reject.payload.toString()
+          );
+        }
       }
     );
   };

@@ -15,10 +15,13 @@ import {
   serverRestartedResponse,
 } from "../../../store/server.store";
 import isServerOnline from "../../../service/server/isServerOnline.service";
+import { FaRegFolderOpen } from "react-icons/fa6";
+import RestoreBrowseModal from "./RestoreBrowseModal/RestoreBrowseModal.component";
 
 export default function Restore() {
   const [uploaderValue, setUploaderValue] = useState<FileList | null>(null);
   const [isLoading, setLoading] = useState(false);
+  const [restoreBrowseModal, setRestoreBrowseModal] = useState(false);
 
   const setCloseServer = useSetAtom(isClosedServer);
   const setRestartingServer = useSetAtom(isRestartingServer);
@@ -65,32 +68,50 @@ export default function Restore() {
   };
 
   return (
-    <Panel header="Restore">
-      <Text muted size="lg">
-        Select a backup to restore.
-      </Text>
-      <Stack spacing={15} style={{ paddingTop: 8 }}>
-        <Stack.Item style={{ width: 400 }}>
-          <Uploader
-            name="restore"
-            buttonText="Upload"
-            accept="application/zip"
-            onChange={setUploaderValue}
-            value={uploaderValue}
-          />
-        </Stack.Item>
-        <Stack.Item>
-          <Button
-            appearance="primary"
-            style={{ width: 150 }}
-            onClick={handleRestore}
-            loading={isLoading}
-            startIcon={<IconWrapper icon={FaUpload} />}
-          >
-            Backup
-          </Button>
-        </Stack.Item>
-      </Stack>
-    </Panel>
+    <>
+      <Panel header="Restore">
+        <Text muted size="lg">
+          Select a backup to restore.
+        </Text>
+        <Stack spacing={15} style={{ paddingTop: 8 }}>
+          <Stack.Item style={{ width: 400 }}>
+            <Uploader
+              name="restore"
+              buttonText="Upload"
+              accept="application/zip"
+              onChange={setUploaderValue}
+              value={uploaderValue}
+            />
+          </Stack.Item>
+          <Stack.Item>
+            <Button
+              appearance="primary"
+              style={{ width: 150 }}
+              onClick={handleRestore}
+              loading={isLoading}
+              startIcon={<IconWrapper icon={FaUpload} />}
+            >
+              Restore
+            </Button>
+          </Stack.Item>
+          <Stack.Item>
+            <Button
+              appearance="primary"
+              color="blue"
+              style={{ width: 150 }}
+              onClick={() => setRestoreBrowseModal(true)}
+              startIcon={<IconWrapper icon={FaRegFolderOpen} />}
+            >
+              Browse
+            </Button>
+          </Stack.Item>
+        </Stack>
+      </Panel>
+
+      <RestoreBrowseModal
+        open={restoreBrowseModal}
+        onClose={() => setRestoreBrowseModal(false)}
+      />
+    </>
   );
 }

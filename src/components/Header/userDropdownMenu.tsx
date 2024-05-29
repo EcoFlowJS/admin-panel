@@ -1,16 +1,18 @@
 import { Dropdown, Popover } from "rsuite";
 import HelpOutlineIcon from "@rsuite/icons/HelpOutline";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { isLoggedOut } from "../../store/initStatusState.store";
 import { useNavigate } from "react-router-dom";
 import userSignoutService from "../../service/user/userSignout.service";
 import { ApiResponse } from "@ecoflow/types";
+import { changePWDModal } from "../../store/modals.store";
 
 const userDropdownMenu =
   (status: any) =>
   ({ onClose, left, top, className }: any, ref: any) => {
     const navigate = useNavigate();
-    const [_signedOut, setSignOut] = useAtom(isLoggedOut);
+    const setSignOut = useSetAtom(isLoggedOut);
+    const changePWDOpen = useSetAtom(changePWDModal);
 
     const signoutHandler = (setSignOut: any) => {
       userSignoutService().then((response: ApiResponse) => {
@@ -27,6 +29,9 @@ const userDropdownMenu =
         case "signout":
           signoutHandler(setSignOut);
           break;
+        case "changePWD":
+          changePWDOpen(true);
+          break;
       }
     };
     return (
@@ -39,14 +44,21 @@ const userDropdownMenu =
           <Dropdown.Separator />
           <Dropdown.Item eventKey="changePWD">Change Password</Dropdown.Item>
           <Dropdown.Item eventKey="profile">Profile & account</Dropdown.Item>
-          <Dropdown.Item eventKey="feedback">Feedback</Dropdown.Item>
+          <Dropdown.Item
+            eventKey="feedback"
+            as="a"
+            target="_blank"
+            href="https://github.com/EcoFlowJS/eco-flow/issues"
+          >
+            Feedback
+          </Dropdown.Item>
           <Dropdown.Separator />
           <Dropdown.Item eventKey="signout" disabled={!status.isAuth}>
             Sign out
           </Dropdown.Item>
           <Dropdown.Item
             icon={<HelpOutlineIcon />}
-            href="#"
+            href="https://github.com/EcoFlowJS/eco-flow/blob/main/README.md"
             target="_blank"
             as="a"
           >
