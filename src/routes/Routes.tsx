@@ -1,5 +1,5 @@
 import { Error404 } from "@ecoflow/components-lib";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import BaseLayout from "../layout/BaseAdminLayout/BaseAdminLayout.layout";
 import UserProfile from "../pages/UserProfile/UserProfile";
 import UsersDashboard from "../pages/UserDashboard/UsersDashboard";
@@ -15,25 +15,27 @@ import BackupRestore from "../pages/BackupRestore/BackupRestore";
 import Export from "../pages/Export/Export.page";
 
 export default function () {
+  const navigate = useNavigate();
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/admin" element={<BaseLayout />}>
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="profile" element={<UserProfile />} />
-          <Route path="users" element={<UsersDashboard />} />
-          <Route path="configurations" element={<ServerConfigurations />} />
-          <Route path="environments" element={<ServerEnvironments />} />
-          <Route path="serverSettings" element={<ServerSettings />} />
-          <Route path="roles" element={<RoleManagement />} />
-          <Route path="InstalledPackages" element={<InstalledPackages />} />
-          <Route path="availablePackages" element={<AvailablePackages />} />
-          <Route path="auditLogs" element={<AuditLogs />} />
-          <Route path="backups" element={<BackupRestore />} />
-          <Route path="exports" element={<Export />} />
-        </Route>
-        <Route path="*" element={<Error404 />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/admin" element={<BaseLayout />}>
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="profile" element={<UserProfile />} />
+        <Route path="users" element={<UsersDashboard />} />
+        <Route path="configurations" element={<ServerConfigurations />} />
+        <Route path="environments" element={<ServerEnvironments />} />
+        <Route path="serverSettings" element={<ServerSettings />} />
+        <Route path="roles" element={<RoleManagement />} />
+        <Route path="InstalledPackages" element={<InstalledPackages />} />
+        <Route path="availablePackages" element={<AvailablePackages />} />
+        <Route path="auditLogs" element={<AuditLogs />} />
+        <Route path="backups" element={<BackupRestore />} />
+        <Route path="exports" element={<Export />} />
+      </Route>
+      <Route
+        path="*"
+        element={<Error404 showBackButton onClick={() => navigate("/admin")} />}
+      />
+    </Routes>
   );
 }
