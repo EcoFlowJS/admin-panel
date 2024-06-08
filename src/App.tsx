@@ -7,6 +7,7 @@ import themeMode from "./store/theme.mode";
 import Routes from "./routes/Routes";
 import { isRestartingServer, isClosedServer } from "./store/server.store";
 import isServerOnline from "./service/server/isServerOnline.service";
+import { BrowserRouter } from "react-router-dom";
 
 export default function App() {
   const [darkMode] = useAtom(themeMode);
@@ -28,7 +29,9 @@ export default function App() {
             <Loader backdrop content="loading..." />
           ) : (
             <ErrorBoundary FallbackComponent={ErrorFallback}>
-              <Routes />
+              <BrowserRouter>
+                <Routes />
+              </BrowserRouter>
             </ErrorBoundary>
           )}
         </CustomProvider>
