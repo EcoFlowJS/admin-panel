@@ -2,7 +2,7 @@
   "name": "@ecoflow/admin-panel",
   "main": "./index.cjs",
   "types": "./index.d.ts",
-  "version": "0.1.28",
+  "version": "0.1.29",
   "type": "module",
   "scripts": {
     "dev": "vite",
