@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Placeholder, Tabs } from "rsuite";
-import SystemEnvvironments from "./SystemEnvvironments/SystemEnvvironments.components";
+import { FlexboxGrid, Tabs, Text } from "rsuite";
+import SystemEnvironments from "./SystemEnvironments/SystemEnvironments.components";
 import UserEnvironments from "./UserEnvironments/UserEnvironments.components";
 
 export default function ServerEnvironmentsContent() {
@@ -8,10 +8,19 @@ export default function ServerEnvironmentsContent() {
   return (
     <Tabs onSelect={(key) => setTabKey(key!)} defaultActiveKey="intro" vertical>
       <Tabs.Tab eventKey="intro" title="Introductions">
-        <Placeholder.Paragraph graph="image" rows={5} />
+        <FlexboxGrid justify="center" align="middle">
+          <FlexboxGrid.Item colspan={18} style={{ padding: 30 }}>
+            <Text size="xl" align="justify" transform="capitalize" muted>
+              Configure and manage your server settings within Eco-Flow to
+              optimize performance, security, and reliability. This section
+              allows you to set up server environments, manage configurations,
+              monitor server health, and deploy your applications seamlessly.
+            </Text>
+          </FlexboxGrid.Item>
+        </FlexboxGrid>
       </Tabs.Tab>
       <Tabs.Tab eventKey="sysEnvs" title="System Environments">
-        {tabKey === "sysEnvs" ? <SystemEnvvironments /> : <></>}
+        {tabKey === "sysEnvs" ? <SystemEnvironments /> : <></>}
       </Tabs.Tab>
       <Tabs.Tab eventKey="userEnvs" title="Users Environments">
         {tabKey === "userEnvs" ? <UserEnvironments /> : <></>}

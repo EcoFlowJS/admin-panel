@@ -17,23 +17,23 @@ const permissionList: PermissionList[] = [
     permissions: [
       {
         name: "createUser",
-        label: "Create Users",
-        hint: "Create users only",
+        label: "Create/Assign Users.",
+        hint: "Members with this specified permission allowed to create or assign new users.",
       },
       {
         name: "deleteUser",
-        label: "Delete Users",
-        hint: "Delete users only",
+        label: "Remove/Disable Users.",
+        hint: "Members with this specified permission allowed to delete/disable users.",
       },
       {
         name: "updateUser",
-        label: "Update Users",
-        hint: "Update users only",
+        label: "Edit/Modify Users.",
+        hint: "Members with this specified permission allowed to Edit/modify user information.",
       },
       {
         name: "showUser",
-        label: "show users",
-        hint: "Show users only",
+        label: "Available Users.",
+        hint: "Members with this specified permission allowed to view all the available users.",
       },
     ],
   },
@@ -42,18 +42,18 @@ const permissionList: PermissionList[] = [
     permissions: [
       {
         name: "createRole",
-        label: "Create Role",
-        hint: "Create role only",
+        label: "Create new role.",
+        hint: "Members with this specified permission allowed to create new roles.",
       },
       {
         name: "deleteRole",
-        label: "Delete Role",
-        hint: "Delete role only",
+        label: "Drop/Remove Role.",
+        hint: "Members with this specified permission allowed to delete roles.",
       },
       {
         name: "updateRole",
-        label: "Update role",
-        hint: "Update role only",
+        label: "Edit/Modify role.",
+        hint: "Members with this specified permission allowed to update/modify roles with this specified permission.",
       },
     ],
   },
@@ -62,23 +62,23 @@ const permissionList: PermissionList[] = [
     permissions: [
       {
         name: "serverConfigurationShow",
-        label: "Server configuration show",
-        hint: "Server configuration show only",
+        label: "Preview server configuration.",
+        hint: "Members with this specified permission allowed to view the server configurations.",
       },
       {
         name: "serverConfigurationUpdate",
-        label: "Server configuration update",
-        hint: "Server configuration update only",
+        label: "Edit/Modify server configuration.",
+        hint: "Members with this specified permission allowed to update/modify the server configurations",
       },
       {
         name: "stopServer",
-        label: "Stop Server",
-        hint: "Stop server only",
+        label: "Stop the server.",
+        hint: "Members with this specified permission allowed to stop the server.",
       },
       {
         name: "restartServer",
-        label: "Restart Server",
-        hint: "Restart server only",
+        label: "Restart the server",
+        hint: "Members with this specified permission allowed to restart the server.",
       },
     ],
   },
@@ -87,18 +87,18 @@ const permissionList: PermissionList[] = [
     permissions: [
       {
         name: "createEnvs",
-        label: "Create Envs",
-        hint: "Create envs",
+        label: "Create/Assign new Environment variables.",
+        hint: "Members with this specified permission allowed to create/assign new environment variables to the server.",
       },
       {
         name: "deleteEnvs",
-        label: "Delete Envs",
-        hint: "Delete",
+        label: "Drop/Remove Environment variables.",
+        hint: "Members with this specified permission allowed to drop/remove already existing environment variables of the server.",
       },
       {
         name: "updateEnvs",
-        label: "Update Envs",
-        hint: "Update",
+        label: "Edit/Modify Environment variables.",
+        hint: "Members with this specified permission allowed to edit/modify environment variables to the server.",
       },
     ],
   },
@@ -107,13 +107,13 @@ const permissionList: PermissionList[] = [
     permissions: [
       {
         name: "backup",
-        label: "Backup Configurtions",
-        hint: "Backup Configurtions",
+        label: "Backup server configurations.",
+        hint: "Members with this specified permission allowed to backup the server configurations.",
       },
       {
         name: "restore",
-        label: "Restore Configurtions",
-        hint: "Restore Configurtions",
+        label: "Restore server configurations.",
+        hint: "Members with this specified permission allowed to restore the server configurations.",
       },
     ],
   },
@@ -122,13 +122,23 @@ const permissionList: PermissionList[] = [
     permissions: [
       {
         name: "schemaEditor",
-        label: "Schema Editor",
-        hint: "schemna editor",
+        label: "Access schema editor.",
+        hint: (
+          <>
+            Members with this specified permission allowed to access the{" "}
+            <strong>Schema Editor</strong>.
+          </>
+        ),
       },
       {
         name: "flowEditor",
-        label: "Flow Editor",
-        hint: "Flow Editor",
+        label: "Access flow editor.",
+        hint: (
+          <>
+            Members with this specified permission allowed to access the{" "}
+            <strong>Flow Editor</strong>.
+          </>
+        ),
       },
     ],
   },
@@ -137,58 +147,58 @@ const permissionList: PermissionList[] = [
     permissions: [
       {
         name: "createDBConnection",
-        label: "Create DBConnection",
-        hint: "Create DBConnection only",
+        label: "Create/Assign a new database connection.",
+        hint: "Members with this specified permission allowed to only to create a database connection.",
       },
       {
         name: "modifyDBConnection",
-        label: "Modify DBConnection",
-        hint: "Modify DBConnection",
+        label: "Edit/Modify database connection.",
+        hint: "Members with this specified permission allowed to edit/modify database connection.",
       },
       {
         name: "removeDBConnection",
-        label: "Remove DBConnection",
-        hint: "Remove DBConnection",
+        label: "Drop/Remove database connection.",
+        hint: "Members with this specified permission allowed to drop/remove database connection.",
       },
       {
         name: "createCollectionTable",
-        label: "Create Collection Table",
-        hint: "Create Collection Table",
+        label: "Create new collection table.",
+        hint: "Members with this specified permission allowed to create/assign database a new collection table.",
       },
       {
         name: "modifyCollectionTable",
-        label: "Modify Collection Table",
-        hint: "Modify Collection Table",
+        label: "Edit/Modify collection table.",
+        hint: "Members with this specified permission allowed to edit/modify database collection tables.",
       },
       {
         name: "removeCollectionTable",
-        label: "Remove Collection Table",
-        hint: "Remove Collection Table",
+        label: "Drop/Remove collection table.",
+        hint: "Members with this specified permission allowed to drop/remove database collection tables.",
       },
       {
         name: "modifyDBStructure",
-        label: "Modify DB Structure",
-        hint: "Modify DB Structure",
+        label: "Edit/Modify database structure.",
+        hint: "Members with this specified permission allowed to edit/modify database structure.",
       },
       {
         name: "displayDBRecord",
-        label: "Display DB Record",
-        hint: "Display DB Record",
+        label: "Display database records.",
+        hint: "Members with this specified permission allowed to preview database records.",
       },
       {
         name: "insertDBRecord",
-        label: "Insert DB Record",
-        hint: "Insert DB Record",
+        label: "Insert database records.",
+        hint: "Members with this specified permission allowed to insert database records.",
       },
       {
         name: "modifyDBRecord",
-        label: "Modify DB Record",
-        hint: "Modify DB Record",
+        label: "Edit/Modify database records.",
+        hint: "Members with this specified permission allowed to edit/modify database records.",
       },
       {
         name: "removeDBRecord",
-        label: "Remove DB Record",
-        hint: "Remove DB Record",
+        label: "Drop/Remove database records.",
+        hint: "Members with this specified permission allowed to drop/remove database records.",
       },
     ],
   },
@@ -198,7 +208,7 @@ const permissionList: PermissionList[] = [
       {
         name: "auditLogs",
         label: "Audit Logs",
-        hint: "Audit Logs",
+        hint: "Members with this specified permission allowed to preview the audit logs.",
       },
       {
         name: "administrator",
