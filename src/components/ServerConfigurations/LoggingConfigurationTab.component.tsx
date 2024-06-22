@@ -1,5 +1,5 @@
 import { defaultServerConfigsOptions } from "../../pages/ServerConfigurations/serverConfigList";
-import { FolderSelector, FormGroup } from "@ecoflow/components-lib";
+import { FormGroup } from "@ecoflow/components-lib";
 import { Input, InputNumber, SelectPicker, Toggle } from "rsuite";
 import logList from "./logList";
 
@@ -64,7 +64,7 @@ export default function LoggingConfigurationTab({
               <FormGroup
                 name="loggingFileLocation"
                 label="Logs File Location :- "
-                accepter={FolderSelector}
+                accepter={Input}
                 placeholder={value.loggingFileLocation}
               />
               <FormGroup
