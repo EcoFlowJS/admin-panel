@@ -36,13 +36,13 @@ export default function LoggingConfigurationTab({
           />
           <FormGroup
             name="loggingLableEnable"
-            label="Logs Lable Enable "
+            label="Logs Label Enable "
             accepter={Toggle}
           />
           {value.loggingLableEnable ? (
             <FormGroup
               name="loggingLableLable"
-              label="Logs Lable :- "
+              label="Logs Label :- "
               accepter={Input}
               placeholder={value.loggingLableLable}
             />

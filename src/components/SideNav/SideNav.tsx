@@ -120,15 +120,14 @@ export default function SideNav() {
                   !userPermissions.deleteRole &&
                   !userPermissions.updateRole
                 }
-                style={{
-                  color:
-                    !userPermissions.administrator &&
-                    !userPermissions.createRole &&
-                    !userPermissions.deleteRole &&
-                    !userPermissions.updateRole
-                      ? "var(--rs-text-disabled)"
-                      : "inherit",
-                }}
+                style={
+                  !userPermissions.administrator &&
+                  !userPermissions.createRole &&
+                  !userPermissions.deleteRole &&
+                  !userPermissions.updateRole
+                    ? { color: "var(--rs-text-disabled)" }
+                    : {}
+                }
               >
                 <NavLabel icon={TbUserShield} label="Roles" />
               </Nav.Item>
@@ -143,16 +142,15 @@ export default function SideNav() {
                   !userPermissions.deleteUser &&
                   !userPermissions.showUser
                 }
-                style={{
-                  color:
-                    !userPermissions.administrator &&
-                    !userPermissions.createUser &&
-                    !userPermissions.updateUser &&
-                    !userPermissions.deleteUser &&
-                    !userPermissions.showUser
-                      ? "var(--rs-text-disabled)"
-                      : "inherit",
-                }}
+                style={
+                  !userPermissions.administrator &&
+                  !userPermissions.createUser &&
+                  !userPermissions.updateUser &&
+                  !userPermissions.deleteUser &&
+                  !userPermissions.showUser
+                    ? { color: "var(--rs-text-disabled)" }
+                    : {}
+                }
               >
                 <NavLabel icon={TbUsers} label="Users" />
               </Nav.Item>
@@ -163,12 +161,11 @@ export default function SideNav() {
                 disabled={
                   !userPermissions.administrator && !userPermissions.auditLogs
                 }
-                style={{
-                  color:
-                    !userPermissions.administrator && !userPermissions.auditLogs
-                      ? "var(--rs-text-disabled)"
-                      : "inherit",
-                }}
+                style={
+                  !userPermissions.administrator && !userPermissions.auditLogs
+                    ? { color: "var(--rs-text-disabled)" }
+                    : {}
+                }
               >
                 <NavLabel icon={CiViewTimeline} label="Audit Logs" />
               </Nav.Item>
@@ -189,14 +186,13 @@ export default function SideNav() {
                   !userPermissions.stopServer &&
                   !userPermissions.restartServer
                 }
-                style={{
-                  color:
-                    !userPermissions.administrator &&
-                    !userPermissions.stopServer &&
-                    !userPermissions.restartServer
-                      ? "var(--rs-text-disabled)"
-                      : "inherit",
-                }}
+                style={
+                  !userPermissions.administrator &&
+                  !userPermissions.stopServer &&
+                  !userPermissions.restartServer
+                    ? { color: "var(--rs-text-disabled)" }
+                    : {}
+                }
               >
                 <NavLabel icon={CiServer} label="Server" />
               </Nav.Item>
@@ -209,14 +205,13 @@ export default function SideNav() {
                   !userPermissions.serverConfigurationShow &&
                   !userPermissions.serverConfigurationUpdate
                 }
-                style={{
-                  color:
-                    !userPermissions.administrator &&
-                    !userPermissions.serverConfigurationShow &&
-                    !userPermissions.serverConfigurationUpdate
-                      ? "var(--rs-text-disabled)"
-                      : "inherit",
-                }}
+                style={
+                  !userPermissions.administrator &&
+                  !userPermissions.serverConfigurationShow &&
+                  !userPermissions.serverConfigurationUpdate
+                    ? { color: "var(--rs-text-disabled)" }
+                    : {}
+                }
               >
                 <NavLabel icon={HiWrenchScrewdriver} label="Configurations" />
               </Nav.Item>
@@ -230,15 +225,14 @@ export default function SideNav() {
                   !userPermissions.deleteEnvs &&
                   !userPermissions.updateEnvs
                 }
-                style={{
-                  color:
-                    !userPermissions.administrator &&
-                    !userPermissions.createEnvs &&
-                    !userPermissions.deleteEnvs &&
-                    !userPermissions.updateEnvs
-                      ? "var(--rs-text-disabled)"
-                      : "inherit",
-                }}
+                style={
+                  !userPermissions.administrator &&
+                  !userPermissions.createEnvs &&
+                  !userPermissions.deleteEnvs &&
+                  !userPermissions.updateEnvs
+                    ? { color: "var(--rs-text-disabled)" }
+                    : {}
+                }
               >
                 <NavLabel icon={SiDotenv} label="Environments" />
               </Nav.Item>
@@ -251,14 +245,13 @@ export default function SideNav() {
                   !userPermissions.backup &&
                   !userPermissions.restore
                 }
-                style={{
-                  color:
-                    !userPermissions.administrator &&
-                    !userPermissions.backup &&
-                    !userPermissions.restore
-                      ? "var(--rs-text-disabled)"
-                      : "inherit",
-                }}
+                style={
+                  !userPermissions.administrator &&
+                  !userPermissions.backup &&
+                  !userPermissions.restore
+                    ? { color: "var(--rs-text-disabled)" }
+                    : {}
+                }
               >
                 <NavLabel icon={RiFolderZipFill} label="Backup and restore" />
               </Nav.Item>

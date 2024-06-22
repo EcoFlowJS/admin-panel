@@ -91,7 +91,7 @@ export default function UserChangePasswordForm({
       >
         <FormGroup
           name="oldPassword"
-          label="Old Password"
+          label="Current Password"
           accepter={InputPassword}
           autoComplete="off"
         />
@@ -103,7 +103,7 @@ export default function UserChangePasswordForm({
         />
         <FormGroup
           name="rePassword"
-          label="New Password"
+          label="Confirm Password"
           accepter={InputPassword}
           autoComplete="off"
         />

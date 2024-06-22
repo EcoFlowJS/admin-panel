@@ -112,7 +112,12 @@ export default function RoleManagementContent() {
           <Placeholder.Paragraph rows={5} active />
         ) : (
           <>
-            <Tabs vertical appearance="tabs">
+            <Tabs
+              vertical
+              defaultActiveKey={
+                roles.length > 0 ? roles[0]._id?.toString() : ""
+              }
+            >
               {roles.map((role) => {
                 return (
                   <Tabs.Tab

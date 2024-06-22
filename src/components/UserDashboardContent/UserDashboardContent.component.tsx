@@ -81,7 +81,9 @@ export default function UserDashboardContent({
         setLoading(false);
         Loading(false);
         setUserList(response.payload);
-        setTabActiveKey(response.payload.length > 0 ? response.payload[0] : "");
+        setTabActiveKey(
+          response.payload.length > 0 ? response.payload[0].toString() : ""
+        );
       }
     }, console.error);
 

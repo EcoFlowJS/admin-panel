@@ -123,7 +123,7 @@ export default function ServerSettings() {
         open={closeModalOpen}
         CancelButtonProps={{
           onClick: () => setCloseModalOpen(false),
-          color: "green",
+          appearance: "subtle",
         }}
         confirmButtonProps={{
           onClick: () => {
