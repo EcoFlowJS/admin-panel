@@ -17,8 +17,6 @@ const commitEnvs = async (
   const res = (await axios.post("/admin/environment/envs", { type, finalEnvs }))
     .data;
 
-  console.log(res);
-
   return res;
 };
 

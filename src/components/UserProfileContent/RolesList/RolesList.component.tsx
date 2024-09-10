@@ -25,7 +25,7 @@ export default function RolesList() {
           })
         );
       }
-    }, console.log);
+    }, console.error);
 
   useEffect(() => {
     if (userRoleList.length > 0) fetchRoles();

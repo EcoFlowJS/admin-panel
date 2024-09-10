@@ -11,11 +11,7 @@ const updateConfigs = async (
         password: string;
         email: string;
       }
-): Promise<ApiResponse> => {
-  console.log({ ...data, migrate });
-
-  return (await axios.put("/admin/config", { ...data, migrate }))
-    .data as ApiResponse;
-};
+): Promise<ApiResponse> =>
+  (await axios.put("/admin/config", { ...data, migrate })).data as ApiResponse;
 
 export default updateConfigs;
